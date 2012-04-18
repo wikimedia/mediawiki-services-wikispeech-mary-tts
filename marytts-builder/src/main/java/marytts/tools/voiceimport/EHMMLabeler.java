@@ -74,6 +74,11 @@ public class EHMMLabeler extends VoiceImportComponent {
         public final String INITEHMMDIR = "EHMMLabeler.startEHMMModelDir";
         public final String RETRAIN = "EHMMLabeler.reTrainFlag";
         public final String NONDETENDFLAG = "EHMMLabeler.nonDetEndFlag";
+
+    //HB 120413
+    public final String DOSETUP = "EHMMLabeler.doSetup";
+
+    
         
         public final String getName(){
             return "EHMMLabeler";
@@ -105,6 +110,10 @@ public class EHMMLabeler extends VoiceImportComponent {
                props.put(INITEHMMDIR,"/");
                props.put(RETRAIN,"false");
                props.put(NONDETENDFLAG,"0");
+	       //HB 120413
+               props.put(DOSETUP,"true");
+
+
            }
            return props;
        }
@@ -147,7 +156,38 @@ public class EHMMLabeler extends VoiceImportComponent {
             ehmm = new File(getProp(EDIR));
             // get the output directory of files used by EHMM 
             outputDir = ehmm.getAbsolutePath()+"/etc";
+
+	    //HB 120413
+	    if(getProp(DOSETUP).equals("true")) {
+		setupAndDumpFeatures();
+	    } else {
+		System.out.println("EHMMLabeler.doSetup = false, skipping setup and dump features ...");
+	    }
+
+
+            System.out.println("See $ROOTDIR/ehmm/log.txt for EHMM Labelling status... ");
+            System.out.println("Intializing EHMM Model ...");
+            intializeEHMMModels();
+            System.out.println(" ... done.");
             
+            baumWelchEHMM();            
+            
+            System.out.println("See $ROOTDIR/ehmm/log.txt for EHMM Labelling status... ");
+            System.out.println("Aligning EHMM for labelling ...");
+            alignEHMM();
+            
+//            System.out.println("And Copying label files into lab directory ...");
+//            getProperLabelFormat();
+//            System.out.println(" ... done.");
+            
+            System.out.println("Label file Generation Successfully completed using EHMM !"); 
+            
+            
+            return true;
+        }
+        
+    //HB 120413
+    private void setupAndDumpFeatures() throws Exception {
             // setup the EHMM directory 
             System.out.println("Setting up EHMM directory ...");
             setup();
@@ -175,27 +215,9 @@ public class EHMMLabeler extends VoiceImportComponent {
             scaleFeatures();
             System.out.println(" ... done.");
             
-            System.out.println("See $ROOTDIR/ehmm/log.txt for EHMM Labelling status... ");
-            System.out.println("Intializing EHMM Model ...");
-            intializeEHMMModels();
-            System.out.println(" ... done.");
-            
-            baumWelchEHMM();            
-            
-            System.out.println("See $ROOTDIR/ehmm/log.txt for EHMM Labelling status... ");
-            System.out.println("Aligning EHMM for labelling ...");
-            alignEHMM();
-            
-//            System.out.println("And Copying label files into lab directory ...");
-//            getProperLabelFormat();
-//            System.out.println(" ... done.");
-            
-            System.out.println("Label file Generation Successfully completed using EHMM !"); 
-            
-            
-            return true;
-        }
-        
+    }
+
+
         
        /**
         * Setup the EHMM directory
