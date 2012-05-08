@@ -165,6 +165,19 @@ public class EHMMLabeler extends VoiceImportComponent {
 	    }
 
 
+            //Getting Phone Sequence for Force Alignment    
+            System.out.println("Getting Phone Sequence from Phone Features...");
+            getPhoneSequence();
+            System.out.println(" ... done.");
+           
+            System.out.println("See $ROOTDIR/ehmm/log.txt for EHMM Labelling status... ");
+            // dump the filenames 
+            System.out.println("Dumping required files ....");
+            dumpRequiredFiles();
+            System.out.println(" ... done.");           
+
+
+
             System.out.println("See $ROOTDIR/ehmm/log.txt for EHMM Labelling status... ");
             System.out.println("Intializing EHMM Model ...");
             intializeEHMMModels();
@@ -192,18 +205,7 @@ public class EHMMLabeler extends VoiceImportComponent {
             System.out.println("Setting up EHMM directory ...");
             setup();
             System.out.println(" ... done.");
-            
-            //Getting Phone Sequence for Force Alignment    
-            System.out.println("Getting Phone Sequence from Phone Features...");
-            getPhoneSequence();
-            System.out.println(" ... done.");
-           
-            System.out.println("See $ROOTDIR/ehmm/log.txt for EHMM Labelling status... ");
-            // dump the filenames 
-            System.out.println("Dumping required files ....");
-            dumpRequiredFiles();
-            System.out.println(" ... done.");           
-            
+                        
             System.out.println("See $ROOTDIR/ehmm/log.txt for EHMM Labelling status... ");
             // Computing Features (MFCCs) for EHMM 
             System.out.println("Computing MFCCs ...");
