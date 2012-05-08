@@ -282,4 +282,16 @@
         </package>
         <depends language="ru" version="5.0-SNAPSHOT"/>
     </voice>
+    <voice gender="male" locale="sv" name="stts-sv-hb-hsmm"
+        type="hsmm" version="5.0-SNAPSHOT">
+        <description>Swedish male voice from STTS, Stockholm</description>
+        <license href="http://mary.dfki.de/download/by-nd-3.0.html"/>
+        <package filename="voice-stts-sv-hb-hsmm-5.0-SNAPSHOT.zip"
+            md5sum="0cdf970891e64457832e521b3dd1a180" size="3196152">
+            <location folder="true" href="http://mary.dfki.de/download/5.0-SNAPSHOT/"/>
+            <location folder="false" href="https://docs.google.com/uc?id=0BzQslox9iFCzazkzMlBvQVdVXzA"/>
+            <location folder="true" href="http://localhost/voice-stts-sv-hb-hsmm/target/"/>
+        </package>
+        <depends language="sv" version="5.0-SNAPSHOT"/>
+    </voice>
 </marytts-install>
