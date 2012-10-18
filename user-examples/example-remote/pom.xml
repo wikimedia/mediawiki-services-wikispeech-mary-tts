@@ -3,17 +3,18 @@
   <parent>
     <artifactId>user-examples</artifactId>
     <groupId>marytts</groupId>
-    <version>5.0-SNAPSHOT</version>
+    <version>5.1-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
   <artifactId>example-remote</artifactId>
+  <name>example-remote</name>
   <description>Example showing how to use a client-server TTS in your java code using RemoteMaryInterface.</description>
 
   <dependencies>
   	<dependency>
   		<groupId>marytts</groupId>
   		<artifactId>marytts-client</artifactId>
-  		<version>5.0-SNAPSHOT</version>
+        <version>${project.parent.version}</version>
   	</dependency>
   </dependencies>
   
