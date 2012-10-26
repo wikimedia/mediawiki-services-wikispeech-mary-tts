@@ -1,0 +1,13 @@
+Spara lexikon till fst funkar inte:
+Exception in thread "AWT-EventQueue-0" java.lang.OutOfMemoryError: GC overhead limit exceeded
+	at marytts.fst.AlignerTrainer.splitAndAdd(AlignerTrainer.java:193)
+	at marytts.fst.AlignerTrainer.readLexicon(AlignerTrainer.java:172)
+	at marytts.tools.transcription.TranscriptionTableModel.createLexicon(TranscriptionTableModel.java:471)
+	at marytts.tools.transcription.TranscriptionTable.saveTranscription(TranscriptionTable.java:253)
+	at marytts.tools.transcription.TranscriptionGUI.saveToFileActionPerformed(TranscriptionGUI.java:598)
+
+Inte heller trainpredict, samma fel.
+
+
+Ökade till -Xmx2g, spara till fst funkar.
+trainpredict har iaf kommit igång.
