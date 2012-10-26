@@ -1,0 +1,45 @@
+package tn;
+
+import java.io.*;
+import java.util.*;
+
+import org.xml.sax.SAXException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+
+/**
+ * @author Erik Sterneberg
+ * 
+ *  This class will: 1) load the text normalization rules from an xml file and save them in an array,
+ *  2) similarly load the regular expressions from a text file pertaining to the TN-rules
+ *  and 3) Call the method TNNormalize on a string until the string returns unchanged.
+ */
+public class TNDemo {
+  public static void main(String[] arg) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException{
+	// Loading TN-rules from tn_rules.xml
+	HashMap<String, String[]> rules = (new TNParser()).query("../tn_rules.xml");
+			
+	// Loading regular expressions from tn_rules_regex.txt
+	HashMap<String, String> regex = TNParser.loadRegexes();
+	
+	// Normalize string on command line using method TNNormalize
+	TNNormalize normalizer = new TNNormalize(regex, rules);
+	String string = arg[0];
+	
+	assert (string.length() > 0); 
+	
+	String processed_string;
+	
+	String returned_string = null;
+	// Process string. If the returned string is unchanged the loop is exited. 
+	do {
+		processed_string = normalizer.normalize(string);
+		if (processed_string != null)
+			string = processed_string;
+	}
+	while(returned_string != null);
+	
+	// String processed. Will now print to screen.
+	System.out.println("New string: " + string);
+  }
+}

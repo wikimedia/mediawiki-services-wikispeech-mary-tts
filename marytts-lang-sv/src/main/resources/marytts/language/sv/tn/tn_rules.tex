@@ -1,0 +1,129 @@
+\documentclass[10pt,a4paper]{article} 
+\usepackage{fullpage}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} % utan denna rad behandlas inte svenska korrekt
+\usepackage{url}
+\usepackage{graphicx}
+
+\usepackage[swedish, english, british, english]{babel}
+
+\author{Erik Sterneberg}
+\title{Text normalization rules for Swedish TTS}
+
+\begin{document}
+
+\maketitle
+\date
+\newpage
+\newpage
+\newpage
+\tableofcontents
+\newpage
+\newpage
+\newpage
+
+\section{Introduction}
+The text normalization rules in \verb!tn_rules.xml! can be used to expand non-alpha-strings such as numbers and dates to words, but is also very useful for expanding number expressions containing abbreviations such as \textit{5 km, 68 kg, 200 lb} and \textit{3,5 dl}. The files \verb!tn_rules.xml!, \verb!tn_rules_regex.txt! \verb!Preprocess.java! \verb!TNParser.java! and \verb!TNNormalize.java! together function as a finite state transducer, taking string input and generating string output. Starting with the rule named \verb!start!, different rules are triggered handling different parts of the input. Child nodes (\verb!<ref name="..."/>!) whose names are written in upper case have regular expressions pertaining to them in the file \verb!tn_rules_regex!. The first rule matching the input string will be added to the action stack -- the non-matching rules and the rest of the untried rules will be discarded. Child nodes that have names written in lower case have already been matched to the input string by their parent and will be added to the action stack without trial. When a rule containing child nodes called \verb!in! and \verb!out! appear on top of the stack, the program will look for the contents of the \verb!in!-node in the beginning of the inputstring, provided that the regular expression was matched in case of the rule being upper case. As an example, see what happens with the input string \verb!998,40!:\\
+
+\begin{enumerate}
+\item The child rule \verb!CARDINAL! to the rule \verb!start! will be matched and put on top of stack.
+\item Rule \verb!CARDINAL! gives no output; redirects to \verb!CARDINAL_INTEGER_DECIMAL!.
+\item Rule \verb!CARDINAL_INTEGER_DECIMAL! gives no output; puts the rules \verb!cardinal_integer, comma!, and \verb!digit_by_digit! on top of stack.
+\item The child rule \verb!CARDINAL_100_999! (matching the range 100 to 999) to the rule \verb!cardinal_integer! will be matched and put on top of stack.
+\item Rule \verb!CARDINAL_100_999! gives no output; puts the rules \verb!cardinal_single_dig_neutr, hundra! and \verb!cardinal_00_99! on top of the stack.
+\item The child rule \verb!CARDINAL_2_9! to the rule \verb!cardinal_single_dig_neutr! will be matched and put on top of the stack.
+\item The child rule \verb!NINE! to the rule \verb!CARDINAL_2_9! will be matched and put on top of the stack.
+\item The rule \verb!NINE! takes a \verb!9! as input (removing it from the inputstring/buffer), and gives \verb!nio! as output.
+\item The rule \verb!hundra! takes no input and gives \verb!hundra! as output.
+\item The child rule \verb!CARDINAL_10_99! to the rule \verb!cardinal_00_99! will be matched and put on top of the stack.
+\item The child rule \verb!CARDINAL_20_99! to the rule \verb!CARDINAL_10_99! will be matched and put on top of the stack.
+\item The child rule \verb!CARDINAL_NINETIES! to the rule \verb!CARDINAL_20_99! will be matched and put on top of the stack.
+\item Rule \verb!CARDINAL_NINETIES! gives no output; puts the rules \verb!ninety! and \verb!cardinal_single_dig_silent_zero! on top of the stack.
+\item The rule \verb!ninety! takes a \verb!9! from the inputbuffer and gives the output \verb!nittio!.
+\item The child rule \verb!EIGHT! to the rule \verb!cardinal_single_dig_silent_zero! will be matched and put on top of the stack.
+\item The rule \verb!EIGHT! takes \verb!8! as input and gives \verb!åtta! as output.
+\item The rule \verb!comma! takes no input (spaces, commas and dots are automatically removed) and gives \verb!komma! as output.
+\item The rule \verb!digit_by_digit! gives no output; puts the rules \verb!cardinal_single_dig! and \verb!digit_by_digit! on top of the stack.
+\item The child rule \verb!CARDINAL_2_9! to the rule \verb!cardinal_single_dig! will be matched and put on top of the stack.
+\item The child rule \verb!FOUR! to the rule \verb!CARDINAL_2_9! will be matched and put on top of the stack.
+\item The rule \verb!FOUR! will take \verb!4! as input, giving \verb!fyra! as output.
+\item The remaining zero in the inputbuffer will be processed in the same was as the preceeding digit, ultimately leaving the inputbuffer empty and the action stack with one rule. Whenever the action stack or the inputbuffer is empty, the processing will halt.
+\end{enumerate}
+
+Currently, only tn-rules for cardinal numbers have been written and tested properly. When adding new categories, start by listing cases where the rules should be triggered.
+
+\section{Numbers}
+\subsection{Cardinals}
+Cases:\\
+\\
+\begin{tabular}{|l|c|r|}\hline
+  Example & Expansion \\ \hline
+  1 234 & ett tusen två hundra trettiofyra\\
+  1234 & ett tusen två hundra trettiofyra\\
+  1.234 & ett tusen två hundra trettiofyra\\
+  1 234,56 & ett tusen två hundra trettiofyra komma femtiosex\\
+  1234,56 & ett tusen två hundra trettiofyra komma femtiosex\\
+  123456789 & ett hundra tjugotre miljoner fyra hundra femtiosex tusen sju hundra åttionio \\
+  1.234.567,8 & en miljon två hundra trettiofyra tusen fem hundra sextiosju komma åtta\\
+  1234567,8 & en miljon två hundra trettiofyra tusen fem hundra sextiosju komma åtta\\
+  1 234 567,8 & en miljon två hundra trettiofyra tusen fem hundra sextiosju komma åtta\\
+  1 miljon & en miljon \\
+  1 tusen & ett tusen \\\hline
+\end{tabular}
+\\
+\\
+Extra information:
+\begin{itemize}
+  \item Cardinals must not begin with a zero
+\end{itemize}
+
+\subsection{Future work}
+\subsubsection{Intervals}
+Cases:\\
+\\
+\begin{tabular}{|l|c|r|}\hline
+  Example & Expansion \\ \hline
+  0-70 & noll till sjuttio \\
+  20-24 & tjugo till tjugofyra \\\hline  
+\end{tabular}
+
+\subsubsection{Ordinals}
+Cases:\\
+\\
+\begin{tabular}{|l|c|r|}\hline
+  Example & Expansion \\ \hline
+  15:e & femtonde \\
+  6:e & sjätte \\
+  5e & femte \\
+  1:a & första \\
+  1:e & förste \\
+  100:e & hundrade \\
+  1 000:e & tusende \\\hline  
+\end{tabular}
+
+\subsubsection{Currency}
+
+\subsubsection{Phone numbers}
+
+
+\section{Dates \& time}
+
+\subsection{Future work}
+
+\subsubsection{Dates}
+
+\subsubsection{Time}
+
+
+\section{Digit by digit}
+These are the 'fallback'-rules which are to be used if no other rules have been triggered.
+
+Cases:\\
+\\
+\begin{tabular}{|l|c|r|}\hline
+  Example & Expansion \\ \hline
+  09876 & noll nio åtta sju sex\\\hline  
+\end{tabular}
+
+\end{document}

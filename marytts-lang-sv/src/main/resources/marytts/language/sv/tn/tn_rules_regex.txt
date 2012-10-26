@@ -1,0 +1,69 @@
+NEEDS_SEGMENTATION: (\d*[^ \d,.]+\d+[^ ]*)|(\d+[^ \d,.]+)
+CARDINAL: ()((((([1-9]\d{0,2}[ ]\d{3}[ ]\d{3})|([1-9]\d{0,2}[\.]\d{3}[\.]\d{3})|([1-9]\d{0,2}\d{6})))|([1-9]\d{0,2}[ \.]?\d{3})|([1-9]\d{0,2})|([0]))[,]\d+)|(((([1-9]\d{0,2}[ ]\d{3}[ ]\d{3})|([1-9]\d{0,2}[\.]\d{3}[\.]\d{3})|([1-9]\d{0,2}\d{6})))|([1-9]\d{0,2}[ \.]?\d{3})|([1-9]\d{0,2})|([0]))
+CARDINAL_INTEGER_DECIMALS: (((([1-9]\d{0,2}[ ]\d{3}[ ]\d{3})|([1-9]\d{0,2}[\.]\d{3}[\.]\d{3})|([1-9]\d{0,2}\d{6})))|([1-9]\d{0,2}[ \.]?\d{3})|([1-9]\d{0,2})|([0]))[,]\d+
+CARDINAL_INTEGER: ((([1-9]\d{0,2}[ ]\d{3}[ ]\d{3})|([1-9]\d{0,2}[\.]\d{3}[\.]\d{3})|([1-9]\d{0,2}\d{6})))|([1-9]\d{0,2}[ \.]?\d{3})|([1-9]\d{0,2})|([0])
+CARDINAL_000_009_XXX: [0]{2}\d[ \.]?\d{3}
+CARDINAL_000_XXX: [0]{3}[ \.]?\d{3}
+CARDINAL_001_999_XXX: [0]{2}[1-9][ \.]?\d{3}
+CARDINAL_001_999_XXX: (\d{2}[1-9]|\d[1-9]\d|[1-9]\d{2})[ \.]?\d{3}
+CARDINAL_1000_999999: [1-9]\d{0,2}[ \.]?\d{3}
+CARDINAL_1000000_999999999: ((([1-9]\d{0,2}[ ]\d{3}[ ]\d{3})|([1-9]\d{0,2}[\.]\d{3}[\.]\d{3})|([1-9]\d{0,2}\d{6})))
+CARDINAL_100_999_XXX_XXX: ((([1-9]\d{2}[ ]\d{3}[ ]\d{3})|([1-9]\d{2}[\.]\d{3}[\.]\d{3})|([1-9]\d{2}\d{6})))
+CARDINAL_10_99_XXX_XXX: ((([1-9]\d[ ]\d{3}[ ]\d{3})|([1-9]\d[\.]\d{3}[\.]\d{3})|([1-9]\d\d{6})))
+CARDINAL_2_9_XXX_XXX: ((([2-9][ ]\d{3}[ ]\d{3})|([2-9][\.]\d{3}[\.]\d{3})|([2-9]\d{6})))
+CARDINAL_1_XXX_XXX: ((([1][ ]\d{3}[ ]\d{3})|([1][\.]\d{3}[\.]\d{3})|([1]\d{6})))
+CARDINAL_100_999: ^[1-9]\d{2}($|[^\d])
+CARDINAL_100_999_XXX: [1-9]\d{2}[ \.]?\d{3}($|[^\d])
+CARDINAL_010_099_XXX: [0][1-9]\d[ \.]?\d{3}($|[^\d])
+CARDINAL_001_009_XXX: [0]{2}[1-9][ \.]?\d{3}($|[^\d])
+CARDINAL_1_999: [1-9]\d{0,2}
+CARDINAL_1_999_XXX: [1-9]\d{0,2}[ \.]?\d{3}
+CARDINAL_10_999: [1-9]\d{1}
+CARDINAL_001_999: ([1-9]\d{2}|(0)[1-9]\d|(00)[1-9])
+CARDINAL_000_999: \d{3}
+CARDINAL_000_099: [0]\d{2}
+CARDINAL_0_99: \d{1,2}
+CARDINAL_00_99: ^\d{2}
+CARDINAL_00_09: 0\d
+CARDINAL_10_99: ^[1-9][0-9]
+CARDINAL_10_99_XXX: [1-9][0-9][ ,\.]?\d{3}($|[^\d])
+CARDINAL_20_99: [2-9][0-9]
+CARDINAL_TWENTIES: 2[0-9]
+CARDINAL_THIRTIES: 3[0-9]
+CARDINAL_FORTIES: 4[0-9]
+CARDINAL_FIFTIES: 5[0-9]
+CARDINAL_SIXTIES: 6[0-9]
+CARDINAL_SEVENTIES: 7[0-9]
+CARDINAL_EIGHTIES: 8[0-9]
+CARDINAL_NINETIES: [9][0-9]
+CARDINAL_10_19: 1[0-9]
+CARDINAL_SINGLE_DIG: ^\d($|[^\d])
+CARDINAL_SINGLE_DIG_NEUTR: ^\d($|[^\d])
+CARDINAL_SINGLE_DIG_SILENT_ZERO: ^\d($|[^\d])
+CARDINAL_DECIMALS: \d+
+CARDINAL_1_9: [1-9]
+CARDINAL_1_9_XXX: [1-9][ ,\.]?\d{3}($|[^\d])
+CARDINAL_2_9: [2-9]
+ZERO_SILENT: [0]
+ZERO: [0]
+ONE: [1]
+ONE_NEUTR: [1]
+TWO: [2]
+THREE: [3]
+FOUR: [4]
+FIVE: [5]
+SIX: [6]
+SEVEN: [7]
+EIGHT: [8]
+NINE: [9]
+TEN: (10)
+ELEVEN: (11)
+TWELVE: (12)
+THIRTEEN: (13)
+FOURTEEN: (14)
+FIFTEEN: (15)
+SIXTEEN: (16)
+SEVENTEEN: (17)
+EIGHTEEN: (18)
+NINETEEN: (19)
+DIGIT_BY_DIGIT: \d+

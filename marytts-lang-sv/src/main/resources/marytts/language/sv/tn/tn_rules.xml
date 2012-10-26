@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tn_rules>
+  <!--
+      Text normalization rules for Swedish MaryTTS voice
+      In order for these rules to be valid, when making changes know that:
+      1) there must be a rule called 'start' containing references to uppercase rules
+      2) when adding or changing rules, never mix uppercase and lowercase referenced rules
+      3) when adding an uppercase rule, a corresponding regular expression must be added to the file tn_rules_regex.txt in order for it to work
+      4) the first character of a rule name must be a letter
+
+      See tn_rules.pdf for more details on creating new rules.
+  -->
+
+  <!-- Only one of the child node rules to this node will be chosen to process the input string
+       every time the method TNNormalize.normalize is called. -->
+  <rule name="start">
+    <!-- Create new rule reference here that should be used before the rules below-->
+    <ref name="NEEDS_SEGMENTATION"/> <!-- Segments strings with digits and non-digits, like "X-2000" -->
+    <ref name="CARDINAL"/>
+
+    <!-- Untested --><!-- <ref name="DIGIT_BY_DIGIT"/>  -->
+    <!-- <ref name="ABBREVIATION"/> -->
+    <!-- Create new rule reference here that should be used after the rules above-->
+  </rule>
+
+  <!-- CARDINAL category -->
+  <rule name="CARDINAL">
+    <ref name="CARDINAL_INTEGER_DECIMALS"/> 
+    <ref name="CARDINAL_INTEGER"/>
+  </rule>
+
+  <rule name="CARDINAL_INTEGER_DECIMALS">
+    <!-- Lower case referenced rules will be added to the queue without further trial
+         since they have already been matched by the parent rule's regular expression. -->
+    <ref name="cardinal_integer"/> 
+    <ref name="comma"/> 
+    <ref name="digit_by_digit"/> 
+  </rule>
+  
+  <rule name="CARDINAL_INTEGER">
+    <ref name="cardinal_integer"/>
+  </rule>
+
+  <rule name="cardinal_integer">
+    <!-- The highest number allowed is 999.999.999 (not including decimals) -->
+    <ref name="CARDINAL_1000000_999999999"/>
+    <ref name="CARDINAL_1000_999999"/>
+    <ref name="CARDINAL_100_999"/>
+    <ref name="CARDINAL_10_99"/>
+    <ref name="CARDINAL_SINGLE_DIG"/>
+  </rule>
+
+  <rule name="CARDINAL_1000000_999999999">
+    <ref name="CARDINAL_100_999_XXX_XXX"/>
+    <ref name="CARDINAL_10_99_XXX_XXX"/>
+    <ref name="CARDINAL_2_9_XXX_XXX"/>
+    <ref name="CARDINAL_1_XXX_XXX"/>
+  </rule>
+
+  <rule name="cardinal_1_999">
+    <ref name="CARDINAL_100_999"/>
+    <ref name="CARDINAL_10_99"/>
+    <ref name="CARDINAL_SINGLE_DIG"/>
+  </rule>
+
+  <rule name="CARDINAL_100_999_XXX_XXX">
+    <ref name="cardinal_100_999"/>
+    <ref name="million"/>
+    <ref name="cardinal_000_999_xxx"/>
+  </rule>
+
+  <rule name="CARDINAL_10_99_XXX_XXX">
+    <ref name="cardinal_10_99"/>
+    <ref name="million"/>
+    <ref name="cardinal_000_999_xxx"/>
+  </rule>
+
+  <rule name="CARDINAL_1_XXX_XXX">
+    <ref name="one_utr"/>
+    <ref name="million_sing"/>
+    <ref name="cardinal_000_999_xxx"/>
+  </rule>
+  <rule name="CARDINAL_2_9_XXX_XXX">
+    <ref name="cardinal_2_9"/>
+    <ref name="million"/>
+    <ref name="cardinal_000_999_xxx"/>
+  </rule>
+
+  <rule name="CARDINAL_001_999_XXX">
+    <ref name="CARDINAL_100_999_XXX"/>
+    <ref name="CARDINAL_010_099_XXX"/>
+    <ref name="CARDINAL_001_009_XXX"/>
+  </rule>
+
+  <rule name="CARDINAL_000_XXX">
+    <ref name="zero_silent"/>
+    <ref name="zero_silent"/>
+    <ref name="zero_silent"/>
+    <ref name="cardinal_000_999"/>
+  </rule>
+
+  <rule name="cardinal_000_999_xxx">
+    <ref name="CARDINAL_100_999_XXX"/>
+    <ref name="CARDINAL_010_099_XXX"/>
+    <ref name="CARDINAL_000_009_XXX"/>
+  </rule>
+
+  <rule name="CARDINAL_000_009_XXX">
+    <ref name="CARDINAL_001_009_XXX"/>
+    <ref name="CARDINAL_000_XXX"/>
+  </rule>
+
+  <rule name="CARDINAL_001_009_XXX">
+    <ref name="zero_silent"/>
+    <ref name="zero_silent"/>
+    <ref name="cardinal_1_9_xxx"/>
+  </rule>
+
+  <rule name="CARDINAL_1000_999999">
+    <ref name="cardinal_1_999_xxx"/>
+<!--
+    <ref name="cardinal_1_999"/>
+-->
+<!--
+    <ref name="thousand"/>
+    <ref name="cardinal_000_999"/>
+-->
+  </rule>
+
+  <rule name="CARDINAL_001_999">
+    <ref name="CARDINAL_100_999"/>
+    <ref name="CARDINAL_001_099"/>
+  </rule>
+
+  <rule name="CARDINAL_000_999">
+    <ref name="CARDINAL_100_999"/>
+    <ref name="CARDINAL_000_099"/>
+  </rule>
+
+  <rule name="cardinal_000_999">
+    <ref name="CARDINAL_100_999"/>
+    <ref name="CARDINAL_000_099"/>
+  </rule>
+
+  <rule name="cardinal_000_099">
+    <ref name="zero_silent"/>
+    <ref name="cardinal_00_99"/>
+  </rule>
+
+  <rule name="CARDINAL_000_099">
+    <ref name="cardinal_000_099"/>
+  </rule>
+
+  <rule name="CARDINAL_SINGLE_DIG">
+    <ref name="ZERO"/>
+    <ref name="ONE"/>
+    <ref name="CARDINAL_2_9"/>
+  </rule>
+
+  <rule name="cardinal_single_dig">
+    <ref name="ZERO"/>
+    <ref name="ONE"/>
+    <ref name="CARDINAL_2_9"/>
+  </rule>
+
+  <rule name="CARDINAL_100_999">
+    <ref name="cardinal_single_dig_neutr"/>
+    <ref name="hundra"/>
+    <ref name="cardinal_00_99"/>
+  </rule>
+
+  <rule name="cardinal_100_999">
+    <ref name="cardinal_single_dig_neutr"/>
+    <ref name="hundra"/>
+    <ref name="cardinal_00_99"/>
+  </rule>
+
+  <rule name="CARDINAL_1_999_XXX">
+    <ref name="cardinal_1_999_xxx"/>
+  </rule>
+
+  <rule name="cardinal_1_999_xxx">
+    <ref name="CARDINAL_100_999_XXX"/>
+    <ref name="CARDINAL_10_99_XXX"/>
+    <ref name="CARDINAL_1_9_XXX"/>
+  </rule>
+
+  <rule name="CARDINAL_1_9_XXX">
+    <ref name="cardinal_1_9"/>
+    <ref name="thousand"/>
+    <ref name="cardinal_000_999"/>
+  </rule>
+
+  <rule name="cardinal_1_9_xxx">
+    <ref name="CARDINAL_1_9"/>
+  </rule>
+
+  <rule name="CARDINAL_10_99_XXX">
+    <ref name="cardinal_10_99"/>
+    <ref name="thousand"/>
+    <ref name="cardinal_000_999"/>
+  </rule>
+
+  <rule name="cardinal_10_99_xxx">
+    <ref name="CARDINAL_10_99"/>
+  </rule>
+
+  <rule name="CARDINAL_100_999_XXX">
+    <ref name="cardinal_100_999"/>
+    <ref name="thousand"/>
+    <ref name="cardinal_000_999"/>
+
+  </rule>
+
+  <rule name="CARDINAL_010_099_XXX">
+    <ref name="cardinal_010_099"/>
+    <ref name="thousand"/>
+    <ref name="cardinal_000_999"/>
+  </rule>
+
+  <rule name="CARDINAL_001_009_XXX">
+    <ref name="cardinal_001_009"/>
+    <ref name="thousand"/>
+    <ref name="cardinal_000_999"/>
+  </rule>
+
+  <rule name="cardinal_001_009">
+    <ref name="zero_silent"/>
+    <ref name="zero_silent"/>
+    <ref name="cardinal_1_9"/>
+  </rule>
+
+  <rule name="cardinal_010_099">
+    <ref name="zero_silent"/>
+    <ref name="cardinal_10_99"/>
+  </rule>
+
+  <rule name="cardinal_100_999_xxx">
+    <ref name="CARDINAL_100_999"/>
+  </rule>
+
+  <rule name="CARDINAL_00_99">
+    <ref name="cardinal_00_99"/>
+  </rule>
+
+  <rule name="cardinal_00_99">
+    <ref name="CARDINAL_10_99"/>
+    <ref name="CARDINAL_00_09"/>
+  </rule>
+
+  <rule name="million">
+    <in> </in>
+    <out> miljoner </out>
+  </rule>
+  <rule name="million_sing">
+    <in> </in>
+    <out> miljon </out>
+  </rule>
+  <rule name="thousand">
+    <in> </in>
+    <out> tusen </out>
+  </rule>
+  <rule name="hundra">
+    <in> </in>
+    <out> hundra </out>
+  </rule>
+
+  <rule name="comma">
+    <!-- Comma sign already removed by script, this rule needs only to output-->
+    <in> </in>
+    <out> komma </out>
+  </rule>
+
+  <rule name="space">
+    <in> </in>
+    <out> </out>
+  </rule>
+
+  <rule name="CARDINAL_00_09">
+    <!--
+    <ref name="ZERO_SILENT"/>
+    <ref name="CARDINAL_SINGLE_DIG_SILENT_ZERO"/>
+    -->    
+    <!-- Bad solution to small bug-->
+    <ref name="cardinal_single_dig_silent_zero"/>    
+    <ref name="cardinal_single_dig_silent_zero"/>
+  </rule>
+
+  <rule name="CARDINAL_10_99">
+    <ref name="CARDINAL_20_99"/>
+    <ref name="CARDINAL_10_19"/>
+  </rule>
+
+  <rule name="cardinal_10_99">
+    <ref name="CARDINAL_20_99"/>
+    <ref name="CARDINAL_10_19"/>
+  </rule>
+
+  <rule name="CARDINAL_10_19">
+    <ref name="TEN"/>
+    <ref name="ELEVEN"/>
+    <ref name="TWELVE"/>
+    <ref name="THIRTEEN"/>
+    <ref name="FOURTEEN"/>
+    <ref name="FIFTEEN"/>
+    <ref name="SIXTEEN"/>
+    <ref name="SEVENTEEN"/>
+    <ref name="EIGHTEEN"/>
+    <ref name="NINETEEN"/>
+  </rule>
+
+  <rule name="CARDINAL_20_99">
+    <ref name="CARDINAL_TWENTIES"/>
+    <ref name="CARDINAL_THIRTIES"/>
+    <ref name="CARDINAL_FORTIES"/>
+    <ref name="CARDINAL_FIFTIES"/>
+    <ref name="CARDINAL_SIXTIES"/>
+    <ref name="CARDINAL_SEVENTIES"/>
+    <ref name="CARDINAL_EIGHTIES"/>
+    <ref name="CARDINAL_NINETIES"/>
+  </rule>
+
+  <rule name="CARDINAL_TWENTIES">
+    <ref name="twenty"/>
+    <ref name="cardinal_single_dig_silent_zero"/>
+  </rule>
+  <rule name="CARDINAL_THIRTIES">
+    <ref name="thirty"/>
+    <ref name="cardinal_single_dig_silent_zero"/>
+  </rule>
+  <rule name="CARDINAL_FORTIES">
+    <ref name="forty"/>
+    <ref name="cardinal_single_dig_silent_zero"/>
+  </rule>
+  <rule name="CARDINAL_FIFTIES">
+    <ref name="fifty"/>
+    <ref name="cardinal_single_dig_silent_zero"/>
+  </rule>
+  <rule name="CARDINAL_SIXTIES">
+    <ref name="sixty"/>
+    <ref name="cardinal_single_dig_silent_zero"/>
+  </rule>
+  <rule name="CARDINAL_SEVENTIES">
+    <ref name="seventy"/>
+    <ref name="cardinal_single_dig_silent_zero"/>
+  </rule>
+  <rule name="CARDINAL_EIGHTIES">
+    <ref name="eighty"/>
+    <ref name="cardinal_single_dig_silent_zero"/>
+  </rule>
+  <rule name="CARDINAL_NINETIES">
+    <ref name="ninety"/>
+    <ref name="cardinal_single_dig_silent_zero"/>
+  </rule>
+
+  <rule name="TEN">
+    <in>10</in>
+    <out>tio</out>
+  </rule>
+  <rule name="ELEVEN">
+    <in>11</in>
+    <out>elva</out>
+  </rule>
+  <rule name="TWELVE">
+    <in>12</in>
+    <out>tolv</out>
+  </rule>
+  <rule name="THIRTEEN">
+    <in>13</in>
+    <out>tretton</out>
+  </rule>
+  <rule name="FOURTEEN">
+    <in>14</in>
+    <out>fjorton</out>
+  </rule>
+  <rule name="FIFTEEN">
+    <in>15</in>
+    <out>femton</out>
+  </rule>
+  <rule name="SIXTEEN">
+    <in>16</in>
+    <out>sexton</out>
+  </rule>
+  <rule name="SEVENTEEN">
+    <in>17</in>
+    <out>sjutton</out>
+  </rule>
+  <rule name="EIGHTEEN">
+    <in>18</in>
+    <out>arton</out>
+  </rule>
+  <rule name="NINETEEN">
+    <in>19</in>
+    <out>nitton</out>
+  </rule>
+
+  <rule name="twenty">
+    <in>2</in>
+    <out>tjugo</out>
+  </rule>
+  <rule name="thirty">
+    <in>3</in>
+    <out>trettio</out>
+  </rule>
+  <rule name="forty">
+    <in>4</in>
+    <out>fyrtio</out>
+  </rule>
+  <rule name="fifty">
+    <in>5</in>
+    <out>femtio</out>
+  </rule>
+  <rule name="sixty">
+    <in>6</in>
+    <out>sextio</out>
+  </rule>
+  <rule name="seventy">
+    <in>7</in>
+    <out>sjuttio</out>
+  </rule>
+  <rule name="eighty">
+    <in>8</in>
+    <out>åttio</out>
+  </rule>
+  <rule name="ninety">
+    <in>9</in>
+    <out>nittio</out>
+  </rule>
+
+  <rule name="CARDINAL_SINGLE_DIG_SILENT_ZERO">
+    <ref name="ZERO_SILENT"/>
+    <ref name="ONE"/>
+    <ref name="CARDINAL_2_9"/>
+  </rule>
+
+  <rule name="cardinal_single_dig_silent_zero">
+    <ref name="ZERO_SILENT"/>
+    <ref name="ONE"/>
+    <ref name="CARDINAL_2_9"/>
+  </rule>
+
+  <rule name="CARDINAL_SINGLE_DIG_NEUTR">
+    <ref name="ZERO"/>
+    <ref name="ONE_NEUTR"/>
+    <ref name="CARDINAL_2_9"/>
+  </rule>
+
+  <rule name="cardinal_single_dig_neutr">
+    <ref name="ZERO"/>
+    <ref name="ONE_NEUTR"/>
+    <ref name="CARDINAL_2_9"/>
+  </rule>
+
+  <rule name="CARDINAL_1_9">
+    <ref name="cardinal_1_9"/>
+  </rule>
+
+  <rule name="cardinal_1_9">
+    <ref name="ONE"/>
+    <ref name="CARDINAL_2_9"/>
+  </rule>
+
+  <rule name="CARDINAL_2_9">
+    <ref name="cardinal_2_9"/>
+  </rule>
+
+  <rule name="cardinal_2_9">
+    <ref name="TWO"/>
+    <ref name="THREE"/>
+    <ref name="FOUR"/>
+    <ref name="FIVE"/>
+    <ref name="SIX"/>
+    <ref name="SEVEN"/>
+    <ref name="EIGHT"/>
+    <ref name="NINE"/>
+  </rule>
+
+  <rule name="ZERO">
+    <in>0</in>
+    <out>noll</out>
+  </rule>
+  <rule name="zero">
+    <in>0</in>
+    <out>noll</out>
+  </rule>
+  <rule name="ZERO_SILENT">
+    <in>0</in>
+    <out> </out>
+  </rule>
+  <rule name="zero_silent">
+    <in>0</in>
+    <out> </out>
+  </rule>
+  <rule name="ONE">
+    <in>1</in>
+    <out>ett</out>
+  </rule>
+  <rule name="one_utr">
+    <in>1</in>
+    <out>en</out>
+  </rule>
+  <rule name="ONE_UTR">
+    <in>1</in>
+    <out>en</out>
+  </rule>
+  <rule name="ONE_NEUTR">
+    <in>1</in>
+    <out>ett</out>
+  </rule>
+  <rule name="one_neutr">
+    <in>1</in>
+    <out>ett</out>
+  </rule>
+  <rule name="TWO">
+    <in>2</in>
+    <out>två</out>
+  </rule>
+  <rule name="THREE">
+    <in>3</in>
+    <out>tre</out>
+  </rule>
+  <rule name="FOUR">
+    <in>4</in>
+    <out>fyra</out>
+  </rule>
+  <rule name="FIVE">
+    <in>5</in>
+    <out>fem</out>
+  </rule>
+  <rule name="SIX">
+    <in>6</in>
+    <out>sex</out>
+  </rule>
+  <rule name="SEVEN">
+    <in>7</in>
+    <out>sju</out>
+  </rule>
+  <rule name="EIGHT">
+    <in>8</in>
+    <out>åtta</out>
+  </rule>
+  <rule name="NINE">
+    <in>9</in>
+    <out>nio</out>
+  </rule>
+
+  <rule name="digit_by_digit">
+    <ref name="cardinal_single_dig"/>
+    <!-- Self-reference to enable infinitely long number strings-->
+    <ref name="space"/>
+    <ref name="digit_by_digit"/>
+  </rule>
+
+  <!-- Category DIGIT_BY_DIGIT -->
+  <!--
+  <rule name="DIGIT_BY_DIGIT">
+    <ref name="CARDINAL_SINGLE_DIG"/>
+    <ref name="DIGIT_BY_DIGIT"/>
+  </rule>
+  -->
+</tn_rules>
+
+
+
