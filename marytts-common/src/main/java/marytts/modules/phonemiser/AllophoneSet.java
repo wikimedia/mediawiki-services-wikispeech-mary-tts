@@ -399,6 +399,8 @@ public class AllophoneSet
             splitIntoAllophoneList(allophoneString, false);
             return true;
         } catch (IllegalArgumentException e) {
+	    //HB 120509 Print message for illegal symbols!
+	    System.out.println(e);
             return false;
         }
     }
