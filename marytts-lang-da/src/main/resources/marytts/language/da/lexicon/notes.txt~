@@ -1,0 +1,5 @@
+converted lexicon from nst format.
+function words marked with f, content words with c.
+
+sh ~/openmary_git_readwrite/marytts/target/marytts-builder-5.0-SNAPSHOT/bin/transcription.sh
+~/openmary_git_readwrite/marytts/marytts-transcription/src/main/java/marytts/tools/transcription/TranscriptionGUI.java
