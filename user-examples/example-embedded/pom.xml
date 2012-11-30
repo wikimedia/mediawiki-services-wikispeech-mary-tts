@@ -25,6 +25,20 @@
   		<artifactId>voice-cmu-slt-hsmm</artifactId>
       <version>${project.parent.version}</version>
   	</dependency>
+
+	<!-- HB added swedish -->
+  	<dependency>
+  		<groupId>marytts</groupId>
+  		<artifactId>marytts-lang-sv</artifactId>
+      <version>${project.parent.version}</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>marytts</groupId>
+  		<artifactId>voice-stts-sv-hb-hsmm</artifactId>
+      <version>${project.parent.version}</version>
+  	</dependency>
+
+
   </dependencies>
   
   <build>

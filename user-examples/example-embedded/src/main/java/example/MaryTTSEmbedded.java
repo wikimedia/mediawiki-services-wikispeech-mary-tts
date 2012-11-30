@@ -1,7 +1,12 @@
 package example;
 import java.util.Set;
+import java.util.Locale;
 
 import javax.sound.sampled.AudioInputStream;
+
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.AudioFileFormat.Type;
+import java.io.File;
 
 import marytts.LocalMaryInterface;
 import marytts.MaryInterface;
@@ -15,14 +20,31 @@ public class MaryTTSEmbedded {
 	 */
 	public static void main(String[] args) throws Exception {
 
-		MaryInterface marytts = new LocalMaryInterface();
-		Set<String> voices = marytts.getAvailableVoices();
-		marytts.setVoice(voices.iterator().next());
-		AudioInputStream audio = marytts.generateAudio("Hello world.");
-		AudioPlayer player = new AudioPlayer(audio);
-		player.start();
-		player.join();
-		System.exit(0);
+	    MaryInterface marytts = new LocalMaryInterface();
+
+	    Set<String> voices = marytts.getAvailableVoices();
+	    System.out.println("Available voices: "+voices);
+	    //marytts.setVoice(voices.iterator().next());
+	    //AudioInputStream audio = marytts.generateAudio("Hello world.");
+	    
+	    marytts.setLocale(new Locale("sv"));
+	    AudioInputStream audio = marytts.generateAudio("Det här är ett test av svensk talsyntes.");
+	    
+	    /*
+	      AudioPlayer player = new AudioPlayer(audio);
+	      player.start();
+	      player.join();
+	      System.out.println("Finished playing, exiting..");
+	    */
+	    
+	    Type filetype = Type.WAVE;
+	    File file = new File("/tmp/apa.wav");
+	    AudioSystem.write(audio, filetype, file);
+	    System.out.println("Finished writing to file, exiting..");
+	    
+	    
+	    
+	    System.exit(0);
 	}
 
 }
