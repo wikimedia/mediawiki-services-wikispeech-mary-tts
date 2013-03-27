@@ -128,6 +128,11 @@
 		<module>voice-cmu-slt-hsmm</module>
 		<module>marytts-assembly</module>
 		<module>user-examples</module>
+
+		<!-- HB added -->
+		<module>marytts-lang-da</module>
+		<module>marytts-lang-no</module>
+
 	</modules>
 
 	<!--
@@ -136,6 +141,8 @@
 		<module>marytts-en-GB</module>
 		</modules>
 	-->
+
+
 
 	<dependencyManagement>
 		<dependencies>
