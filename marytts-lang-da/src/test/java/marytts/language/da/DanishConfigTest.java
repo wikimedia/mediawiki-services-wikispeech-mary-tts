@@ -36,11 +36,11 @@ import org.junit.Test;
  *
  */
 public class DanishConfigTest {
-	private static final Locale DANISH = new Locale("da");
+        private static final Locale DANISH = new Locale("da");
 
-	@Test
+        @Test
 	public void isNotMainConfig() throws MaryConfigurationException {
-		MaryConfig m = new DanishConfig();
+	        MaryConfig m = new DanishConfig();
 		assertFalse(m.isMainConfig());
 	}
 	

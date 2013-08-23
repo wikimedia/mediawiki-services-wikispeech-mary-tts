@@ -132,6 +132,7 @@
 		<!-- HB added -->
 		<module>marytts-lang-da</module>
 		<module>marytts-lang-no</module>
+		<module>marytts-lang-ga_MU</module>
 
 	</modules>
 
