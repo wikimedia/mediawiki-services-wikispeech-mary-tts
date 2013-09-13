@@ -27,8 +27,12 @@ public class MaryTTSEmbedded {
 	    //marytts.setVoice(voices.iterator().next());
 	    //AudioInputStream audio = marytts.generateAudio("Hello world.");
 	    
-	    marytts.setLocale(new Locale("sv"));
-	    AudioInputStream audio = marytts.generateAudio("Det här är ett test av svensk talsyntes.");
+	    //marytts.setLocale(new Locale("sv"));
+	    //AudioInputStream audio = marytts.generateAudio("Det här är ett test av svensk talsyntes.");
+
+	    marytts.setLocale(new Locale("ga"));
+	    marytts.setVoice("nnc-hsmm");
+	    AudioInputStream audio = marytts.generateAudio("Dia dhíbh go léir a chairde.");
 	    
 	    /*
 	      AudioPlayer player = new AudioPlayer(audio);
