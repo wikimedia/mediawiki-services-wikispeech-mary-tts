@@ -132,7 +132,7 @@
 		<!-- HB added -->
 		<module>marytts-lang-da</module>
 		<module>marytts-lang-no</module>
-		<module>marytts-lang-ga_MU</module>
+		<module>marytts-lang-ga</module>
 
 	</modules>
 
@@ -296,6 +296,15 @@
 				<artifactId>mwdumper</artifactId>
 				<version>1.16</version>
 			</dependency>
+
+			<!-- HB should you really need to have this here? Only used in marytts-lang-ga -->
+			<dependency>
+			  <groupId>com.googlecode.json-simple</groupId>
+			  <artifactId>json-simple</artifactId>
+			  <version>1.1</version>
+			</dependency>
+
+
 		</dependencies>
 	</dependencyManagement>
 
