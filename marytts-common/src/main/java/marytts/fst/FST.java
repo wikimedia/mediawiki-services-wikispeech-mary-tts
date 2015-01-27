@@ -152,11 +152,13 @@ public class FST {
 		int overallBits = in.readInt();
 		int arcOffBits = in.readInt();
 
-		// System.out.println("bits: " + overallBits + "-" + arcOffBits);
+		//System.out.println("bits: " + overallBits + "-" + arcOffBits);
 
 		// todo: allow for more flexibility
-		if (overallBits != 32 || arcOffBits != 20) {
-			throw new IOException("Cannot handle non-standard bit allocation for label and arc id's.");
+		//if (overallBits != 32 || arcOffBits != 20){
+		//HB TODO What is this all about...
+		if ( (overallBits != 65 && overallBits != 32) || arcOffBits != 20){
+		    throw new IOException("Cannot handle non-standard bit allocation for label and arc id's.");
 		}
 
 		int nArcs = in.readInt();
