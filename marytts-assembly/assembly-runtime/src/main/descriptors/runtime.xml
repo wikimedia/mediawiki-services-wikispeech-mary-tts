@@ -58,6 +58,12 @@
 		<filtered>true</filtered>
       </file>
       <file>
+        <source>src/runtime/installed/marytts-lang-fr-component.xml</source>
+		<outputDirectory>/</outputDirectory>
+		<destName>installed/marytts-lang-fr-${project.version}-component.xml</destName>
+		<filtered>true</filtered>
+      </file>
+      <file>
         <source>src/runtime/installed/marytts-lang-it-component.xml</source>
 		<outputDirectory>/</outputDirectory>
 		<destName>installed/marytts-lang-it-${project.version}-component.xml</destName>
@@ -96,7 +102,7 @@
       <unpack>false</unpack>
       <scope>runtime</scope>
       <includes>
-        <include>${project.groupId}:marytts-server:jar:jar-with-dependencies</include>
+        <include>${project.groupId}:marytts-runtime:jar:jar-with-dependencies</include>
         <include>${project.groupId}:marytts-client:jar:jar-with-dependencies</include>
         <include>${project.groupId}:marytts-lang-*:jar</include>
         <include>${project.groupId}:voice-*:jar</include>

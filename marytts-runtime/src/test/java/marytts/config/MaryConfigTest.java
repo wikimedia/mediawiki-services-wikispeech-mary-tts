@@ -24,6 +24,7 @@ import static org.junit.Assert.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
@@ -31,7 +32,6 @@ import java.util.Properties;
 import marytts.exceptions.MaryConfigurationException;
 
 import org.junit.Test;
-
 
 /**
  * @author marc
@@ -46,19 +46,44 @@ public class MaryConfigTest {
 		// verify
 		assertTrue(num >= 0);
 	}
-	
+
 	@Test
 	public void haveMainConfig() {
 		MaryConfig m = MaryConfig.getMainConfig();
 		assertNotNull(m);
 	}
-	
-	@Test(expected=MaryConfigurationException.class)
+
+	/**
+	 * @author Tristan
+	 * @author ingmar
+	 * 
+	 *         Test to check properties file for trailing whitespace [SOLVED] -> created PropertiesTrimTrailingWhitespace class to
+	 *         trim trailing whitespace
+	 * @throws MaryConfigurationException
+	 * @throws IOException
+	 * 
+	 */
+	@Test
+	public void ensureTrailingWhitespaceIsTrimmed() throws MaryConfigurationException, IOException {
+		String testResourceName = "test.config";
+		InputStream actualInput = this.getClass().getResourceAsStream(testResourceName);
+		MaryConfig testConfig = new TestConfig(actualInput);
+		Properties testProps = new Properties();
+		InputStream expectedInput = this.getClass().getResourceAsStream(testResourceName);
+		testProps.load(expectedInput);
+		for (String key : testProps.stringPropertyNames()) {
+			String expected = testProps.getProperty(key).trim();
+			String actual = testConfig.getProperties().getProperty(key);
+			assertEquals(expected, actual);
+		}
+	}
+
+	@Test(expected = MaryConfigurationException.class)
 	public void requireLocale1() throws MaryConfigurationException {
 		new LanguageConfig(new ByteArrayInputStream(new byte[0]));
 	}
-	
-	@Test(expected=MaryConfigurationException.class)
+
+	@Test(expected = MaryConfigurationException.class)
 	public void requireLocale2() throws MaryConfigurationException, IOException {
 		Properties p = new Properties();
 		p.setProperty("a", "b");
@@ -68,7 +93,6 @@ public class MaryConfigTest {
 		new LanguageConfig(new ByteArrayInputStream(baos.toByteArray()));
 	}
 
-	
 	@Test
 	public void testGetList() throws MaryConfigurationException, IOException {
 		Properties p = new Properties();
@@ -86,5 +110,13 @@ public class MaryConfigTest {
 		assertEquals("a", it.next());
 		assertEquals("b", it.next());
 		assertEquals("c", it.next());
+	}
+
+	class TestConfig extends MaryConfig {
+
+		protected TestConfig(InputStream propertyStream) throws MaryConfigurationException {
+			super(propertyStream);
+		}
+
 	}
 }

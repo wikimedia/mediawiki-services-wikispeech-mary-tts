@@ -1,10 +1,12 @@
+[![Build Status](https://travis-ci.org/marytts/marytts.svg?branch=5.1.x)](https://travis-ci.org/marytts/marytts)
+
 MARY TTS README
 ===============
 
 This is the source code repository for the multilingual open-source MARY text-to-speech platform (MARY TTS).
 MARY TTS is a client-server system written in pure Java, so it runs on many platforms.
 
-**For a downloadable package ready for use, see [the download page](https://github.com/marytts/marytts/downloads).** 
+**For a downloadable package ready for use, see [the releases page](https://github.com/marytts/marytts/releases).**
 
 **For documentation on using MARY TTS from various angles, see [the wiki](https://github.com/marytts/marytts/wiki).**
 Older documentation can also be found at http://mary.dfki.de and http://mary.opendfki.de .
@@ -58,7 +60,6 @@ Then connect to it with your browser at http://localhost:59125 or using the mary
 The runtime system is also available as deployable packages:
 
     target/marytts-<VERSION>.zip
-    target/marytts-<VERSION>.tar.gz
 
 Installation is easy: Unpack anywhere, and run the scripts in the `bin/` folder.
 
