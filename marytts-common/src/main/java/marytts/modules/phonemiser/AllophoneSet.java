@@ -436,7 +436,7 @@ public class AllophoneSet {
 	 * @param phoneString
 	 * @return a syllabified string; individual allophones are separated by spaces, and syllables, by dashes.
 	 * @throws IllegalArgumentException
-	 *             if the <b>phoneString</b> contains a symbol that satisfies none of the following conditions:
+	 *             if the <b>phoneString</b> is empty or contains a symbol that satisfies none of the following conditions:
 	 *             <ol>
 	 *             <li>the symbol corresponds to an Allophone, or</li> <li>the symbol is a stress symbol (cf. {@link Stress}), or
 	 *             </li> <li>the symbol is a syllable boundary (<code>-</code>)</li>
@@ -445,6 +445,14 @@ public class AllophoneSet {
 	 * 
 	 */
 	public String syllabify(String phoneString) {
+		// Before we process, a sanity check:
+		if (phoneString.trim().isEmpty()) {
+			throw new IllegalArgumentException("Cannot syllabify empty phone string");
+		}
+
+        // FIXME: hack for CMU to work with inner mary phone encoding
+        phoneString = phoneString.replace("0", Stress.NONE).replace("1", Stress.PRIMARY).replace("2", Stress.SECONDARY);
+            
 		// First, split phoneString into a List of allophone Strings...
 		List<String> allophoneStrings = splitIntoAllophoneList(phoneString, true);
 		// ...and create from it a List of generic Objects

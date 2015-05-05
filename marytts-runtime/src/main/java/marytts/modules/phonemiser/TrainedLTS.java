@@ -160,20 +160,7 @@ public class TrainedLTS {
 	 * @return phone chain, with syllable sepeators "-" and stress symbols "'"
 	 */
 	public String syllabify(String phones) {
-
-	    //HB Trying to find problematic transcription..
-	    //System.err.println("syllabify phones: "+phones);
-
-
-	    Syllabifier sfr = new Syllabifier(this.allophoneSet, this.removeTrailingOneFromPhones);
-	    return sfr.syllabify(phones);
-
-	    //HB using allophoneSet.syllabify instead, the Syllabifier class is marked as deprecated
-	    //But lexicon_lts_pos_builder fails then..
-	    //return this.allophoneSet.syllabify(phones);
-
-		
-
+		return allophoneSet.syllabify(phones);
 	}
 
 	public static void main(String[] args) throws IOException, MaryConfigurationException {
