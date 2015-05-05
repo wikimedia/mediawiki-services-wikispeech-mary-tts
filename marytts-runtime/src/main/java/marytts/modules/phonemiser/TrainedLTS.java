@@ -161,9 +161,19 @@ public class TrainedLTS {
 	 */
 	public String syllabify(String phones) {
 
-		Syllabifier sfr = new Syllabifier(this.allophoneSet, this.removeTrailingOneFromPhones);
+	    //HB Trying to find problematic transcription..
+	    //System.err.println("syllabify phones: "+phones);
 
-		return sfr.syllabify(phones);
+
+	    Syllabifier sfr = new Syllabifier(this.allophoneSet, this.removeTrailingOneFromPhones);
+	    return sfr.syllabify(phones);
+
+	    //HB using allophoneSet.syllabify instead, the Syllabifier class is marked as deprecated
+	    //But lexicon_lts_pos_builder fails then..
+	    //return this.allophoneSet.syllabify(phones);
+
+		
+
 	}
 
 	public static void main(String[] args) throws IOException, MaryConfigurationException {
@@ -189,6 +199,7 @@ public class TrainedLTS {
 		while ((line = br.readLine()) != null) {
 			line = line.trim();
 			String pron = lts.predictPronunciation(line);
+			System.err.println("lts.predictPronunciation: "+pron);
 			String syl = lts.syllabify(pron);
 			String sylStripped = syl.replaceAll("[-' ]+", "");
 			System.out.println(sylStripped);
