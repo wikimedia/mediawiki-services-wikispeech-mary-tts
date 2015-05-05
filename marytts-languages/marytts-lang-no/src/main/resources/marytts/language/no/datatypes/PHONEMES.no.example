@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><maryxml xmlns="http://mary.dfki.de/2002/MaryXML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="0.5" xml:lang="sv">
+<p>
+<s>
+<phrase>
+<t accent="H*" g2p_method="rules" ph=", v E: l - % k O - m @ n" pos="content">
+Välkommen
+</t>
+<t g2p_method="lexicon" ph="' t I l" pos="function">
+till
+</t>
+<t accent="H*" g2p_method="rules" ph=", t A: l - s Y n - % t e: - s @ n s" pos="content">
+talsyntesens
+</t>
+<t accent="H*" g2p_method="lexicon" ph="' v {: rd" pos="content">
+värld
+</t>
+<t pos="$PUNCT">
+!
+</t>
+<boundary breakindex="5" tone="L-L%"/>
+</phrase>
+</s>
+</p>
+</maryxml>
