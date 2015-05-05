@@ -24,7 +24,7 @@ import marytts.exceptions.MaryConfigurationException;
 
 
 public class DanishConfig extends LanguageConfig {
-	public DanishConfig() throws MaryConfigurationException {
-		super(DanishConfig.class.getResourceAsStream("da.config"));
-	}
+    public DanishConfig() throws MaryConfigurationException {
+	super(DanishConfig.class.getResourceAsStream("da.config"));
+    }
 }

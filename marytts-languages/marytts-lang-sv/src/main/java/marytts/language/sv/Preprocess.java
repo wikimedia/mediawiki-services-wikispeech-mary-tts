@@ -37,11 +37,11 @@ public class Preprocess extends InternalModule {
 	    this.rbnf = new RuleBasedNumberFormat(new ULocale("sv"), RuleBasedNumberFormat.SPELLOUT);
 		this.cardinalRule = "%spellout-numbering";
 		this.ordinalRule = getOrdinalRuleName(rbnf);
-		//System.err.println("Ordinal rule: "+this.ordinalRule);
 	}
 
 	public MaryData process(MaryData d) throws Exception {
 		Document doc = d.getDocument();
+		logger.info("preprocess 'sv': calling checkForNumbers");
 		checkForNumbers(doc);
 		MaryData result = new MaryData(getOutputType(), d.getLocale());
 		result.setDocument(doc);
@@ -58,9 +58,15 @@ public class Preprocess extends InternalModule {
 				continue;
 			}
 			String origText = MaryDomUtils.tokenText(t);
-			if (MaryDomUtils.tokenText(t).matches("\\d+(e|a)")) {
-				String matched = MaryDomUtils.tokenText(t).split("e|a")[0];
-				MaryDomUtils.setTokenText(t, expandOrdinal(Double.parseDouble(matched)));
+			//HB special case for swedish 1e, 2e
+			if (MaryDomUtils.tokenText(t).matches("\\d+e")) {
+			    String matched = MaryDomUtils.tokenText(t).split("e")[0];
+			    MaryDomUtils.setTokenText(t, expandOrdinal_e( "%spellout-ordinal-masculine", Double.parseDouble(matched) ));
+
+			} else if (MaryDomUtils.tokenText(t).matches("\\d+a")) {
+				String matched = MaryDomUtils.tokenText(t).split("a")[0];
+				MaryDomUtils.setTokenText(t, expandOrdinal( Double.parseDouble(matched) ));
+
 			} else if (MaryDomUtils.tokenText(t).matches("\\d+")) {
 				MaryDomUtils.setTokenText(t, expandNumber(Double.parseDouble(MaryDomUtils.tokenText(t))));
 			}
@@ -72,13 +78,26 @@ public class Preprocess extends InternalModule {
 	}
 
 	protected String expandNumber(double number) {
-		this.rbnf.setDefaultRuleSet(cardinalRule);
-		return this.rbnf.format(number);
+	    this.rbnf.setDefaultRuleSet(cardinalRule);
+	    String expanded = this.rbnf.format(number); 
+	    logger.debug("Expanding cardinal "+number+" using rule "+cardinalRule+" -> "+expanded);
+	    return expanded;
 	}
 
 	protected String expandOrdinal(double number) {
-		this.rbnf.setDefaultRuleSet(ordinalRule);
-		return this.rbnf.format(number);
+	    logger.info("Expanding ordinal "+number+" using rule "+ordinalRule);
+	    this.rbnf.setDefaultRuleSet(ordinalRule);
+	    String expanded = this.rbnf.format(number); 
+	    logger.debug("Expanding ordinal "+number+" using rule "+ordinalRule+" -> "+expanded);
+	    return expanded;
+	}
+
+	protected String expandOrdinal_e(String rule, double number) {
+	    logger.info("Expanding ordinal "+number+" using rule "+rule);
+	    this.rbnf.setDefaultRuleSet(rule);
+	    String expanded = this.rbnf.format(number); 
+	    logger.debug("Expanding ordinal "+number+" using rule "+rule+" -> "+expanded);
+	    return expanded;
 	}
 
 	/**
@@ -90,12 +109,13 @@ public class Preprocess extends InternalModule {
 	 *            The RuleBasedNumberFormat from where we will try to extract the rule name.
 	 * @return The rule name for "ordinal spell out".
 	 */
-	protected static String getOrdinalRuleName(final RuleBasedNumberFormat rbnf) {
+	protected String getOrdinalRuleName(final RuleBasedNumberFormat rbnf) {
 		List<String> l = Arrays.asList(rbnf.getRuleSetNames());
+		logger.debug("RNBF list for 'sv':"+l);
 		if (l.contains("%spellout-ordinal")) {
 			return "%spellout-ordinal";
-		} else if (l.contains("%spellout-ordinal-masculine")) {
-			return "%spellout-ordinal-masculine";
+		} else if (l.contains("%spellout-ordinal-neuter")) {
+			return "%spellout-ordinal-neuter";
 		} else {
 			for (String string : l) {
 				if (string.startsWith("%spellout-ordinal")) {

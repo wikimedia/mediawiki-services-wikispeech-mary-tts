@@ -294,6 +294,15 @@ public class Syllabifier {
 			it = phoneList.listIterator(0);
 			while (it.hasNext()) {
 				String s = it.next();
+
+				//HB there's a problem here, not sure why, but s can be "-" in some circumstances and we get
+				//java.lang.IllegalArgumentException: Allophone `-' could not be found in AllophoneSet `sampa' (Locale: sv)
+				//in that case
+				if (s == "-") {
+				    System.err.println("Problem with -");
+				    break;
+				}
+
 				Allophone ph = allophoneSet.getAllophone(s);
 				if (ph.sonority() >= 5) { // non-schwa vowel
 					// Search backwards for syllable boundary or beginning of word:

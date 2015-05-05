@@ -37,6 +37,8 @@ public class PreprocessTest {
 					{ "3", "tre" }, 
 					{ "4", "fyra" },
 					//{ "43", "fyrtio tre"},
+					{ "1a", "första"},
+					{ "2a", "andra" },
 					{ "1e", "förste"},
 					{ "2e", "andre" },
 					{ "3e", "tredje" },
@@ -58,7 +60,7 @@ public class PreprocessTest {
 	@DataProvider(name = "OrdinalExpandData")
 	private Object[][] numberExpansionDocDataOrdinal() {
 		// @formatter:off
-		return new Object[][] { { "2", "andre" },
+		return new Object[][] { { "2", "andra" },
 					{ "3", "tredje" },
 					{ "4", "fjärde" } };
 		// @formatter:on
