@@ -1,6 +1,6 @@
 <allophones name="sampa" xml:lang="sv"
 		features="vlng vheight vfront vrnd ctype cplace cvox"
-		ignore_chars="',_%"
+		ignore_chars="&quot;',_%"
 		>
 	<silence ph="_"/>
 
