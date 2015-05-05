@@ -543,6 +543,8 @@ public class AllophoneSet {
 					if (currentSyllable == null) {
 						// haven't seen a Syllable yet in this iteration
 						iterator.remove();
+						//HB
+						System.err.println("POSSIBLE PROBLEM phoneString: "+phoneString+", allophone: "+allophone);
 						initialSyllable.prependAllophone(allophone);
 					} else {
 						// append it to the last seen Syllable
