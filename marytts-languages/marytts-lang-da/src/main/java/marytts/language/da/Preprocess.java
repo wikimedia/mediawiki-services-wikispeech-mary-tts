@@ -39,16 +39,16 @@ public class Preprocess extends InternalModule {
 	this.cardinalRule = "%spellout-numbering";
 	try {
 	    this.ordinalRule = getOrdinalRuleName(rbnf);
-	    System.err.println("Ordinal rule: "+ordinalRule);
+	    logger.debug("Ordinal rule: "+ordinalRule);
 	} catch(UnsupportedOperationException e) {
-	    System.err.println("Unable to load cardinal rule - falling back to rbnf "+this.cardinalRule+". Reason: "+e);
+	    logger.warn("Unable to load cardinal rule - falling back to rbnf "+this.cardinalRule+". Reason: "+e);
 	    this.ordinalRule = this.cardinalRule;
 	}
     }
 
 	public MaryData process(MaryData d) throws Exception {
 		Document doc = d.getDocument();
-		System.err.println("preprocess 'da': calling checkForNumbers");
+		logger.info("preprocess 'da': calling checkForNumbers");
 		checkForNumbers(doc);
 		MaryData result = new MaryData(getOutputType(), d.getLocale());
 		result.setDocument(doc);
@@ -80,12 +80,17 @@ public class Preprocess extends InternalModule {
 
 	protected String expandNumber(double number) {
 		this.rbnf.setDefaultRuleSet(cardinalRule);
-		return this.rbnf.format(number);
+		//return this.rbnf.format(number);
+		String expanded = this.rbnf.format(number);
+		logger.debug("expandNumber "+number+" using rule "+ordinalRule+" -> "+expanded);
+		return expanded;
 	}
 
 	protected String expandOrdinal(double number) {
 		this.rbnf.setDefaultRuleSet(ordinalRule);
-		return this.rbnf.format(number);
+		String expanded = this.rbnf.format(number);
+		logger.debug("expandOrdinal "+number+" using rule "+ordinalRule+" -> "+expanded);
+		return expanded;
 	}
 
 	/**
@@ -97,9 +102,9 @@ public class Preprocess extends InternalModule {
 	 *            The RuleBasedNumberFormat from where we will try to extract the rule name.
 	 * @return The rule name for "ordinal spell out".
 	 */
-	protected static String getOrdinalRuleName(final RuleBasedNumberFormat rbnf) {
+	protected String getOrdinalRuleName(final RuleBasedNumberFormat rbnf) {
 		List<String> l = Arrays.asList(rbnf.getRuleSetNames());
-		System.err.println("List of rbnf's for locale 'da': "+l);
+		logger.info("List of rbnf's for locale 'da': "+l);
 		if (l.contains("%spellout-ordinal")) {
 			return "%spellout-ordinal";
 		} else if (l.contains("%spellout-ordinal-masculine")) {

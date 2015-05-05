@@ -34,7 +34,7 @@ public class Preprocess extends InternalModule {
     protected String ordinalRule;
 
     public Preprocess() {
-	super("Preprocess", MaryDataType.TOKENS, MaryDataType.WORDS, new Locale("nb"));
+	super("Preprocess", MaryDataType.TOKENS, MaryDataType.WORDS, new Locale("no"));
 	this.rbnf = new RuleBasedNumberFormat(new ULocale("nb"), RuleBasedNumberFormat.SPELLOUT);
 	this.cardinalRule = "%spellout-numbering";
 	
