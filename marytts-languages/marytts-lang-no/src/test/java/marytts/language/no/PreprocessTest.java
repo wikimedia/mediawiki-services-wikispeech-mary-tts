@@ -57,11 +57,12 @@ public class PreprocessTest {
 
 	@DataProvider(name = "OrdinalExpandData")
 	private Object[][] numberExpansionDocDataOrdinal() {
-		// @formatter:off
-		return new Object[][] { { "2", "to" },
-					{ "3", "tre" },
-					{ "4", "fire" } };
-		// @formatter:on
+	    // @formatter:off
+	    //These are wrong, of course, at some point the norwegian rules will need to be updated with ordinals!
+	    return new Object[][] { { "2", "to" },
+				    { "3", "tre" },
+				    { "4", "fire" } };
+	    // @formatter:on
 	}
 
 	@Test(dataProvider = "DocData")

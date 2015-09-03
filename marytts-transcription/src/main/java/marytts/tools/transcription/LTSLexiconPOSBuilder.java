@@ -258,6 +258,7 @@ public class LTSLexiconPOSBuilder {
 			String lexout = dirName + File.separator + baseName + ".lextxt";
 
 			// Procedure
+
 			System.out.println("trainPredict ...");
 			myLTSLexiconPOSBuilder.trainPredict(treeAbsolutePath);
 			System.out.println("... done.");

@@ -8,4 +8,4 @@ BINDIR="`dirname "$0"`"
 export MARY_BASE="target/marytts-5.2-SNAPSHOT"
 
 
-java -showversion -ea -Xms40m -Xmx1g -cp "$MARY_BASE/lib/*" -Dmary.base="$MARY_BASE" marytts.modules.phonemiser.TrainedLTS marytts-languages/marytts-lang-sv/src/main/resources/marytts/language/sv/lexicon/allophones.sv.xml marytts-languages/marytts-lang-sv/src/main/resources/marytts/language/sv/lexicon/sv.lts $*
+java -showversion -ea -Xms40m -Xmx1g -cp "$BINDIR/../$MARY_BASE/lib/*" -Dmary.base="$BINDIR/../$MARY_BASE" marytts.modules.phonemiser.TrainedLTS $*

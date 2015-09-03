@@ -450,8 +450,10 @@ public class AllophoneSet {
 			throw new IllegalArgumentException("Cannot syllabify empty phone string");
 		}
 
-        // FIXME: hack for CMU to work with inner mary phone encoding
-        phoneString = phoneString.replace("0", Stress.NONE).replace("1", Stress.PRIMARY).replace("2", Stress.SECONDARY);
+		// FIXME: hack for CMU to work with inner mary phone encoding
+		// HB removed: "2" is used for ö/ø in the scandinavian languages
+		//phoneString = phoneString.replace("0", Stress.NONE).replace("1", Stress.PRIMARY).replace("2", Stress.SECONDARY);
+		phoneString = phoneString.replace("0", Stress.NONE).replace("1", Stress.PRIMARY);
             
 		// First, split phoneString into a List of allophone Strings...
 		List<String> allophoneStrings = splitIntoAllophoneList(phoneString, true);

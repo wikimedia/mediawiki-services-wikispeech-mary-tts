@@ -5,7 +5,7 @@
 
 # Set the Mary base installation directory in an environment variable:
 BINDIR="`dirname "$0"`"
-export MARY_BASE="target/marytts-builder-5.2-SNAPSHOT"
+export MARY_BASE="$BINDIR/../target/marytts-builder-5.2-SNAPSHOT"
 
 
-java -showversion -ea -Xms40m -Xmx1g -cp "$MARY_BASE/lib/*" -Dmary.base="$MARY_BASE" marytts.tools.transcription.LTSLexiconPOSBuilder marytts-languages/marytts-lang-sv/src/main/resources/marytts/language/sv/lexicon/allophones.sv.xml marytts-languages/marytts-lang-sv/src/main/resources/marytts/language/sv/lexicon/swe030224NST_utf8_converted.txt $*
+java -showversion -ea -Xms40m -Xmx4g -cp "$MARY_BASE/lib/*" -Dmary.base="$MARY_BASE" marytts.tools.transcription.LTSLexiconPOSBuilder $*

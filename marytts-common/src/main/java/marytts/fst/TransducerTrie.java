@@ -49,6 +49,8 @@ public class TransducerTrie extends Trie<StringPair> {
 	static int ARCOFFSET_BITS = 20;
 
 	static int OVERALL_BITS = 32;// for example
+	//HB testing REMOVE
+	//static int OVERALL_BITS = 65;// for example
 	static int LABELID_BITS = OVERALL_BITS - (ARCOFFSET_BITS + 1);
 
 	public void writeFST(DataOutputStream out, String encoding) throws IOException {
