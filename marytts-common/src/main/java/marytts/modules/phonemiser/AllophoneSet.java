@@ -590,11 +590,6 @@ public class AllophoneSet {
 					if (currentSyllable == null) {
 						// haven't seen a Syllable yet in this iteration
 						iterator.remove();
-<<<<<<< HEAD
-						//HB
-						System.err.println("POSSIBLE PROBLEM phoneString: "+phoneString+", allophone: "+allophone);
-						initialSyllable.prependAllophone(allophone);
-=======
 						if (initialSyllable == null) {
 							// haven't seen any syllable at all
 							initialSyllable = new Syllable(allophone);
@@ -602,7 +597,7 @@ public class AllophoneSet {
 						} else {
 							initialSyllable.prependAllophone(allophone);
 						}
->>>>>>> upstream/master
+
 					} else {
 						// append it to the last seen Syllable
 						iterator.remove();
