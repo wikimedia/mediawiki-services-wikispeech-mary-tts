@@ -55,3 +55,22 @@ shuf -n 90000 nor_nst.txt > /tmp/tmp_lex ; grep functional nor_nst.txt >> /tmp/t
 sh ~/git/marytts/hb/marytts-lts-lexicon_builder allophones.no.xml ./nor_nst_90k.txt
 
 Use the resulting fst files: nor_nst_90k_lexicon.fst, nor_nst_90k_pos.fst
+
+
+#################################################
+Problem: The phoneme }: seems to cause error:
+
+Caused by: marytts.exceptions.SynthesisException: Duration model could not be applied
+	at marytts.modules.AcousticModeller.process(AcousticModeller.java:184)
+	at marytts.server.Request.processOneChunk(Request.java:548)
+	... 19 more
+Caused by: marytts.exceptions.MaryConfigurationException: Error searching in tree when predicting duration. 
+	at marytts.modules.acoustic.HMMModel.predictAndSetDuration(HMMModel.java:279)
+	at marytts.modules.acoustic.HMMModel.applyTo(HMMModel.java:157)
+	at marytts.modules.AcousticModeller.process(AcousticModeller.java:182)
+	... 20 more
+Caused by: java.lang.IndexOutOfBoundsException: Byte value out of range: 55
+	at marytts.util.string.ByteStringTranslator.get(ByteStringTranslator.java:155)
+	at marytts.features.FeatureDefinition.getFeatureValueAsString(FeatureDefinition.java:1007)
+	at marytts.features.FeatureVector.getFeatureAsString(FeatureVector.java:177)
+	at marytts.modules.acoustic.HMMModel.predictAndSetDuration(HMMModel.java:225)
