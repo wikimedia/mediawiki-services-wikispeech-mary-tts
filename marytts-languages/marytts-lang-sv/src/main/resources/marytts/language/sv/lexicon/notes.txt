@@ -1,0 +1,117 @@
+Original lexicon file:
+http://www.nb.no/sbfil/leksikalske_databaser/leksikon/sv.leksikon.tar.gz
+
+Contents of archive:
+ST svensk leksikon/
+NST svensk leksikon/swe030224NST.pron/
+NST svensk leksikon/swe030224NST.pron/swe030224NST.pron_inspect.OUT
+NST svensk leksikon/swe030224NST.pron/inspect_lex.pl
+NST svensk leksikon/swe030224NST.pron/swe030224NST.pron
+
+cp NST svensk leksikon/swe030224NST.pron/swe030224NST.pron .
+wc swe030224NST.pron 
+   927167   1116249 185392421 swe030224NST.pron
+
+Phoneme symbols used in marytts are these:
+https://www.phon.ucl.ac.uk/home/sampa/swedish.htm
+In addition, the diphthongs E*U and a*U are used.
+
+script to extract and convert words and transcriptions:
+
+cat swe030224NST.pron | perl convertNST2MaryTts.pl > sv.lex
+
+wc sv.lex
+  499271   998711 14960445 sv.lex
+grep functional sv.lex | wc
+    169     507    4619
+
+sh ~/git/marytts/hb/marytts-lts-lexicon_builder allophones.sv.xml ./sv.lex
+...
+saveTranscription ...
+Testing FST...
+FST.java loading fst, bits: 32-20
+Testing complete. 7289 entries (7289 correct, 0 failed)
+... done.
+
+Seems to have worked fine.. Too good to be true?
+sv_lexicon.dict is very small (I clearly don't understand what's going on here..). What is the difference between sv.lex, sv.lextxt, and sv_lexicon.dict? What is actually in the fst? 
+
+sv.lex:
+talsyntesens "tA:l-sYn-%te:-sens
+
+sv.lextxt:
+talsyntesens
+(no trans, only a few words have trans)
+
+sv_lexicon.dict
+word talsyntesens not there at all 
+
+The only words that have transcriptions in sv.lextxt have one syllable acute accent, all others are dropped.
+utf-8? sv.lex is now ascii. trying to convert it, see if it makes a difference
+ 
+iconv -f iso-8859-1 -t utf-8 swe030224NST.pron > swe030224NST_utf8.pron
+cat swe030224NST_utf8.pron | perl convertNST2MaryTts.pl > sv_utf8.lex
+sh ~/git/marytts/hb/marytts-lts-lexicon_builder allophones.sv.xml ./sv_utf8.lex
+.. done.
+saveTranscription ...
+Testing FST...
+FST.java loading fst, bits: 32-20
+Testing complete. 9615 entries (9615 correct, 0 failed)
+... done.
+
+So a bit different.. But still only one-syllable acc1 transcriptions!
+I think the problem was that - (the syllable boundary) wasn't listed in the ignore_chars in allophones.sv.xml. It is a bit curious that it should be ignored, but let's see what happens.. At least the training is much slower now!
+
+
+     Training decision tree for: e
+Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+
+Increased to 12g in marytts-lts-lexicon_builder
+
+Äsch samma fel som i norskan
+
+
+saveTranscription ...
+Problem processing the following input:
+args[0]:allophones.sv.xml
+args[1]:./sv_utf8.lex
+
+
+java.io.IOException: Cannot write transducer: too many arc-labels to be encoded in binary fst format (would need 12 bits, have 11)
+	at marytts.fst.TransducerTrie.writeFST(TransducerTrie.java:90)
+	at marytts.tools.transcription.TranscriptionTableModel.createLexicon(TranscriptionTableModel.java:497)
+	at marytts.tools.transcription.LTSLexiconPOSBuilder.saveTranscription(LTSLexiconPOSBuilder.java:227)
+	at marytts.tools.transcription.LTSLexiconPOSBuilder.main(LTSLexiconPOSBuilder.java:275)
+
+Failure exit
+
+Ändrat i TransducerTrie till 65 bits igen..
+Kör om lex-builder.
+Väntar mig tester som misslyckas.
+Gör det något? Varför händer det?
+
+...
+Problem looking up key 'övärlds': Expected value '" 2: - % v E: rd rs', but got no result
+Testing complete. 815826 entries (402 correct, 815424 failed)
+... done.
+
+Det funkar delvis iallafall:
+talsyntesens ger det här:
+<t g2p_method="rules" ph="' t A: l - s y: n - t e: - s e n s" pos="content">
+
+Så transkriptionen är ganska hygglig, men den har inte hittats i lexikonet utan genereras av lts-reglerna.
+Så jag måste kolla på vad som händer med testerna, varför blir det inget resultat på "övärlds" tex. Om det funkar kanske det också går att slå upp i lexikonet? 
+
+Det är i TranscriptionTableModel
+
+Provat med det italienska lexikonet, det har 409000 uppslag så borde visa samma problem, men det gör det inte alls, funkar fint att skapa och slå upp i med samma skript.
+Vad är det för skillnad?
+En copyrighttext..
+it har bara ', inte " och %
+jag testar helt bryskt att ta bort % och ersätta " med '..
+Hjälper inte, får samma fel 
+Problem looking up key 'demissionering': Expected value 'd e - m I - S U - ' n e: - r I N', but got no result
+
+it allophones har inga ignore_chars öht..
+Jag provar att ta bort dem från den svenska?
+Nej (det finns en default "',-" i AllophoneSet, det är det som används i italienska)

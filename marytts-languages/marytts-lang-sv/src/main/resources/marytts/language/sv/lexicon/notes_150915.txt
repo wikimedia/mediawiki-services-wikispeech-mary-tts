@@ -1,0 +1,39 @@
+>> wget http://www.nb.no/sbfil/leksikalske_databaser/leksikon/sv.leksikon.tar.gz
+
+>> tar xzvf sv.leksikon.tar.gz
+NST svensk leksikon/
+NST svensk leksikon/swe030224NST.pron/
+NST svensk leksikon/swe030224NST.pron/swe030224NST.pron_inspect.OUT
+NST svensk leksikon/swe030224NST.pron/inspect_lex.pl
+NST svensk leksikon/swe030224NST.pron/swe030224NST.pron
+
+>> iconv -f iso-8859-1 -t utf-8 NST\ svensk\ leksikon/swe030224NST.pron/swe030224NST.pron > swe030224NST_utf8.pron
+
+(rm sv.leksikon.tar.gz)
+(rm -rf NST\ svensk\ lexicon)
+
+cat swe030224NST_utf8.pron | perl convertNST2MaryTts.pl > sv_nst_ok.txt 2> sv_nst_skipped.txt
+
+wc sv_nst_*
+  766400  1533025 24441488 sv_nst_ok.txt
+   49426    98860  1184779 sv_nst_skipped.txt
+  815826  1631885 25626267 total
+
+sh ~/git/marytts/hb/marytts-lts-lexicon_builder allophones.sv.xml ./sv_nst_ok.txt
+
+use for marytts:
+sv_nst_ok_lexicon.fst
+sv_nst_ok.lts
+sv_nst_ok_pos.fst
+
+sh ~/git/marytts/hb/marytts-lts-lexicon_builder allophones.sv.xml ./sv_nst_skipped.txt
+fails to write fst, but writes dict
+use for marytts sv.secondary_lexicon:
+sv_nst_skipped_lexicon.dict
+
+(rm swe030224NST_utf8.pron)
+(rm sv*txt)
+(rm sv_nst_ok_lexicon.dict)
+(rm sv_nst_ok_pos.list)
+(rm sv_nst_skipped.lts)
+(rm sv_nst_skipped_lexicon.fst)
