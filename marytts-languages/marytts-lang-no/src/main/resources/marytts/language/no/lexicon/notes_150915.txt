@@ -1,0 +1,54 @@
+convertNST2MaryTts.pl now splits the nst lexicon into two parts, stdout for accepted lines, and stderr for skipped.
+The accepted should compile to fst, and maybe the skipped will too, if they are in their own file.
+
+wget http://www.nb.no/sbfil/leksikalske_databaser/leksikon/no.leksikon.tar.gz
+tar xzvf no.leksikon.tar.gz
+iconv -f iso-8859-1 -t utf-8 NSTs\ norske\ leksikon/nor030224NST.pron/nor030224NST.pron > nor030224NST_utf8.pron
+
+(rm -rf NSTs\ norske\ leksikon)
+
+cat nor030224NST_utf8.pron | perl convertNST2MaryTts.pl > no_nst_ok.txt 2> no_nst_skipped.txt
+
+wc nor030224NST_utf8.pron 
+   784240    784241 171453160 nor030224NST_utf8.pron
+wc no_nst_*
+  594606  1189437 17606478 no_nst_ok.txt
+   43560    87160   958390 no_nst_skipped.txt
+
+sh ~/git/marytts/hb/marytts-lts-lexicon_builder allophones.no.xml ./no_nst_ok.txt
+(should convert to good lts, fst, and pos.fst files. These should be used in mary, first of all)
+
+It still didn't work (too many arc-labels). 
+This command tries again from the *.dict, with more alignment iterations, and prints more output for error analysis:
+
+sh ~/git/marytts/hb/lexToFst.sh ./no_nst_ok_lexicon.dict &> log
+
+After a few iterations of skipping more words (convertNST2MaryTts.pl, marytts-lts-lexicon_builder, lexToFst.sh) this produced an fst that works (no_nst_ok_lexicon.fst).
+test:
+sh ~/git/marytts/hb/fst_lookup.sh ./no_nst_ok_lexicon.fst talesyntese
+
+
+sh ~/git/marytts/hb/marytts-lts-lexicon_builder allophones.no.xml ./no_nst_skipped.txt
+(should convert to fst, or if that fails, to dict. Use that as secondary lexicon)
+It did fail to write fst. Ok so use the no_nst_skipped_lexicon.dict as secondary lexicon.
+
+When that works, change the number if iterations in TranscriptionTableModel.java to that used in the working LexToFST.java, recompile, rerun.
+sh ~/git/marytts/hb/marytts-lts-lexicon_builder allophones.no.xml ./no_nst_ok.txt
+Now use the lts, fst, and pos.fst files in no.config.
+
+
+Code to change:
+JPhonemiser.java
+allow list of fst or dict as lexiconProperty in no.config.
+read fst or dict.
+lookup in fst or dict (in order of lexiconProperty list)
+
+Not quite done that way - easier change first:
+added an optional secondary_lexicon property, and an optional lookup in that.
+
+Ok so marytts-lang-no now has a working fst lexicon with 594606 entries, and a secondary lexicon with 43560 entries. Good.
+One problem is that words with hyphen are not looked up in the lexica, they are first split. Lookup first, then split and try the parts. TODO
+
+HB TODO
+Rebuild the no_nst voices.
+Do the Swedish and Danish nst lexica in the same way, and rebuild the voices.

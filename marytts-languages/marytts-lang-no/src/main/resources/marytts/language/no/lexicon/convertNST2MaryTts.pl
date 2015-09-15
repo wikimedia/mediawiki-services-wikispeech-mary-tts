@@ -1,12 +1,32 @@
 
+$nst_language = "NOR";
+$locale = "no";
+$do_split = 1;
 
-if ($ARGV[0] eq "lts") {
-    $do_lts = 1;
-    print STDERR "DOING LTS\n";
-} else {
-    $do_lts = 0;
-    print STDERR "NOT DOING LTS\n";
+
+#read phonemes from allophones.*.xml
+open(PH, "allophones.$locale.xml");
+while (<PH>) {
+    chomp;
+
+    next unless /ph=\"([^\"]+)\"/;
+    $phn = $1;
+    #print "$phn\n";
+    push(@phnlist,$phn);
 }
+close(PH);
+
+#print "@phnlist\n";
+@sorted = sort { length $b <=> length $a } @phnlist;
+$phonemes_re = join("|", @sorted);
+
+$phonemes_re =~ s/\*/\\\*/g;
+
+#print "$phonemes_re\n";
+#exit;
+
+
+
 
 %words = {};
 
@@ -17,9 +37,6 @@ while (<STDIN>) {
 
     $orth = $line[0];
 
-    #Skip any duplicates
-    next if $words{$orth};
-    $words{$orth} = 1;
 
     $pos = $line[1];
     #$morph = $line[2];
@@ -37,32 +54,18 @@ while (<STDIN>) {
     $trans = $line[11];
 
 
-    #Skip garbage..
+    #Skip the following, and don't print at all
+    #Skip any duplicates
+    next if $words{$orth};
+    $words{$orth} = 1;
+
     next if ($garbage eq "GARB");
-
-    #If doing lts training, skip the following
-    if ($do_lts) {
-
-	#Skip acronyms (spelled out) and abbreviations (expanded)
-	#They should be in lexicon but not used for lts training
-	next if ($acr_abbr eq "ACR");
-	next if ($acr_abbr eq "ABBR");
-
-	#Skip foreign words
-	#They should be in lexicon but not used for lts training
-	next if ($lang ne "NOR");
-
-
-    }
-
 
     #Skip words containing something except letters and hyphen
     #They will cause failure in java build
     #But they would be nice to have in lexicon (?)
     #Accented letters included that occur in the nst lexicon
     next if ($orth =~ /[^a-zåæøäöüéôèêñçàáòóâíëA-ZÅÆØÄÖÉÜ-]/);
-
-
 
     #These are not useful (but multiword entries could be good to have in some, if there's a method for finding them)
     #Skip words beginning with -
@@ -74,10 +77,57 @@ while (<STDIN>) {
 
 
 
-    #print STDERR "$garbage, $acr_abbr, $lang\n";
+    #Skip the following, print separately
+    if ($do_split) {
+	$skip = 0;
+
+	#Skip acronyms (spelled out) and abbreviations (expanded)
+	#They should be in lexicon but not used for lts training
+	$skip = 1 if ($acr_abbr eq "ACR");
+	$skip = 1 if ($acr_abbr eq "ABBR");
+
+	#Also skip compound acronyms like ABS-bromsar
+	#Words containing two consecutive capital letters
+	$skip = 1 if ($orth =~ /[A-ZÅÄÖÆØ]{2}/);
+	#Words containing capital letter + hyphen
+	$skip = 1 if ($orth =~ /[A-ZÅÄÖÆØ]-/);
+
+
+	#Skip foreign words
+	#They should be in lexicon but not used for lts training
+	$skip = 1 if ($lang ne $nst_language);
+
+
+
+	#Skip names
+	#They should be in lexicon (but the lexicon becomes too big to write to FST, maybe if they are separated out it will work). They potentially cause problems for lts.
+	$skip = 1 if ($pos =~ /^PM/);
+
+	#Skip words that have no POS (example no Hewlett, Switzerland)
+	$skip = 1 if ($pos eq "");
+	
+
+
+    }
+
+
 
 
     #map transcription to mary format
+
+    if ($locale eq "sv") {
+	$trans =~ s/x\\/S/g;
+	$trans =~ s/d`/rd/g;
+	$trans =~ s/t`/rt/g;
+	$trans =~ s/n`/rn/g;
+	$trans =~ s/l`/rl/g;
+	$trans =~ s/s`/rs/g;
+	$trans =~ s/s'/C/g;
+    }
+
+
+
+
     
     #syllable boundaries
     $trans =~ s/\$/-/g;
@@ -98,10 +148,10 @@ while (<STDIN>) {
 
 
     #check transcription is now correct according to allophones.no.xml
-    $phonemes = "9\\*Y|O\\*Y|A\\*I|{\\*I|E\\*u0|}\\*I|u\\*I|n`=|l`=|n=|l=|A:|e:|i:|y:|2:|u:|}:|o:|{:|s`|n`|t`|d`|l`|A|e|E|I|Y|U|u0|O|{|9|@|p|t|k|b|d|g|f|v|s|h|S|C|l|m|n|N|r|j";
+    #$phonemes = "9\\*Y|O\\*Y|A\\*I|{\\*I|E\\*u0|}\\*I|u\\*I|n`=|l`=|n=|l=|A:|e:|i:|y:|2:|u:|}:|o:|{:|s`|n`|t`|d`|l`|A|e|E|I|Y|U|u0|O|{|9|@|p|t|k|b|d|g|f|v|s|h|S|C|l|m|n|N|r|j";
 
     $rest = $trans;
-    while ($rest =~ /^(\"|\'|%|-)*($phonemes)(.*)$/) {
+    while ($rest =~ /^(\"|\'|%|-)*($phonemes_re)(.*)$/) {
 	#print STDERR "Extra: $1\n";
 	#print STDERR "Phoneme: $2\n";
 	#print STDERR "Rest: $3\n";
@@ -109,8 +159,8 @@ while (<STDIN>) {
     }
 
     if ($rest ne "") {
-	print STDERR "ERROR:\t$orth\t$rest\t$trans\n";
-	#exit;
+	print STDERR "ERROR:\t$orth\t$rest\t$trans\t$phonemes_re\n";
+	exit;
 	next;
     }
 
@@ -123,11 +173,19 @@ while (<STDIN>) {
 	$functional = 1
     }
     
-    printf "%s %s", $orth, $trans;
+
     if ($functional) {
-	print " functional";
+	$outstr = sprintf "%s %s functional\n", $orth, $trans;
+    } else {
+	$outstr = sprintf "%s %s\n", $orth, $trans;
     }
-    print "\n";
+
+    if ($skip) {
+	print STDERR $outstr;
+    } else {
+	print STDOUT $outstr;
+    }
+
 
 
     #exit;
