@@ -1,0 +1,41 @@
+>> wget http://www.nb.no/sbfil/leksikalske_databaser/leksikon/da_leksikon.tar.gz
+
+>> tar xzvf da_leksikon.tar.gz 
+dan030224NST.pron/
+dan030224NST.pron/dan030224NST.pron_inspect.OUT
+dan030224NST.pron/inspect_lex.pl
+dan030224NST.pron/dan030224NST.pron
+
+>> iconv -f iso-8859-1 -t utf-8 dan030224NST.pron/dan030224NST.pron > dan030224NST_utf8.pron
+
+(rm da_leksikon.tar.gz)
+(rm -rf dan030224NST.pron/)
+
+wc dan030224NST_utf8.pron 
+  237873   237883 35106312 dan030224NST_utf8.pron
+
+
+>> cat dan030224NST_utf8.pron | perl convertNST2MaryTts.pl > da_nst_ok.txt 2> da_nst_skipped.txt
+
+wc da_nst*
+ 159072  318297 4524798 da_nst_ok.txt
+  45192   90387 1003166 da_nst_skipped.txt
+ 204264  408684 5527964 total
+
+>> sh ~/git/marytts/hb/marytts-lts-lexicon_builder allophones.da.xml ./da_nst_ok.txt
+OK
+
+rm da_nst_ok_lexicon.dict da_nst_ok.lextxt da_nst_ok_pos.list da_nst_ok.txt
+
+use in marytts: 
+da_nst_ok_lexicon.fst
+da_nst_ok.lts
+da_nst_ok_pos.fst 
+
+>> sh ~/git/marytts/hb/marytts-lts-lexicon_builder allophones.da.xml ./da_nst_skipped.txt
+FAIL
+
+rm da_nst_skipped_lexicon.fst da_nst_skipped.lextxt da_nst_skipped.lts da_nst_skipped.txt
+
+use in marytts as da.secondary_lexicon:
+da_nst_skipped_lexicon.dict 
