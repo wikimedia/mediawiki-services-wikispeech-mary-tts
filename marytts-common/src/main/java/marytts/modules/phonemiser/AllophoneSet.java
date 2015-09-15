@@ -437,7 +437,9 @@ public class AllophoneSet {
 			splitIntoAllophoneList(allophoneString, false);
 			return true;
 		} catch (IllegalArgumentException e) {
-			return false;
+		    //HB 150910
+		    System.err.println(e);
+		    return false;
 		}
 	}
 

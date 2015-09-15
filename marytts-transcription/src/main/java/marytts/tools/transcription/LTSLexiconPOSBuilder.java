@@ -107,9 +107,17 @@ public class LTSLexiconPOSBuilder {
 			}
 			if (!transcription.equals("")) {
 				boolean ok = phoneSet.checkAllophoneSyntax(transcription);
+
+				//HB 150910
+				if (ok == false) {
+				    System.err.println("Syntax check failed for: "+transcription);
+				}
+
 				transcriptionModel.setAsCorrectSyntax(row, ok);
 			} else {
-				transcriptionModel.setAsCorrectSyntax(row, false);
+			    //HB 150910
+			    System.err.println("Syntax check failed for: "+transcription);
+			    transcriptionModel.setAsCorrectSyntax(row, false);
 			}
 		}
 	}

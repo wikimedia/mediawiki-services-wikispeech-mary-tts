@@ -50,7 +50,7 @@ public class TransducerTrie extends Trie<StringPair> {
 
 	static int OVERALL_BITS = 32;// for example
 	//HB testing REMOVE
-	//static int OVERALL_BITS = 65;// for example
+	//static int OVERALL_BITS = 33;// for example
 	static int LABELID_BITS = OVERALL_BITS - (ARCOFFSET_BITS + 1);
 
 	public void writeFST(DataOutputStream out, String encoding) throws IOException {
@@ -87,7 +87,7 @@ public class TransducerTrie extends Trie<StringPair> {
 		int maxLID = this.labels.size() + 2;
 		if ((maxLID >> LABELID_BITS) != 0) {
 			int numBitsNeeded = (int) Math.ceil(Math.log(maxLID) / Math.log(2));
-			throw new IOException("Cannot write transducer: too many arc-labels to be encoded in binary fst format (would need "
+			throw new IOException("Cannot write transducer: too many arc-labels ("+maxLID+") to be encoded in binary fst format (would need "
 					+ numBitsNeeded + " bits, have " + LABELID_BITS + ")");
 		}
 
@@ -193,9 +193,27 @@ public class TransducerTrie extends Trie<StringPair> {
 			out.writeByte(0);
 			out.write(ioSym.getString2().getBytes(encoding));
 			out.writeByte(0);
+
+
+
 		}
 
 	}
+
+	//HB testing
+	public int getLabelCount() {
+	    return this.labels.size()+2;
+	}
+
+	//HB testing
+	public void printLabels() {	
+	    for (int i = 0; i < labels.size(); i++) {
+
+		StringPair ioSym = labels.get(i);
+		System.err.println("Label "+i+": "+ioSym.getString1()+" ::>> "+ioSym.getString2());
+	    }
+	}
+
 
 	public static void main(String[] args) throws IOException {
 		// example usage

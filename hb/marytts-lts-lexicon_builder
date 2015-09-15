@@ -8,4 +8,4 @@ BINDIR="`dirname "$0"`"
 export MARY_BASE="$BINDIR/../target/marytts-builder-5.2-SNAPSHOT"
 
 
-java -showversion -ea -Xms40m -Xmx4g -cp "$MARY_BASE/lib/*" -Dmary.base="$MARY_BASE" marytts.tools.transcription.LTSLexiconPOSBuilder $*
+java -showversion -ea -Xms40m -Xmx12g -cp "$MARY_BASE/lib/*" -Dmary.base="$MARY_BASE" marytts.tools.transcription.LTSLexiconPOSBuilder $*

@@ -157,7 +157,7 @@ public class FST {
 		//if (overallBits != 32 || arcOffBits != 20){
 		//HB TODO What is this all about...
 		System.out.println("FST.java loading fst, bits: " + overallBits + "-" + arcOffBits);
-		if ( (overallBits != 65 && overallBits != 32) || arcOffBits != 20){
+		if ( (overallBits != 33 && overallBits != 32) || arcOffBits != 20){
 		    throw new IOException("Cannot handle non-standard bit allocation for label and arc id's.");
 		}
 
@@ -172,7 +172,13 @@ public class FST {
 			int thisArc = in.readInt();
 
 			targets[i] = thisArc & 1048575;
-			labels[i] = (short) ((thisArc >> 20) & 2047);
+			//HB testing
+			//labels[i] = (short) ((thisArc >> 20) & 2047);
+			if (overallBits == 32) {
+			    labels[i] = (short) ((thisArc >> 20) & 2047);
+			} else if (overallBits == 33) {
+			    labels[i] = (short) ((thisArc >> 20) & 4095);
+			}
 			isLast[i] = ((byte) (thisArc >> 31)) != 0;
 
 		}

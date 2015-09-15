@@ -483,7 +483,8 @@ public class TranscriptionTableModel extends AbstractTableModel {
 		br.close();
 
 		// make some alignment iterations
-		for (int i = 0; i < 4; i++) {
+		//HB changed from 4 to 10.. 
+		for (int i = 0; i < 10; i++) {
 			at.alignIteration();
 		}
 		TransducerTrie t = new TransducerTrie();

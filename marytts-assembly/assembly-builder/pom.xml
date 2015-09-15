@@ -70,6 +70,21 @@
 			<artifactId>marytts-lang-lb</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
+		<!-- HB added -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>marytts-lang-da</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>marytts-lang-no</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+
+
 	</dependencies>
 
 	<build>
