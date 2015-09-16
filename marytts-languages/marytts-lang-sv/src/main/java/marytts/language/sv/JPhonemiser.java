@@ -248,7 +248,7 @@ public class JPhonemiser extends InternalModule {
 		//HB 150915 adding secondary lexicon
 		result = secondary_lexiconLookup(text, pos);
 		if (result != null) {
-			g2pMethod.append("secondary_lexicon");
+			g2pMethod.append("lexicon");
 			return result;
 		}
 
@@ -265,6 +265,12 @@ public class JPhonemiser extends InternalModule {
 			if (result != null) {
 				g2pMethod.append("lexicon");
 				return result;
+			}
+			//HB 150915 adding secondary lexicon
+			result = secondary_lexiconLookup(text, pos);
+			if (result != null) {
+			    g2pMethod.append("lexicon");
+			    return result;
 			}
 		}
 

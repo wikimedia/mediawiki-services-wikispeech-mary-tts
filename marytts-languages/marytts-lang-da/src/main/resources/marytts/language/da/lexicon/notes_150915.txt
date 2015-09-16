@@ -39,3 +39,6 @@ rm da_nst_skipped_lexicon.fst da_nst_skipped.lextxt da_nst_skipped.lts da_nst_sk
 
 use in marytts as da.secondary_lexicon:
 da_nst_skipped_lexicon.dict 
+
+OK all seems fine except the secondary lexicon isn't actually used?? It is used in swedish and norwegian, the code is the same, so what's going on?
+
