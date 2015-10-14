@@ -17,7 +17,7 @@
 	<!-- is this really the old long u-sound ?? Yes. Remove this after new voices have been built that don't use it anymore -->
 	<vowel ph="1:" vlng="l" vheight="3" vfront="1" vrnd="+"/>
 	<vowel ph="{:" vlng="l" vheight="3" vfront="1" vrnd="-"/>
-	<vowel ph="9:" vlng="l" vheight="3" vfront="1" vrnd="-"/>
+	<vowel ph="9:" vlng="l" vheight="3" vfront="1" vrnd="+"/>
 
 	<vowel ph="a" vlng="s" vheight="3" vfront="3" vrnd="-"/>
 	<vowel ph="e" vlng="s" vheight="2" vfront="1" vrnd="-"/>
@@ -29,7 +29,7 @@
 	<vowel ph="O" vlng="s" vheight="2" vfront="3" vrnd="+"/>
 	<vowel ph="u0" vlng="s" vheight="3" vfront="1" vrnd="-"/>
 	<vowel ph="{" vlng="s" vheight="3" vfront="1" vrnd="-"/>
-	<vowel ph="9" vlng="s" vheight="3" vfront="1" vrnd="-"/>
+	<vowel ph="9" vlng="s" vheight="3" vfront="1" vrnd="+"/>
 	
 	<vowel ph="@" vlng="s" vheight="3" vfront="1" vrnd="-"/>
 

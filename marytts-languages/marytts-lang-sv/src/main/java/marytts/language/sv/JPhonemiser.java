@@ -187,8 +187,10 @@ public class JPhonemiser extends InternalModule {
 						continue;
 					}
 
-					//HB trying to map }: to 1: for old voices, before they are rebuilt..
-					phon = phon.replaceAll("}:", "1:");
+					//HB mapping }: to 1: for old voices, before they are rebuilt..
+					//phon = phon.replaceAll("}:", "1:");
+					//HB mapping {: to E: for old voices, before they are rebuilt..
+					//phon = phon.replaceAll("\\{:", "E:");
 
 
 					if (ph.length() == 0) { // first part

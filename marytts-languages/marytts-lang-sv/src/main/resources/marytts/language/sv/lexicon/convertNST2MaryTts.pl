@@ -5,7 +5,7 @@ $do_split = 1;
 
 
 #read phonemes from allophones.*.xml
-open(PH, "allophones.$locale.xml");
+open(PH, "../allophones.$locale.xml") || die $!;
 while (<PH>) {
     chomp;
 
@@ -123,6 +123,14 @@ while (<STDIN>) {
 	$trans =~ s/l`/rl/g;
 	$trans =~ s/s`/rs/g;
 	$trans =~ s/s'/C/g;
+
+	#Map E: to {: before retroflex
+
+	$trans =~ s/E:([\"%\$])*r/{:\1r/g;
+	#Map 2: to 9: before retroflex
+	$trans =~ s/2:([\"%\$])*r/9:\1r/g;
+
+
     }
 
 

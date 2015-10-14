@@ -76,6 +76,8 @@ public class EHMMLabeler extends VoiceImportComponent {
 	public final String NONDETENDFLAG = "EHMMLabeler.nonDetEndFlag";
 
 	public final String PREPAREFILESFLAG = "EHMMLabeler.prepareFiles";
+    //HB 150918
+	public final String PREPAREAUDIOFLAG = "EHMMLabeler.prepareAudioFiles";
 	public final String TRAININGFLAG = "EHMMLabeler.doTraining";
 	public final String ALIGNMENTFLAG = "EHMMLabeler.doAlignment";
 
@@ -107,6 +109,8 @@ public class EHMMLabeler extends VoiceImportComponent {
 			props.put(RETRAIN, "false");
 			props.put(NONDETENDFLAG, "0");
 			props.put(PREPAREFILESFLAG, "true");
+			//HB 150918
+			props.put(PREPAREAUDIOFLAG, "true");
 			props.put(TRAININGFLAG, "true");
 			props.put(ALIGNMENTFLAG, "true");
 		}
@@ -125,7 +129,10 @@ public class EHMMLabeler extends VoiceImportComponent {
 		props2Help.put(RETRAIN, "true - Do re-training by initializing with given models. false - Do just Decoding");
 		props2Help.put(NONDETENDFLAG, "(0,1) - Viterbi decoding with non deterministic ending (festvox 2.4)");
 
-		props2Help.put(PREPAREFILESFLAG, "(true/false) -- initialize files in the etc/ and feat/ directories");
+		//props2Help.put(PREPAREFILESFLAG, "(true/false) -- initialize files in the etc/ and feat/ directories");
+		//HB 150918
+		props2Help.put(PREPAREFILESFLAG, "(true/false) -- initialize files in the etc/ directory");
+		props2Help.put(PREPAREAUDIOFLAG, "(true/false) -- initialize files in the feat/ directory");
 		props2Help.put(TRAININGFLAG, "(true/false) -- perform model training");
 		props2Help.put(ALIGNMENTFLAG, "(true/false) -- perform alignment");
 	}
@@ -154,7 +161,7 @@ public class EHMMLabeler extends VoiceImportComponent {
 		// get the output directory of files used by EHMM
 		outputDir = ehmm.getAbsolutePath() + "/etc";
 		if ("true".equals(getProp(PREPAREFILESFLAG))) {
-			System.out.println("Preparing voice database for labelling using EHMM :");
+			System.out.println("Preparing transcriptions for labelling using EHMM :");
 			System.out.println("See $ROOTDIR/ehmm/log.txt for EHMM Labelling status... ");
 			// setup the EHMM directory
 			System.out.println("Setting up EHMM directory ...");
@@ -172,29 +179,36 @@ public class EHMMLabeler extends VoiceImportComponent {
 			dumpRequiredFiles();
 			System.out.println(" ... done.");
 
-			System.out.println("See $ROOTDIR/ehmm/log.txt for EHMM Labelling status... ");
-			// Computing Features (MFCCs) for EHMM
-			System.out.println("Computing MFCCs ...");
-			computeFeatures();
-			System.out.println(" ... done.");
-
-			System.out.println("See $ROOTDIR/ehmm/log.txt for EHMM Labelling status... ");
-			System.out.println("Scaling Feature Vectors ...");
-			scaleFeatures();
-			System.out.println(" ... done.");
-
-			System.out.println("See $ROOTDIR/ehmm/log.txt for EHMM Labelling status... ");
-			System.out.println("Converting Feature Vectors to Binary Format ...");
-			convertToBinaryFeatures();
-			System.out.println(" ... done.");
+			//HB 150918
+			if ("true".equals(getProp(PREPAREAUDIOFLAG))) {
+			    System.out.println("See $ROOTDIR/ehmm/log.txt for EHMM Labelling status... ");
+			    // Computing Features (MFCCs) for EHMM
+			    System.out.println("Computing MFCCs ...");
+			    computeFeatures();
+			    System.out.println(" ... done.");
+			    
+			    System.out.println("See $ROOTDIR/ehmm/log.txt for EHMM Labelling status... ");
+			    System.out.println("Scaling Feature Vectors ...");
+			    scaleFeatures();
+			    System.out.println(" ... done.");
+			    
+			    System.out.println("See $ROOTDIR/ehmm/log.txt for EHMM Labelling status... ");
+			    System.out.println("Converting Feature Vectors to Binary Format ...");
+			    convertToBinaryFeatures();
+			    System.out.println(" ... done.");
+			} else {
+			    System.out.println("Skipping audio features preparatory steps.");
+			}
 
 			System.out.println("See $ROOTDIR/ehmm/log.txt for EHMM Labelling status... ");
 			System.out.println("Intializing EHMM Model ...");
 			intializeEHMMModels();
 			System.out.println(" ... done.");
+
 		} else {
 			System.out.println("Skipping preparatory steps.");
 		}
+		
 		
 		if ("true".equals(getProp(TRAININGFLAG))) {
 			baumWelchEHMM();
