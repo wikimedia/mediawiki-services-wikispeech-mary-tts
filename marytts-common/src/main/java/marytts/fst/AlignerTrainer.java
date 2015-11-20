@@ -32,6 +32,7 @@ import marytts.util.MaryUtils;
 
 import org.apache.log4j.Logger;
 
+
 /**
  * This trains an alignment model between Strings. Applications are for example letter-to-sound rule training (see LTSTrainer) or
  * transducer construction/minimization.
@@ -470,6 +471,8 @@ public class AlignerTrainer {
 	 * @return length of p_al[ostr]
 	 */
 	public int[] align(String[] istr, String[] ostr) {
+
+
 
 		StringPair key = new StringPair(null, null);
 

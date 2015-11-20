@@ -1025,8 +1025,11 @@ public class FeatureDefinition {
 	 * 
 	 */
 	public String getFeatureValueAsString(int featureIndex, int value) {
+	    //HB 151110 
+
 		if (featureIndex < numByteFeatures)
-			return byteFeatureValues[featureIndex].get((byte) value);
+		    return byteFeatureValues[featureIndex].get((byte) value);
+		
 		featureIndex -= numByteFeatures;
 		if (featureIndex < numShortFeatures)
 			return shortFeatureValues[featureIndex].get((short) value);

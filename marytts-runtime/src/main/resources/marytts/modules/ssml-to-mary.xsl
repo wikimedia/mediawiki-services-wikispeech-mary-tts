@@ -159,7 +159,8 @@ THIS SOFTWARE.
   <xsl:template match="ssml:phoneme">
     <xsl:choose>
       <xsl:when test="@alphabet='x-sampa'">
-        <t sampa="{@ph}">
+<!-- HB 151102        <t sampa="{@ph}"> -->
+        <t ph="{@ph}">
           <xsl:apply-templates/>
         </t>
       </xsl:when>

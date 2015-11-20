@@ -93,7 +93,8 @@ public class MaryTranscriptionAligner extends TranscriptionAligner {
 		HashSet<String> manualLabelSet = new HashSet<String>(Arrays.asList(al.trim().split("[#\\s]+")));
 		try {
 			for (String label : manualLabelSet) {
-				allophoneSet.getAllophone(label);
+			    System.err.println("Checking label: " + label);
+			    allophoneSet.getAllophone(label);
 			}
 		} catch (IllegalArgumentException iae) {
 			throw new InvalidDataException(iae.getMessage());
