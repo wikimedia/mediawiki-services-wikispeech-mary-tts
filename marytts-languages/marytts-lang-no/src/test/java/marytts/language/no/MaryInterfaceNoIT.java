@@ -76,4 +76,9 @@ public class MaryInterfaceNoIT {
 	//HB this is not right, PHONEMES get printed here, how does that happen? Where are the acoustparams, and why no complaint?	
 	System.err.println("Result: "+getStringFromDoc(acparams));
     }
+
+
+
 }
+
+

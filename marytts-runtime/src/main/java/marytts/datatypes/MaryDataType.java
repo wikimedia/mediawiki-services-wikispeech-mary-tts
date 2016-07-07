@@ -83,6 +83,10 @@ public class MaryDataType {
 	public static final MaryDataType TOKENS = new MaryDataType("TOKENS", true, true, MARYXML, MaryXML.MARYXML);
 	public static final MaryDataType WORDS = new MaryDataType("WORDS", true, true, MARYXML, MaryXML.MARYXML);
 
+    //HB testing 160629
+	public static final MaryDataType WIKISPEECH_JSON = new MaryDataType("WIKISPEECH_JSON", false, true, PLAIN_TEXT);
+
+
 	// ///////////////////////////////////////////////////////////////////
 	// //////////////////////// One MaryDataType /////////////////////////
 	// ///////////////////////////////////////////////////////////////////
@@ -183,6 +187,8 @@ public class MaryDataType {
 		if (!dataTypesByName.containsKey(type.name())) {
 			dataTypesByName.put(type.name(), type);
 			knownDataTypes.add(type);
+			//HB 160705
+			logger.debug("REGISTERED: "+type.name());
 		}
 	}
 

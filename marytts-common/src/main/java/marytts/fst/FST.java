@@ -162,7 +162,8 @@ public class FST {
 		// todo: allow for more flexibility
 		//if (overallBits != 32 || arcOffBits != 20){
 		//HB TODO What is this all about...
-		System.out.println("FST.java loading fst, bits: " + overallBits + "-" + arcOffBits);
+		//System.out.println("FST.java loading fst, bits: " + overallBits + "-" + arcOffBits);
+
 		if ( (overallBits != 33 && overallBits != 32) || arcOffBits != 20){
 		    throw new IOException("Cannot handle non-standard bit allocation for label and arc id's.");
 		}

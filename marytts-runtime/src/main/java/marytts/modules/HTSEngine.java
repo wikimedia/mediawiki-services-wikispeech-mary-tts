@@ -105,6 +105,10 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.traversal.NodeIterator;
 
+//HB 160706
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+
 /**
  * HTSEngine: a compact HMM-based speech synthesis engine.
  * 
@@ -239,6 +243,26 @@ public class HTSEngine extends InternalModule {
 		// set the actualDurations in tokensAndBoundaries
 		if (tokensAndBoundaries != null)
 			setRealisedProsody(tokensAndBoundaries, um);
+
+		//HB 160706
+		//If writeTmpFile is true, the server doesn't return audio. No error message or anything, just no sound.
+		//It's only here temporarily, anyway, until I find a way to get at the audio in WikispeechJsonExtractor
+		//Trying to set AudioFileFormat back to null, it's the only thing changed here, I think?
+		//no, same thing.
+		//It writes the tmpfile, and then it says that it writes the audio to the client
+		boolean writeTmpFile = true;
+		if ( writeTmpFile ) {
+		    if (output.getAudioFileFormat() == null) {
+			output.setAudioFileFormat(new AudioFileFormat(AudioFileFormat.Type.WAVE, Voice.AF22050, AudioSystem.NOT_SPECIFIED));
+		    }
+		    String outputFileName = "/tmp/marytts_tmpfile_HTSEngine.wav";
+		    logger.debug("Trying to write audio to "+outputFileName);
+		    OutputStream os = new FileOutputStream(outputFileName);
+		    output.writeTo(os);
+		    logger.debug("Audio written to "+outputFileName);
+		    output.setAudioFileFormat(null);
+		}
+		//END HB 160706
 
 		return output;
 

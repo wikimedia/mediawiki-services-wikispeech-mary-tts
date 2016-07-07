@@ -1,0 +1,8 @@
+cat swe030224NST_utf8.pron | perl convertNST2MaryTts.pl lts > sv_utf8_test_filtered.txt
+
+The "lts" argument reduces the list by removing names, acronyms, etc. This simplifies the lexicon enough so that it now compiles into fst using
+
+sh ~/git/marytts/hb/marytts-lts-lexicon_builder allophones.sv.xml ./sv_utf8_test_filtered.txt
+
+Now, however, the Swedish voices fail on }:, because this symbol was not used when they were built (probably uu instead). Need to rebuild the swedish voices..
+Or else add a mapping in sv/JPhonemiser.java should do it for now. 

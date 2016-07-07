@@ -207,7 +207,9 @@ public class HTSVocoder {
 
 		int audioSize = computeAudioSize(pdf2par.getMcepPst(), htsData);
 		HTSVocoderDataProducer producer = new HTSVocoderDataProducer(audioSize, pdf2par, htsData);
+		//HB 160705 no it just stops if using run()..
 		producer.start();
+		//producer.run();
 		return new DDSAudioInputStream(producer, getHTSAudioFormat(htsData));
 
 		/*

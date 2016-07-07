@@ -21,4 +21,4 @@ and (assuming you have a marytts server running at localhost on port 59125):
 
 this command works:
 
-java -Dmary.base="target/marytts-5.1-SNAPSHOT" -cp "target/marytts-5.1-SNAPSHOT/lib/*:user-examples/example-embedded/target/example-embedded-5.1-SNAPSHOT.jar" example.MaryTTSEmbedded
+java -Dmary.base="target/marytts-5.2-SNAPSHOT" -cp "target/marytts-5.2-SNAPSHOT/lib/*:user-examples/example-embedded/target/example-embedded-5.2-SNAPSHOT.jar" example.MaryTTSEmbedded

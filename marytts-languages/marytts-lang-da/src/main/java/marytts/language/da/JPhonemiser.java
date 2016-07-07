@@ -126,10 +126,10 @@ public class JPhonemiser extends InternalModule {
 		System.err.println("lexiconProperty: "+MaryProperties.getProperty(lexiconProperty));
 
 		
-		String secondary_lexiconFilename = MaryProperties.getProperty("no.secondary_lexicon");
+		String secondary_lexiconFilename = MaryProperties.getProperty("da.secondary_lexicon");
 		if (secondary_lexiconFilename != null) {
-		    System.err.println("Loading secondary_lexicon: "+secondary_lexiconFilename);
-		    secondary_lexicon = readLexiconStream(secondary_lexiconFilename,MaryProperties.needStream("no.secondary_lexicon"));
+		    System.err.println("Loading da.secondary_lexicon: "+secondary_lexiconFilename);
+		    secondary_lexicon = readLexiconStream(secondary_lexiconFilename,MaryProperties.needStream("da.secondary_lexicon"));
 		}
 	       
 
