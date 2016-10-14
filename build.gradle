@@ -1,0 +1,12 @@
+allprojects {
+    group 'de.dfki.mary'
+    version '6.0-SNAPSHOT'
+
+    repositories {
+        jcenter()
+    }
+}
+
+task check {
+    dependsOn subprojects.findAll { it.tasks.findByName('check') }
+}

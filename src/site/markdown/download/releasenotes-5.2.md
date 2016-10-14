@@ -9,10 +9,24 @@ Improvements
 * Support for Luxembourgish
 * Completely rewritten text preprocessing module for English (removing reliance on FreeTTS)
 * Better support for Java 8
+* Some migration towards building with Gradle
+
+Voicebuilding
+-------------
+
+* All unit-selection voices have been rebuilt using the new [Gradle plugin](https://github.com/marytts/gradle-marytts-voicebuilding-plugin)
+* All HSMM voices are now hosted on Bintray and can be resolved as dependencies
+* Voices with open data now have open-source voicebuilding repositories hosted on GitHub, which include downloadable distribution packages
 
 Development news
 ----------------
 
+* [#533](https://github.com/marytts/marytts/pull/533): support system preferredmodule
+* [#525](https://github.com/marytts/marytts/pull/525): Update dependencies and maven plugins
+* [#523](https://github.com/marytts/marytts/pull/523): solving quotes phonetisation problem
+* [#506](https://github.com/marytts/marytts/pull/506): Duplicate subexpressions in `WeightedCodebookMfccMapper.java`
+* [#499](https://github.com/marytts/marytts/pull/499): Upgrade Apache Commons Collections to v3.2.2
+* [#493](https://github.com/marytts/marytts/pull/493): Drop assembly plugin
 * [#425](https://github.com/marytts/marytts/pull/425): various fixes for C++ client source code
 * [#399](https://github.com/marytts/marytts/pull/399): Component installer License download re-code following [#395](https://github.com/marytts/marytts/issues/395)
 * [#393](https://github.com/marytts/marytts/issues/393): `package.html` files converted into `package-info.java` files
@@ -24,12 +38,30 @@ Development news
 * [#320](https://github.com/marytts/marytts/issues/320): move outdated example code from runtime assembly into doc directory
 * [#309](https://github.com/marytts/marytts/issues/309): try to process tokens if they contain word characters, even when they are tagged as punctuation
 * [#228](https://github.com/marytts/marytts/issues/228): fix on drop FreeTTS dependencies
+* [#227](https://github.com/marytts/marytts/pull/227): Enhanced OutputStreams for Mary Client
 * [#217](https://github.com/marytts/marytts/pull/217): incrementality changes
 
 Fixed Issues/Bugs
 -----------------
+
+* [#593](https://github.com/marytts/marytts/pull/593): Don't split up multiple punctuation marks in tokenization
+* [#570](https://github.com/marytts/marytts/issues/570): Praat TextGrid output is invalid with boundaries (times are not monotonic)
+* [#564](https://github.com/marytts/marytts/pull/564): add missing TOKENS examples
+* [#555](https://github.com/marytts/marytts/issues/555): HMMModel generates malformed XML duration attributes
+* [#531](https://github.com/marytts/marytts/issues/531): java.awt.HeadlessException in (Half)PhoneLabelFeatureAligner
+* [#516](https://github.com/marytts/marytts/issues/516): Single words conduct to have a wrong POS which leads to a crash of the target feature module
+* [#515](https://github.com/marytts/marytts/pull/515): preprocessing contraction and double quotes correction
+* [#503](https://github.com/marytts/marytts/issues/503): `halfphoneUnitFeatureDefinition_ac.txt` does not have any continuous features even though `halfphoneFeatures_ac.mry` does
+* [#480](https://github.com/marytts/marytts/issues/480): IBAN code &rarr; stacktrace
+* [#469](https://github.com/marytts/marytts/issues/469): APML is broken
+* [#468](https://github.com/marytts/marytts/issues/468): SABLE is broken
+* [#467](https://github.com/marytts/marytts/issues/467): SIMPLEPHONEMES is broken
+* [#465](https://github.com/marytts/marytts/issues/465): enable acoustic features by default
+* [#460](https://github.com/marytts/marytts/issues/460): Tokens mistakenly POS-tagged as punctuation cause wrong boundary insertion
 * [#458](https://github.com/marytts/marytts/issues/458): VoiceCompiler generates invalid package name from db.voicename property
 * [#452](https://github.com/marytts/marytts/issues/452): Disable assertions in user startup scripts
+* [#448](https://github.com/marytts/marytts/issues/448): unit selection: final boundary durations synthesized 50% shorter than requested
+* [#428](https://github.com/marytts/marytts/issues/428): error in marytts cart DecisionNode
 * [#421](https://github.com/marytts/marytts/pull/421): Force English locale for parsing date when English language is used
 * [#409](https://github.com/marytts/marytts/pull/409): ensure that ICU4J's resource is read with the correct encoding, regardless of environment
 * [#398](https://github.com/marytts/marytts/pull/398): Use https URLs whenever possible
