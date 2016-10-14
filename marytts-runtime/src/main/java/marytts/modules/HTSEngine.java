@@ -252,7 +252,7 @@ public class HTSEngine extends InternalModule {
 		//Trying to set AudioFileFormat back to null, it's the only thing changed here, I think?
 		//no, same thing.
 		//It writes the tmpfile, and then it says that it writes the audio to the client
-		boolean writeTmpFile = true;
+		boolean writeTmpFile = false;
 		if ( writeTmpFile ) {
 		    if (output.getAudioFileFormat() == null) {
 			output.setAudioFileFormat(new AudioFileFormat(AudioFileFormat.Type.WAVE, Voice.AF22050, AudioSystem.NOT_SPECIFIED));
