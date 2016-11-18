@@ -1,3 +1,7 @@
+plugins {
+    id 'base'
+}
+
 allprojects {
     group 'de.dfki.mary'
     version '6.0-SNAPSHOT'
@@ -7,6 +11,4 @@ allprojects {
     }
 }
 
-task check {
-    dependsOn subprojects.findAll { it.tasks.findByName('check') }
-}
+apply from: 'applicationLogic.gradle'

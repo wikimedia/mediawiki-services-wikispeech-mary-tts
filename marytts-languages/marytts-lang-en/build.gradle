@@ -1,0 +1,12 @@
+dependencies {
+    testCompile libs.testng
+    testCompile libs.xmlunit
+}
+
+test {
+    useTestNG()
+}
+
+generateComponentXmlDescriptor {
+    locales = ['en-US', 'en-GB']
+}
