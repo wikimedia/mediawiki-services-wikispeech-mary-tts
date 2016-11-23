@@ -374,7 +374,18 @@
 				<artifactId>xmlunit</artifactId>
 				<version>1.6</version>
 			</dependency>
-		</dependencies>
+
+			<!-- HB https://mvnrepository.com/artifact/org.json/json -->
+			<dependency>
+			  <groupId>org.json</groupId>
+			  <artifactId>json</artifactId>
+			  <version>1.5-20090211</version>
+			</dependency>
+		
+
+
+
+		      </dependencies>
 	</dependencyManagement>
 
 	<repositories>

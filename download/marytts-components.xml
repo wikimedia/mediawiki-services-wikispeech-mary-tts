@@ -274,6 +274,15 @@
     </package>
     <depends language="lb" version="5.2"/>
   </voice>
+  <voice locale="sv" name="stts_sv_nst-hsmm" gender="male" type="hsmm" version="5.2">
+    <description>A male Swedish hidden semi-Markov model voice</description>
+    <license href="http://mary.dfki.de/download/by-nd-3.0.html"/>
+    <package md5sum="515d19d350d8a68c24c5cef5c94426e1" filename="voice-stts_sv_nst-hsmm-5.2.zip" size="4604101">
+      <location folder="true" href="http://mary.dfki.de/download/5.2/"/>
+      <location folder="false" href="https://github.com/HaraldBerthelsen/voice-stts_sv_nst-hsmm/releases/download/v5.2/voice-stts_sv_nst-hsmm-5.2.zip"/>
+    </package>
+    <depends language="sv" version="5.2"/>
+  </voice>
   <voice locale="te" name="cmu-nk-hsmm" gender="female" type="hsmm" version="5.2">
     <description>A female Telugu hidden semi-Markov model voice built from voice recordings provided by IIIT Hyderabad and Carnegie Mellon University</description>
     <license href="http://mary.dfki.de/download/by-nd-3.0.html"/>

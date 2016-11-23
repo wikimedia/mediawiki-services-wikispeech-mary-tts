@@ -39,7 +39,7 @@ public class HBTestMaryTTSEmbedded {
 		//av någon anledning heter den svenska rösten "no" på min dator, inte på morf.. FIXA DET
 		marytts.setVoice("stts_no_nst-hsmm");
 		//marytts.setOutputType(MaryDataType.REALISED_DURATIONS.name());
-		marytts.setOutputType(MaryDataType.WIKISPEECH_JSON.name());
+		//marytts.setOutputType(MaryDataType.WIKISPEECH_JSON.name());
 
 		String text = "Godmorgon, godmiddag.";
 		String res = marytts.generateText(text);
