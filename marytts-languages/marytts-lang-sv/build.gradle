@@ -1,0 +1,13 @@
+plugins {
+    id 'groovy'
+}
+
+dependencies {
+    testCompile libs.testng
+    testCompile libs.xmlunit
+}
+
+test {
+    useTestNG()
+    systemProperty 'sv.userdict', "$rootDir/src/main/dist/user-dictionaries/userdict-sv.txt"
+}
