@@ -180,7 +180,8 @@ public class InstallerGUI extends javax.swing.JFrame implements VoiceUpdateListe
 		if (version.equals("trunk")) {
 			version = "latest";
 		}
-		tfComponentListURL.setText("https://raw.github.com/marytts/marytts/master/download/marytts-components.xml");
+		//tfComponentListURL.setText("https://raw.github.com/marytts/marytts/master/download/marytts-components.xml");
+		tfComponentListURL.setText("https://raw.github.com/HaraldBerthelsen/marytts/master/download/marytts-components.xml");
 		tfComponentListURL.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				tfComponentListURLActionPerformed(evt);
