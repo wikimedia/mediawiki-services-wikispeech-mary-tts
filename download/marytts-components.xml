@@ -275,7 +275,7 @@
     <depends language="lb" version="5.2"/>
   </voice>
   <voice locale="sv" name="stts_sv_nst-hsmm" gender="male" type="hsmm" version="5.2">
-    <description>A male Swedish hidden semi-Markov model voice</description>
+    <description>A male Swedish hidden semi-Markov model voice.</description>
     <license href="http://mary.dfki.de/download/by-nd-3.0.html"/>
     <package md5sum="8cc495cfa3196556cbdb1d4cb8b33441" filename="voice-stts_sv_nst-hsmm-5.2.zip" size="4544198">
       <location folder="true" href="http://mary.dfki.de/download/5.2/"/>
