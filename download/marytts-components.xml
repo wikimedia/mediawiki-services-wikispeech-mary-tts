@@ -323,6 +323,16 @@
     <depends language="no" version="5.2"/>
   </voice>
   
+  <voice locale="da" name="stts_da_nst-hsmm" gender="male" type="hsmm" version="5.2">
+    <description>A male Danish hidden semi-Markov model voice.</description>
+    <license href="http://mary.dfki.de/download/by-nd-3.0.html"/>
+    <package md5sum="2158f4775ef7edb9f46b02e374022b76" filename="voice-stts_da_nst-hsmm-5.2.zip" size="913241">
+    <!--  <location folder="true" href="http://mary.dfki.de/download/5.2/"/>-->
+      <location folder="false" href="https://github.com/HaraldBerthelsen/voice-stts_da_nst-hsmm/releases/download/v5.2/voice-stts_da_nst-hsmm-5.2.zip"/>
+    </package>
+    <depends language="da" version="5.2"/>
+  </voice>
+  
   
   <voice locale="ar" name="ar-nah-hsmm" gender="male" type="hsmm" version="5.2">
     <description>A male Arabic hidden semi-Markov model voice.</description>
