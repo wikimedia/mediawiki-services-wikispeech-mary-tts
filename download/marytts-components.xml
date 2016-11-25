@@ -274,15 +274,6 @@
     </package>
     <depends language="lb" version="5.2"/>
   </voice>
-  <voice locale="sv" name="stts_sv_nst-hsmm" gender="male" type="hsmm" version="5.2">
-    <description>A male Swedish hidden semi-Markov model voice.</description>
-    <license href="http://mary.dfki.de/download/by-nd-3.0.html"/>
-    <package md5sum="8cc495cfa3196556cbdb1d4cb8b33441" filename="voice-stts_sv_nst-hsmm-5.2.zip" size="4544198">
-      <location folder="true" href="http://mary.dfki.de/download/5.2/"/>
-      <location folder="false" href="https://github.com/HaraldBerthelsen/voice-stts_sv_nst-hsmm/releases/download/v5.2/voice-stts_sv_nst-hsmm-5.2.zip"/>
-    </package>
-    <depends language="sv" version="5.2"/>
-  </voice>
   <voice locale="te" name="cmu-nk-hsmm" gender="female" type="hsmm" version="5.2">
     <description>A female Telugu hidden semi-Markov model voice built from voice recordings provided by IIIT Hyderabad and Carnegie Mellon University</description>
     <license href="http://mary.dfki.de/download/by-nd-3.0.html"/>
@@ -310,4 +301,39 @@
     </package>
     <depends language="tr" version="5.2"/>
   </voice>
+
+
+  <voice locale="sv" name="stts_sv_nst-hsmm" gender="male" type="hsmm" version="5.2">
+    <description>A male Swedish hidden semi-Markov model voice.</description>
+    <license href="http://mary.dfki.de/download/by-nd-3.0.html"/>
+    <package md5sum="8cc495cfa3196556cbdb1d4cb8b33441" filename="voice-stts_sv_nst-hsmm-5.2.zip" size="4544198">
+    <!--  <location folder="true" href="http://mary.dfki.de/download/5.2/"/>-->
+      <location folder="false" href="https://github.com/HaraldBerthelsen/voice-stts_sv_nst-hsmm/releases/download/v5.2/voice-stts_sv_nst-hsmm-5.2.zip"/>
+    </package>
+    <depends language="sv" version="5.2"/>
+  </voice>
+
+  <voice locale="no" name="stts_no_nst-hsmm" gender="male" type="hsmm" version="5.2">
+    <description>A male Norwegian hidden semi-Markov model voice.</description>
+    <license href="http://mary.dfki.de/download/by-nd-3.0.html"/>
+    <package md5sum="ce67f14cf7cc5365d7670232066b674f" filename="voice-stts_sv_nst-hsmm-5.2.zip" size="4333677">
+    <!--  <location folder="true" href="http://mary.dfki.de/download/5.2/"/>-->
+      <location folder="false" href="https://github.com/HaraldBerthelsen/voice-stts_no_nst-hsmm/releases/download/v5.2/voice-stts_no_nst-hsmm-5.2.zip"/>
+    </package>
+    <depends language="no" version="5.2"/>
+  </voice>
+  
+  
+  <voice locale="ar" name="ar-nah-hsmm" gender="male" type="hsmm" version="5.2">
+    <description>A male Arabic hidden semi-Markov model voice.</description>
+<!--    <license href="https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt"/>-->
+    <license href="https://raw.githubusercontent.com/HaraldBerthelsen/voice-ar-nah-hsmm/master/LICENSE.md" />
+    <package md5sum="e39dc2ea800f4d9b9236466a813f1a81" filename="voice-ar-nah-hsmm-5.2.zip" size="2557794">
+<!--      <location folder="true" href="http://mary.dfki.de/download/5.2/"/>-->
+      <location folder="false" href="https://github.com/HaraldBerthelsen/voice-ar-nah-hsmm/releases/download/v5.2/voice-ar-nah-hsmm-5.2.zip"/>
+    </package>
+    <depends language="ar" version="5.2"/>
+  </voice>
+
+
 </marytts-install>
