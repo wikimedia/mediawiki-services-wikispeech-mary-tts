@@ -1,0 +1,14 @@
+plugins {
+    id 'groovy'
+}
+
+dependencies {
+    compile 'org.glassfish:javax.json:1.0.4'
+    testCompile libs.testng
+    testCompile libs.xmlunit
+}
+
+test {
+    useTestNG()
+    systemProperty 'ar.userdict', "$rootDir/src/main/dist/user-dictionaries/userdict-ar.txt"
+}
