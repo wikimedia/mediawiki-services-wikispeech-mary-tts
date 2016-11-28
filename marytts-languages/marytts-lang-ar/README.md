@@ -3,11 +3,15 @@
 This is very much work in progress.
 It sort of works for me - but there are plenty of errors and problems.
 
-Test version is (sometimes - and apparently works in chrome only) up on http://morf.se:59125
+Test version is (sometimes) up on http://morf.se:59125
 
 ~~For vocalisation another server needs to be running in the background. Clone it from here https://github.com/HaraldBerthelsen/arabic_vocaliser.git, and run "nohup python vocalise.py server &"~~
 
-For vocalisation a mishkal server needs to be running in the background. Clone it from here https://github.com/linuxscout/mishkal.git, and run "nohup python interfaces/web/mishkal-webserver.py &"
+For vocalisation a server needs to be running in the background. Clone it from here https://github.com/linuxscout/mishkal.git, and run "nohup python interfaces/web/mishkal-webserver.py &"
+
+IMPORTANT: If you don't run the mishkal server in the background, there will be no vocalisation. In that case, only fully vocalised text will work as input.
+
+If you want to correct the vocalisation, get vocalised text from the mishkal server at http://localhost:8080, paste it into marytts and edit.
 
 -----------------------
 
@@ -19,28 +23,41 @@ If you want it, add this line to settings.gradle:
 
 include 'marytts-languages:marytts-lang-ar'
 
-Then make sure to start the mishkal vocalisation server before starting marytts with "./gradlew run"
+Start the mishkal vocalisation server before starting marytts with "./gradlew run"
 
 
 ------------------------
 
 
-The first version test voice can hopefully be released soon as well.
+First version test voice is available at https://github.com/HaraldBerthelsen/voice-ar-nah-hsmm.
 
-Input text in arabic writing, without diacritics or fully or partly vocalised.
+Input text in arabic writing, without diacritics if running mishkal server, or else vocalised.
 
 Numbers work to some extent, number expansion is done with icu4j.
 
 Some punctuation and other "weird" characters may cause problems.
 
-Sample text to try:
+Sample text to try (please forgive me for all errors!):
+
+Without diacritics if running mishkal server:
 
 لسير ونستون ليونارد سبنسر تشرشل, رئيس وزراء 
 المملكة المتحدة
 
 
+Partly diacritised for correction of foreign words if running mishkal server:
+
 السير وِنْسْتُونْ ليونارْدُ سْبِنْسِرْ تْشَرْشِلْ, رئيس وزراء 
 المملكة المتحدة
+
+
+
+Fully diacritised if running without mishkal server:
+
+
+السَّيْرُ وِنْسْتُُونْ لِيُونَارْدُ سْبِنْسِرْ تْشَرْشِلْ, رَئِيسَ وُزَرَاءِ الْمَمْلَكَةِ الْمُتَّحِدَةِ
+
+
 
 Next steps:
 
