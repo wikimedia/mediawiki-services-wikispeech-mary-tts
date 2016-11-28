@@ -132,9 +132,13 @@ public class Preprocess extends InternalModule {
 	String url = "http://localhost:8080/ajaxGet?action=Tashkeel2&text=";
 	url+=URLEncoder.encode(text, "UTF-8");
 	System.out.println("Vocalise url: "+url);
-
-	InputStream is = new URL(url).openStream();
-
+	InputStream is;
+	try {
+	    is = new URL(url).openStream();
+	} catch (Exception e) {
+	    System.out.println("Can't read url: "+url+"\nReason: "+e);
+	    return text;
+	}
         BufferedReader in = new BufferedReader(new InputStreamReader(is));
 
         StringBuilder response = new StringBuilder();
