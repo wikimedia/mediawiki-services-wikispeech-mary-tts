@@ -13,10 +13,6 @@ RUN cd marytts && ./gradlew installDist
 ## INSTALL STTS VOICES
 RUN cp marytts/stts_voices/* marytts/build/install/marytts/lib/
 
-## ARABIC
-#RUN cd marytts/build/install/marytts/lib/ && wget https://github.com/HaraldBerthelsen/voice-ar-nah-hsmm/releases/download/v5.2/voice-ar-nah-hsmm-5.2.jar
-
-
 RUN echo "echo 'AVAILABLE VOICES:' && ls marytts/build/install/marytts/lib/ | egrep ^voice | sed 's/.jar//' | sed 's/^/* /' " > /bin/voices
 RUN chmod +x /bin/voices
 
