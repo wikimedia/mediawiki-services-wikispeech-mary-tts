@@ -1,1 +1,0 @@
-cd /mishkal && python interfaces/web/mishkal-webserver.py
