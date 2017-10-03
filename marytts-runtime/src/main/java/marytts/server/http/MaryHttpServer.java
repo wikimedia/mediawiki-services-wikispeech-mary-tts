@@ -200,6 +200,7 @@ public class MaryHttpServer extends Thread {
 		registry.register("/features-discrete", infoRH);
 		registry.register("/vocalizations", infoRH);
 		registry.register("/styles", infoRH);
+		registry.register("/ping", infoRH);
 		registry.register("*", new FileRequestHandler());
 
 		handler.setHandlerResolver(registry);
