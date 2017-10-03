@@ -113,10 +113,6 @@ public class JPhonemiser extends marytts.modules.JPhonemiser {
 	String phones = buckwalterToPhonetic(text);
 	System.out.println("Text: "+text+", phones: "+phones);
 
-	if (phones.trim.length == 0) {
-	    return null;
-	}
-	
         result = lts.syllabify(phones);
 	System.out.println("Syllabified: "+result);
 
