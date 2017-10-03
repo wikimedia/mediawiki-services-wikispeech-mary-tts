@@ -561,7 +561,6 @@ public class Request {
 				// side effect: writeTo() writes to log if debug
 			}
 			logger.info("Next module: " + m.name());
-			System.out.println("HL DEBUG : " + currentData);
 			MaryData outData = null;
 			try {
 				outData = m.process(currentData);
