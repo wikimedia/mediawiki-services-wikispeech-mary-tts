@@ -1,9 +1,10 @@
-[![Build Status](https://travis-ci.org/marytts/marytts.svg?branch=5.1.x)](https://travis-ci.org/marytts/marytts)
-
 # MaryTTS
 
 This is the source code repository for the multilingual open-source MARY text-to-speech platform (MaryTTS).
 MaryTTS is a client-server system written in pure Java, so it runs on many platforms.
+
+[![Build Status](https://travis-ci.org/marytts/marytts.svg?branch=5.1.x)](https://travis-ci.org/marytts/marytts)
+
 
 **For a downloadable package ready for use, see [the releases page](https://github.com/marytts/marytts/releases).**
 
