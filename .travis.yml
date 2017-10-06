@@ -27,5 +27,5 @@ script:
   - ./gradlew run &
   - export pid=$!  
   - echo "marytts running on pid $pid"
-  - sleep 20
+  - sleep 30
   - sh .travis/exit_server_and_fail_if_not_running.sh marytts $pid
