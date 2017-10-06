@@ -24,5 +24,8 @@ script:
   - ./gradlew check
   - ./gradlew assembleDist
   - ./gradlew test
-  - echo "TODO: test server start as well"
-  - exit 1
+  - ./gradlew run &
+  - export pid=$!  
+  - echo "marytts running on pid $pid"
+  - sleep 20
+  - sh .travis/exit_server_and_fail_if_not_running.sh marytts $pid
