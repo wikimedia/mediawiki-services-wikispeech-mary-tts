@@ -16,5 +16,13 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 
+before_script:
+  # fail on any non-zero exit value
+  - set -e
+
 script:
-  - ./gradlew check && ./gradlew assembleDist
+  - ./gradlew check
+  - ./gradlew assembleDist
+  - ./gradlew test
+  - echo "TODO: test server start as well"
+  - exit 1
