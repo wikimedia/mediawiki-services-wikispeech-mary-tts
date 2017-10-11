@@ -92,7 +92,7 @@ public class Preprocess extends InternalModule {
                 i++;
             }
         } 
-        catch (java.io.FileNotFoundException e) {
+        catch (java.net.ConnectException e) {
             System.out.println("Mishkal server not running - can't vocalise");
         }
 

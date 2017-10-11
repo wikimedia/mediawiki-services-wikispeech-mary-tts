@@ -116,7 +116,7 @@ public class PreprocessTest {
             try {
                 String actual = module.vocaliseText(token).trim();
                 Assert.assertEquals(actual, word);
-            } catch (java.io.FileNotFoundException e) {
+            } catch (java.net.ConnectException e) {
                 System.out.println("Mishkal server not running - can't test vocalisation");
             }
 	}
