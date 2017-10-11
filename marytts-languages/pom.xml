@@ -24,5 +24,6 @@
 		<!-- HB added -->
 		<module>marytts-lang-no</module>
 		<module>marytts-lang-da</module>
+		<module>marytts-lang-ar</module>
 	</modules>
 </project>
