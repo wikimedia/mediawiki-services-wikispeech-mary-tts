@@ -1,0 +1,24 @@
+git clone https://github.com/HaraldBerthelsen/marytts.git
+cd marytts
+./gradlew installDist
+wget https://github.com/HaraldBerthelsen/voice-ar-nah-hsmm/releases/download/v5.2/voice-ar-nah-hsmm-5.2.jar
+mv voice-ar-nah-hsmm-5.2.jar build/install/marytts/lib/
+./gradlew run
+
+#You should get a message similar to this:
+#Vocalise url: http://localhost:8080/ajaxGet?action=Tashkeel2&text=+%D8%A7%D9%84%D9%8A%D9%88%D9%85+%D8%A7%D9%84%D8%A5%D8%AB%D9%86%D9%8A%D9%86+%D8%AE%D9%85%D8%B3%D8%A9+%D9%88+%D8%B9%D8%B4%D8%B1%D9%88%D9%86+%D9%8A%D9%86%D8%A7%D9%8A%D8%B1+%D8%A3%D9%84%D9%81%D9%8A%D9%86+%D9%88+%D8%B3%D8%AA%D8%A9+%D8%B9%D8%B4%D8%B1+.
+#Mishkal server not running - can't vocalise
+# started in 3.642 s on port 59125
+
+#test with
+google-chrome http://localhost:59125
+#marytts gui
+#switch to voice ar-nah-hsmm
+#The test example should work but not vocalise..
+
+#mishkal
+#Use my fork because there is a tiny error that I have fixed
+git clone https://github.com/HaraldBerthelsen/mishkal.git
+python mishkal/interfaces/web/mishkal-webserver.py
+
+#Now try the test example in marytts gui again. It should vocalise with mishkal.

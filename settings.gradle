@@ -1,7 +1,7 @@
 include 'marytts-builder'
 include 'marytts-client'
 include 'marytts-common'
-//include 'marytts-languages:marytts-lang-ar'
+include 'marytts-languages:marytts-lang-ar'
 include 'marytts-languages:marytts-lang-da'
 include 'marytts-languages:marytts-lang-no'
 include 'marytts-languages:marytts-lang-de'

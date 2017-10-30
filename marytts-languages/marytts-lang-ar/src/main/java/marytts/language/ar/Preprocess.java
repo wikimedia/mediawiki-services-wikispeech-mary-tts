@@ -32,12 +32,13 @@ import org.w3c.dom.traversal.TreeWalker;
 import com.ibm.icu.text.RuleBasedNumberFormat;
 
 import java.io.StringReader;
+/*
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
-
+*/
 /**
  * @author Tristan Hamilton + HB
  * 
@@ -77,21 +78,24 @@ public class Preprocess extends InternalModule {
 	    //continue;
 	    origText.append(" " + MaryDomUtils.tokenText(t));
 	}
-	String vocText = vocaliseText(origText.toString());
-	//String vocText = vocaliseTextMishkal(origText.toString());
+        try {
+            String vocText = vocaliseText(origText.toString());
+            String[] vocTextList = vocText.split(" ");
 
-	String[] vocTextList = vocText.split(" ");
+            TreeWalker tw2 = ((DocumentTraversal) doc).createTreeWalker(doc, NodeFilter.SHOW_ELEMENT,
+                                                                        new NameNodeFilter(MaryXML.TOKEN), false);
+            Element t2 = null;
+            int i = 0;
 
+            while ((t2 = (Element) tw2.nextNode()) != null && i < vocTextList.length) {
+                MaryDomUtils.setTokenText(t2, vocTextList[i]);
+                i++;
+            }
+        } 
+        catch (java.net.ConnectException e) {
+            System.out.println("Mishkal server not running - can't vocalise");
+        }
 
-	TreeWalker tw2 = ((DocumentTraversal) doc).createTreeWalker(doc, NodeFilter.SHOW_ELEMENT,
-								   new NameNodeFilter(MaryXML.TOKEN), false);
-	Element t2 = null;
-	int i = 0;
-
-	while ((t2 = (Element) tw2.nextNode()) != null) {
-	    MaryDomUtils.setTokenText(t2, vocTextList[i]);
-	    i++;
-	}
     }
 
     protected static String vocaliseText(String text) throws Exception {
@@ -132,13 +136,9 @@ public class Preprocess extends InternalModule {
 	String url = "http://localhost:8080/ajaxGet?action=Tashkeel2&text=";
 	url+=URLEncoder.encode(text, "UTF-8");
 	System.out.println("Vocalise url: "+url);
-	InputStream is;
-	try {
-	    is = new URL(url).openStream();
-	} catch (Exception e) {
-	    System.out.println("Can't read url: "+url+"\nReason: "+e);
-	    return text;
-	}
+
+	InputStream is = new URL(url).openStream();
+
         BufferedReader in = new BufferedReader(new InputStreamReader(is));
 
         StringBuilder response = new StringBuilder();
@@ -152,11 +152,14 @@ public class Preprocess extends InternalModule {
         String vocalised = response.toString();	
 	System.out.println("Vocalised text: "+vocalised);
 
+	List<String> vocList = new ArrayList<String>();
+
+	//Here starts json part to replace
+	/*
 	JsonReader reader = Json.createReader(new StringReader(vocalised));
         JsonObject vocObject = reader.readObject();         
         reader.close();
 
-	List<String> vocList = new ArrayList<String>();
 	JsonArray resultsArray = vocObject.getJsonArray("result");
 
 	for (int i = 0; i < resultsArray.size(); ++i) {
@@ -173,19 +176,16 @@ public class Preprocess extends InternalModule {
 
 	    vocList.add(chosen);
 	}
+	*/
+	//Here ends json part to replace
+	//Replacement: sth like
+	Matcher m = Pattern.compile("\"semi\": *\"([^\"]*)\"")
+	    .matcher(vocalised);
+	while (m.find()) {
+	    vocList.add(m.group(1));
+	}
+	//Unlikely as it seems, this appears to work with the test examples :)
 
-
-	// for (JsonValue jsonValue : resultsArray) {        
-        //     System.out.println(jsonValue.toString());
-	//     String chosen = ((JsonObject) resultObj).getString("chosen");
-	//     //String chosen = jsonValue.getJsonObject("chosen");
-	//     vocList.add(chosen);
-        // }
-
-	
-	//String[] vocArray = new String[vocList.size()];
-	//vocList.toArray(vocArray);
-	//return vocArray;
 
 	String vocString = "";
 

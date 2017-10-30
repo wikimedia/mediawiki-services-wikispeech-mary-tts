@@ -30,8 +30,8 @@ public class JPhonemiserTest {
 	private Object[][] phonetiseData() {
 		// @formatter:off
 	    //These tests are not correct - but anyway this is a place to add tests later!
-	    return new Object[][] { { "وَاحِد", "w a - ' H i d"}, 
-				    { "إِثْنانِ", "' < i0 ^ - n aa - n i0" } };
+	    return new Object[][] { { "وَاحِد", "' w a - H i1 d"}, 
+				    { "إِثْنانِ", "' < i0 - ^ n aa - n i0" } };
 		// @formatter:on
 	}
 
@@ -39,8 +39,7 @@ public class JPhonemiserTest {
 	@Test(dataProvider = "PhonetiseData")
 	public void testPhonetise(String test, String trans) throws Exception {
 	    String actual = module.phonemise(test).trim();
-	    System.out.println("Received transcription: "+actual);
-	    //Assert.assertEquals(actual, trans);
+	    Assert.assertEquals(actual, trans);
 	}
 
 

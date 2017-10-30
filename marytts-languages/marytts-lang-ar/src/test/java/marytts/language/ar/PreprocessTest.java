@@ -111,11 +111,15 @@ public class PreprocessTest {
 	    };
 		// @formatter:on
 	}
-    /*@Test(dataProvider = "VocaliseData")
+	@Test(dataProvider = "VocaliseData")
 	public void testVocalise(String token, String word) throws Exception {
-	    String actual = module.vocaliseText(token).trim();
-	    //Assert.assertEquals(actual, word);
+            try {
+                String actual = module.vocaliseText(token).trim();
+                Assert.assertEquals(actual, word);
+            } catch (java.net.ConnectException e) {
+                System.out.println("Mishkal server not running - can't test vocalisation");
+            }
 	}
-    */
+
     //   ٌٍِ][ﻷضَصثقفًٌٌَُ      َ    َ
 }
