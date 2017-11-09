@@ -88,6 +88,7 @@ public class Preprocess extends InternalModule {
             int i = 0;
 
             while ((t2 = (Element) tw2.nextNode()) != null && i < vocTextList.length) {
+		t2.setAttribute("orig", MaryDomUtils.tokenText(t2));
                 MaryDomUtils.setTokenText(t2, vocTextList[i]);
                 i++;
             }
