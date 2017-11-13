@@ -208,6 +208,8 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 			}
 			MaryHttpServerUtils.errorMissingQueryParameter(response, "'voice'");
 			return null;
+		} else if (request.equals("ping")) {
+		    return "marytts";
 		}
 		MaryHttpServerUtils.errorFileNotFound(response, request);
 		return null;

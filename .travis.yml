@@ -6,10 +6,8 @@ branches:
 
 language: java
 jdk:
-  - openjdk7
-  - oraclejdk7
-  - oraclejdk8
-
+  - openjdk8
+  
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -17,3 +15,17 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+
+before_script:
+  # fail on any non-zero exit value
+  - set -e
+
+script:
+  - ./gradlew check
+  - ./gradlew assembleDist
+  - ./gradlew test
+  - ./gradlew run &
+  - export pid=$!  
+  - echo "marytts running on pid $pid"
+  - sleep 30
+  - sh .travis/exit_server_and_fail_if_not_running.sh marytts $pid
