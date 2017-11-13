@@ -6,8 +6,8 @@ WORKDIR "/"
 
 
 ## INSTALL MARYTTS
-#RUN git clone https://github.com/HaraldBerthelsen/marytts.git
-RUN git clone https://github.com/HannaLindgren/marytts.git
+RUN git clone https://github.com/HaraldBerthelsen/marytts.git
+#RUN git clone https://github.com/HannaLindgren/marytts.git
 
 WORKDIR "/marytts"
 
