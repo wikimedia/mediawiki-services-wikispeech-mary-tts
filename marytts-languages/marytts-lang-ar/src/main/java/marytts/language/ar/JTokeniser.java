@@ -64,16 +64,17 @@ public class JTokeniser extends marytts.modules.JTokeniser {
 	    while ((p = (Element) ni.nextNode()) != null) {
 		Node textNode = p.getFirstChild();
 		String s = textNode.getNodeValue();
+		if (s != null) {
+		    System.err.println("FilterPunctuation");
+		    System.err.println(s);
 
-		System.err.println("FilterPunctuation");
-		System.err.println(s);
+		    s = s.replaceAll("،", ",");
+		    //s = s.replaceAll("XX", "YY");
 
-		s = s.replaceAll("،", ",");
-		//s = s.replaceAll("XX", "YY");
+		    System.err.println(s);
 
-		System.err.println(s);
-
-		textNode.setNodeValue(s);
+		    textNode.setNodeValue(s);
+		}
 	    }
 	}
 
