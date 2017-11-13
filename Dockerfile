@@ -38,5 +38,6 @@ RUN voices
 
 
 ## RUNTIME SETTINGS
-EXPOSE 59125
-CMD ./gradlew run
+#EXPOSE 59125
+#CMD ./gradlew run
+CMD echo "marytts (core) was built without errors"
