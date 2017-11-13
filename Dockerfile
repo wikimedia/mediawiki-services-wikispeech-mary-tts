@@ -12,11 +12,21 @@ RUN git clone https://github.com/HaraldBerthelsen/marytts.git
 WORKDIR "/marytts"
 
 RUN ./gradlew installDist
+#RUN ./gradlew build
 
 ## INSTALL STTS VOICES
-RUN cp stts_voices/* build/install/marytts/lib/
+#RUN cp stts_voices/* build/install/marytts/lib/
 
+RUN cp stts_voices/voice-ar-nah-hsmm-5.2.jar build/install/marytts/lib/
+RUN cp stts_voices/voice-dfki-spike-hsmm-5.1.jar build/install/marytts/lib/
+RUN cp stts_voices/voice-stts_no_nst-hsmm-5.2.jar build/install/marytts/lib/
+RUN cp stts_voices/voice-stts_sv_nst-hsmm-5.2-SNAPSHOT.jar build/install/marytts/lib/
 
+#RUN cp stts_voices/voice-stts-sv-hb-hsmm-5.1-SNAPSHOT.jar build/install/marytts/lib/
+
+#RUN cp stts_voices/voice-nst_da_hsmm-hsmm-5.0-SNAPSHOT.jar build/install/marytts/lib/
+#RUN cp stts_voices/voice-nst_no_hsmm-hsmm-5.0-SNAPSHOT.jar build/install/marytts/lib/
+#RUN cp stts_voices/voice-nst-sv-1000-hsmm-5.0-SNAPSHOT.jar build/install/marytts/lib/
 
 ## SCRIPT FOR LISTING VOICES
 RUN echo "echo 'AVAILABLE VOICES:' && ls build/install/marytts/lib/ | egrep ^voice | sed 's/.jar//' | sed 's/^/* /' " > /bin/voices
