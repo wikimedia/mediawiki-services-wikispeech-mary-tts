@@ -29,3 +29,8 @@ script:
   - echo "marytts running on pid $pid"
   - sleep 30
   - sh .travis/exit_server_and_fail_if_not_running.sh marytts $pid
+
+#from upstream
+#before_install:
+#  - JAVA_HOME=$(jdk_switcher home openjdk8) ./gradlew
+
