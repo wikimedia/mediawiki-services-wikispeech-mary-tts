@@ -44,14 +44,13 @@ RUN chmod +x /bin/marytts-mishkal-start
 
 ##################### AFTER INSTALL #####################
 
+WORKDIR "/"
+
 ## LIST MARYTTS VOICES
 RUN voices
 
 
 ## RUNTIME SETTINGS
-WORKDIR "/"
-#EXPOSE 8080
-#CMD python /mishkal/interfaces/web/mishkal-webserver.py
 EXPOSE 59125
 CMD /bin/marytts-mishkal-start
 
