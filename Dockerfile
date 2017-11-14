@@ -18,7 +18,7 @@ RUN cp stts_voices/voice-stts_no_nst-hsmm-5.2.jar build/install/marytts/lib/
 RUN cp stts_voices/voice-stts_sv_nst-hsmm-5.2-SNAPSHOT.jar build/install/marytts/lib/
 
 ## SCRIPT FOR LISTING VOICES
-RUN echo "echo 'AVAILABLE VOICES:' && ls build/install/marytts/lib/ | egrep ^voice | sed 's/.jar//' | sed 's/^/* /' " > /bin/voices
+RUN echo "echo 'AVAILABLE VOICES:' && ls /marytts/build/install/marytts/lib/ | egrep ^voice | sed 's/.jar//' | sed 's/^/* /' " > /bin/voices
 RUN chmod +x /bin/voices
 
 
@@ -47,7 +47,7 @@ RUN chmod +x /bin/marytts-mishkal-start
 WORKDIR "/"
 
 ## LIST MARYTTS VOICES
-RUN voices
+RUN /bin/voices
 
 
 ## RUNTIME SETTINGS
