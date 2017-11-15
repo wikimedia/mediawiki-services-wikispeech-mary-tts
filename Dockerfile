@@ -48,10 +48,10 @@ WORKDIR "/"
 
 
 # BUILD INFO
-RUN echo -n "Build timestamp: " > /.build_info.txt
-RUN date >> /.build_info.txt
-RUN echo "Built by: docker" >> /.build_info.txt
-RUN echo "Application name: marytts"  >> /.build_info.txt
+RUN echo -n "Build timestamp: " > /var/.marytts_build_info.txt
+RUN date >> /var/.marytts_build_info.txt
+RUN echo "Built by: docker" >> /var/.marytts_build_info.txt
+RUN echo "Application name: marytts"  >> /var/.marytts_build_info.txt
 
 
 ## LIST MARYTTS VOICES
