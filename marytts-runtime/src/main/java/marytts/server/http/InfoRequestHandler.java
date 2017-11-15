@@ -28,7 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.io.FileReader;
 import java.io.BufferedReader;
-
+import java.io.File;
 
 import marytts.features.FeatureProcessorManager;
 import marytts.features.FeatureRegistry;
@@ -79,18 +79,24 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 	    String appNamePrefix = "Application name: ";
 	    String builtByPrefix = "Built by: ";
 	    String buildTimePrefix = "Build timestamp: ";
-	    Scanner sc = new Scanner(new BufferedReader(new FileReader("/var/.marytts_build_info.txt")));
-	    while (sc.hasNext()) {
-		String l = sc.next().trim();
-		if (l.startsWith(appNamePrefix))
-		    appName = l;
-		else if (l.startsWith(builtByPrefix))
-		    builtBy = l;
-		else if (l.startsWith(buildTimePrefix))
-		    buildTimestamp = l;
+	    String buildInfoFile = "/var/.marytts_build_info.txt";
+	    if (new File(buildInfoFile).exists()) {
+		Scanner sc = new Scanner(new BufferedReader(new FileReader(buildInfoFile)));
+		while (sc.hasNext()) {
+		    String l = sc.next().trim();
+		    if (l.startsWith(appNamePrefix))
+			appName = l;
+		    else if (l.startsWith(builtByPrefix))
+			builtBy = l;
+		    else if (l.startsWith(buildTimePrefix))
+			buildTimestamp = l;
+		}
+		sc.close();
+	    } else {
+		logger.info("[InfoRequestHandler] No build info file found: " + buildInfoFile);
+		System.err.println("[InfoRequestHandler] No build info file found: " + buildInfoFile);
 	    }
-	    sc.close();
-	    return buildTimestamp + "\n" + builtBy + "\n" + appName + "\n" + startedAt + "\n" + MaryRuntimeUtils.getMaryVersion();
+	    return buildTimestamp + "\n" + builtBy + "\n" + appName + "\n" + startedAt + "\n\nMaryTTS version: " + MaryRuntimeUtils.getMaryVersion();
      	}
 
      	private String handleInfoRequest(String absPath, Map<String, String> queryItems, HttpResponse response) {
@@ -105,9 +111,6 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 		String request = absPath.substring(1); // without the initial slash
 
 		if (request.equals("version")) {
-		    // HL TODO read /var/.marytts_build_info.txt
-		    // HL TODO add 'started at' timestamp
-		    // HL TODO append marytts version
 		    try {
 			return getVersionInfo();
 		    } catch (IOException e) {
