@@ -4,8 +4,7 @@ FROM sttsse/wikispeech_base
 
 ##################### INSTALL MARYTTS #####################
 WORKDIR "/"
-RUN git clone https://github.com/HaraldBerthelsen/marytts.git
-#RUN git clone https://github.com/HannaLindgren/marytts.git
+RUN git clone https://github.com/stts-se/marytts.git
 
 WORKDIR "/marytts"
 
