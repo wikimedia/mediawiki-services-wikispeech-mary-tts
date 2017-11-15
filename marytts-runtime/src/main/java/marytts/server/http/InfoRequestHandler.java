@@ -72,10 +72,11 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 		}
 	}
 
+     	// STTS addition, November 2017
      	private String getVersionInfo() throws IOException {
 	    String buildTimestamp = "Build timestamp: undefined";
-	    String builtBy = "Built by: python3 runtime";
-	    String appName = "Application name: wikispeech";
+	    String builtBy = "Built by: java standalone";
+	    String appName = "Application name: marytts";
 	    String appNamePrefix = "Application name: ";
 	    String builtByPrefix = "Built by: ";
 	    String buildTimePrefix = "Build timestamp: ";
@@ -84,6 +85,7 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 		Scanner sc = new Scanner(new BufferedReader(new FileReader(buildInfoFile)));
 		while (sc.hasNext()) {
 		    String l = sc.next().trim();
+		    System.err.println("[InfoRequestHandler] debug " + l);
 		    if (l.startsWith(appNamePrefix))
 			appName = l;
 		    else if (l.startsWith(builtByPrefix))
