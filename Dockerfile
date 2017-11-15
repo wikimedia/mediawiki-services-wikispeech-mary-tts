@@ -46,6 +46,14 @@ RUN chmod +x /bin/marytts-mishkal-start
 
 WORKDIR "/"
 
+
+# BUILD INFO
+RUN echo -n "Build timestamp: " > /.build_info.txt
+RUN date >> /.build_info.txt
+RUN echo "Built by: docker" >> /.build_info.txt
+RUN echo "Application name: marytts"  >> /.build_info.txt
+
+
 ## LIST MARYTTS VOICES
 RUN /bin/voices
 
