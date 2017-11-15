@@ -23,6 +23,12 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Scanner;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.io.FileReader;
+import java.io.BufferedReader;
+
 
 import marytts.features.FeatureProcessorManager;
 import marytts.features.FeatureRegistry;
@@ -42,6 +48,8 @@ import org.apache.http.nio.entity.NStringEntity;
  */
 public class InfoRequestHandler extends BaseHttpRequestHandler {
 
+        private String startedAt =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+    
 	public InfoRequestHandler() {
 		super();
 	}
@@ -64,7 +72,28 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 		}
 	}
 
-	private String handleInfoRequest(String absPath, Map<String, String> queryItems, HttpResponse response) {
+     	private String getVersionInfo() throws IOException {
+	    String buildTimestamp = "Build timestamp: undefined";
+	    String builtBy = "Built by: python3 runtime";
+	    String appName = "Application name: wikispeech";
+	    String appNamePrefix = "Application name: ";
+	    String builtByPrefix = "Built by: ";
+	    String buildTimePrefix = "Build timestamp: ";
+	    Scanner sc = new Scanner(new BufferedReader(new FileReader("/var/.marytts_build_info.txt")));
+	    while (sc.hasNext()) {
+		String l = sc.next().trim();
+		if (l.startsWith(appNamePrefix))
+		    appName = l;
+		else if (l.startsWith(builtByPrefix))
+		    builtBy = l;
+		else if (l.startsWith(buildTimePrefix))
+		    buildTimestamp = l;
+	    }
+	    sc.close();
+	    return buildTimestamp + "\n" + builtBy + "\n" + appName + "\n" + startedAt + "\n" + MaryRuntimeUtils.getMaryVersion();
+     	}
+
+     	private String handleInfoRequest(String absPath, Map<String, String> queryItems, HttpResponse response) {
 		logger.debug("New info request: " + absPath);
 		if (queryItems != null) {
 			for (String key : queryItems.keySet()) {
@@ -75,8 +104,18 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 		assert absPath.startsWith("/") : "Absolute path '" + absPath + "' does not start with a slash!";
 		String request = absPath.substring(1); // without the initial slash
 
-		if (request.equals("version"))
-			return MaryRuntimeUtils.getMaryVersion();
+		if (request.equals("version")) {
+		    // HL TODO read /var/.marytts_build_info.txt
+		    // HL TODO add 'started at' timestamp
+		    // HL TODO append marytts version
+		    try {
+			return getVersionInfo();
+		    } catch (IOException e) {
+			MaryHttpServerUtils.errorInternalServerError(response, "couldn't retrieve version info", e);
+			return null;
+		    }
+		    //return MaryRuntimeUtils.getMaryVersion();
+		}
 		else if (request.equals("datatypes"))
 			return MaryRuntimeUtils.getDataTypes();
 		else if (request.equals("locales"))
