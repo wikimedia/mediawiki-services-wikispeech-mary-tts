@@ -83,8 +83,8 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 	    String buildInfoFile = "/var/.marytts_build_info.txt";
 	    if (new File(buildInfoFile).exists()) {
 		Scanner sc = new Scanner(new BufferedReader(new FileReader(buildInfoFile)));
-		while (sc.hasNext()) {
-		    String l = sc.next().trim();
+		while (sc.hasNextLine()) {
+		    String l = sc.nextLine().trim();
 		    System.err.println("[InfoRequestHandler] debug " + l);
 		    if (l.startsWith(appNamePrefix))
 			appName = l;
