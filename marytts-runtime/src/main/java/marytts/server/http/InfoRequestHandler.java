@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.File;
@@ -48,10 +49,13 @@ import org.apache.http.nio.entity.NStringEntity;
  */
 public class InfoRequestHandler extends BaseHttpRequestHandler {
 
-        private String startedAt =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+    private String startedAt;
     
 	public InfoRequestHandler() {
 		super();
+		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+		startedAt = dateFormat.format(new Date());
 	}
 
 	@Override
@@ -85,7 +89,6 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 		Scanner sc = new Scanner(new BufferedReader(new FileReader(buildInfoFile)));
 		while (sc.hasNextLine()) {
 		    String l = sc.nextLine().trim();
-		    System.err.println("[InfoRequestHandler] debug " + l);
 		    if (l.startsWith(appNamePrefix))
 			appName = l;
 		    else if (l.startsWith(builtByPrefix))
@@ -98,7 +101,7 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 		logger.info("[InfoRequestHandler] No build info file found: " + buildInfoFile);
 		System.err.println("[InfoRequestHandler] No build info file found: " + buildInfoFile);
 	    }
-	    return buildTimestamp + "\n" + builtBy + "\n" + appName + "\n" + startedAt + "\n\nMaryTTS version: " + MaryRuntimeUtils.getMaryVersion();
+	    return buildTimestamp + "\n" + builtBy + "\n" + appName + "\nStarted at: " + startedAt + "\n\nMaryTTS version: " + MaryRuntimeUtils.getMaryVersion();
      	}
 
      	private String handleInfoRequest(String absPath, Map<String, String> queryItems, HttpResponse response) {
