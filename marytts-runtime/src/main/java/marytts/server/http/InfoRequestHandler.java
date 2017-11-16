@@ -84,7 +84,7 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 	    String appNamePrefix = "Application name: ";
 	    String builtByPrefix = "Built by: ";
 	    String buildTimePrefix = "Build timestamp: ";
-	    String buildInfoFile = "/var/.marytts_build_info.txt";
+	    String buildInfoFile = "/wikispeech/.marytts_build_info.txt";
 	    if (new File(buildInfoFile).exists()) {
 		Scanner sc = new Scanner(new BufferedReader(new FileReader(buildInfoFile)));
 		while (sc.hasNextLine()) {
