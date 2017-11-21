@@ -22,7 +22,7 @@ The code comes under the Lesser General Public License LGPL version 3 -- see LIC
 
 ### 1. Basic setup
 
-    ./gradlew installDist    
+    ./gradlew installDist
 
 ### 2. Install voices
 
