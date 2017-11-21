@@ -30,9 +30,10 @@ RUN git clone https://github.com/HaraldBerthelsen/mishkal.git
 
 WORKDIR "/wikispeech/mishkal"
 
-RUN sed 's/self.display(word, format_display)/self.display(voc_word, format_display)/' mishkal/tashkeel/tashkeel.py > mishkal/tashkeel/tashkeel.py_UPDATE
-RUN mv mishkal/tashkeel/tashkeel.py  mishkal/tashkeel/tashkeel.py_OLD
-RUN cp mishkal/tashkeel/tashkeel.py_UPDATE mishkal/tashkeel/tashkeel.py
+# NO LONGER NEEDED (FIXED IN HB'S VERSION):
+# RUN sed 's/self.display(word, format_display)/self.display(voc_word, format_display)/' mishkal/tashkeel/tashkeel.py > mishkal/tashkeel/tashkeel.py_UPDATE
+# RUN mv mishkal/tashkeel/tashkeel.py  mishkal/tashkeel/tashkeel.py_OLD
+# RUN cp mishkal/tashkeel/tashkeel.py_UPDATE mishkal/tashkeel/tashkeel.py
 
 RUN echo "python /wikispeech/mishkal/interfaces/web/mishkal-webserver.py &" > /wikispeech/bin/marytts-mishkal-start
 RUN echo "sleep 2" >> /bin/marytts-mishkal-start
