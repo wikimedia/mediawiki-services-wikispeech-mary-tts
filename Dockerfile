@@ -32,7 +32,7 @@ WORKDIR "/wikispeech/mishkal"
 
 # NO LONGER NEEDED (FIXED IN HB'S VERSION):
 # RUN sed 's/self.display(word, format_display)/self.display(voc_word, format_display)/' mishkal/tashkeel/tashkeel.py > mishkal/tashkeel/tashkeel.py_UPDATE
-# RUN mv mishkal/tashkeel/tashkeel.py  mishkal/tashkeel/tashkeel.py_OLD
+# RUN mv mishkal/tashkeel/tashkeel.py mishkal/tashkeel/tashkeel.py_OLD
 # RUN cp mishkal/tashkeel/tashkeel.py_UPDATE mishkal/tashkeel/tashkeel.py
 
 RUN echo "python /wikispeech/mishkal/interfaces/web/mishkal-webserver.py &" > /wikispeech/bin/marytts-mishkal-start
