@@ -1,11 +1,11 @@
+[![Build Status](https://travis-ci.org/stts-se/marytts.svg)](https://travis-ci.org/stts-se/marytts)
+
 # MaryTTS
 
 This is a copy of the source code repository for [MaryTTS](https://github.com/marytts/marytts), adapted by STTS for use with the <a href="http://stts-se.github.io/wikispeech">Wikispeech engine</a>.
 
 MaryTTS is a multilingual open-source MARY text-to-speech platform (MaryTTS).
 MaryTTS is a client-server system written in pure Java, so it runs on many platforms.
-
-[![Build Status](https://travis-ci.org/stts-se/marytts.svg)](https://travis-ci.org/stts-se/marytts)
 
 **For a downloadable package ready for use, see [the releases page](https://github.com/stts-se/marytts/releases).**
 
