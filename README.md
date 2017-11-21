@@ -26,10 +26,7 @@ The code comes under the Lesser General Public License LGPL version 3 -- see LIC
 
 ### 2. Install voices
 
-    cp stts_voices/voice-ar-nah-hsmm-5.2.jar build/install/marytts/lib/
-    cp stts_voices/voice-dfki-spike-hsmm-5.1.jar build/install/marytts/lib/
-    cp stts_voices/voice-stts_no_nst-hsmm-5.2.jar build/install/marytts/lib/
-    cp stts_voices/voice-stts_sv_nst-hsmm-5.2-SNAPSHOT.jar build/install/marytts/lib/
+    cp stts_voices/voice-ar-nah-hsmm-5.2.jar stts_voices/voice-dfki-spike-hsmm-5.1.jar stts_voices/voice-stts_no_nst-hsmm-5.2.jar stts_voices/voice-stts_sv_nst-hsmm-5.2-SNAPSHOT.jar build/install/marytts/lib/
 
 
 ## Running MaryTTS
