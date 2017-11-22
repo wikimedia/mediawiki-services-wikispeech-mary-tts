@@ -139,7 +139,7 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 	    }
 	    if (gitTimestamp.endsWith("unknown")) {
 		try {
-		    Process p = Runtime.getRuntime().exec(new String[]{"git", "log", "-1", "--pretty=format:%ad %h", "--date=format:%Y-%m-%d %H:%M:%S %z"});
+		    Process p = Runtime.getRuntime().exec(new String[]{"git", "log", "-1", "--pretty=format:%ai %h"});
 		    BufferedReader stderr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 		    Scanner sce = new Scanner(stderr).useDelimiter("\\Z");
 		    if (sce.hasNext()) {
