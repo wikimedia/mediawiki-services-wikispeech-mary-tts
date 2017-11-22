@@ -81,9 +81,13 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 	    String buildTimestamp = "Build timestamp: " + startedAt;
 	    String builtBy = "Built by: java standalone";
 	    String appName = "Application name: marytts";
+	    String gitRelease = "Git release: unknown";
+	    String gitTimestamp = "Git timestamp: unknown";
 	    String appNamePrefix = "Application name: ";
 	    String builtByPrefix = "Built by: ";
 	    String buildTimePrefix = "Build timestamp: ";
+	    String gitReleasePrefix = "Git release: ";
+	    String gitTimestampPrefix = "Git timestamp: ";
 	    String buildInfoFile = "/wikispeech/.marytts_build_info.txt";
 	    if (new File(buildInfoFile).exists()) {
 		Scanner sc = new Scanner(new BufferedReader(new FileReader(buildInfoFile)));
@@ -101,7 +105,7 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 		logger.info("[InfoRequestHandler] No build info file found: " + buildInfoFile);
 		System.err.println("[InfoRequestHandler] No build info file found: " + buildInfoFile);
 	    }
-	    return appName + "\n" + buildTimestamp + "\n" + builtBy + "\nStarted: " + startedAt + "\n\nMaryTTS version: " + MaryRuntimeUtils.getMaryVersion();
+	    return appName + "\n" + buildTimestamp + "\n" + builtBy + "\n" + gitRelease + "\n" + gitTimestamp + "\nStarted: " + startedAt + "\n\nMaryTTS version: " + MaryRuntimeUtils.getMaryVersion();
      	}
 
      	private String handleInfoRequest(String absPath, Map<String, String> queryItems, HttpResponse response) {
