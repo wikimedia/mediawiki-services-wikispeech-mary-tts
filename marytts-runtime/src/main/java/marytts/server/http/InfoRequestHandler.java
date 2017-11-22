@@ -101,7 +101,7 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 		logger.info("[InfoRequestHandler] No build info file found: " + buildInfoFile);
 		System.err.println("[InfoRequestHandler] No build info file found: " + buildInfoFile);
 	    }
-	    return appName + "\n" + buildTimestamp + "\n" + builtBy + "\nStarted at: " + startedAt + "\n\nMaryTTS version: " + MaryRuntimeUtils.getMaryVersion();
+	    return appName + "\n" + buildTimestamp + "\n" + builtBy + "\nStarted: " + startedAt + "\n\nMaryTTS version: " + MaryRuntimeUtils.getMaryVersion();
      	}
 
      	private String handleInfoRequest(String absPath, Map<String, String> queryItems, HttpResponse response) {
