@@ -99,6 +99,10 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 			builtBy = l;
 		    else if (l.startsWith(buildTimePrefix))
 			buildTimestamp = l;
+		    else if (l.startsWith(gitReleasePrefix))
+			gitRelease = l;
+		    else if (l.startsWith(gitTimestampPrefix))
+			gitTimestamp = l;
 		}
 		sc.close();
 	    } else {
