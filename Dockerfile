@@ -1,5 +1,7 @@
-# Download sttsse/wikispeech_base from hub.docker.com | source repository: https://github.com/stts-se/wikispeech_base.git
+# Download sttsse/wikispeech_base from hub.docker.com | source repository: https://github.com/stts-se/wikispeech_mockup: docker/wikispeech_base
 FROM sttsse/wikispeech_base
+
+LABEL "se.stts.vendor"="STTS - Speech technology services - http://stts.se"
 
 RUN mkdir -p /wikispeech/bin
 WORKDIR "/wikispeech"
@@ -48,11 +50,15 @@ WORKDIR "/wikispeech"
 
 
 # BUILD INFO
-RUN echo -n "Build timestamp: " > /wikispeech/.marytts_build_info.txt
-RUN date --utc "+%Y-%m-%d %H:%M:%S %Z" >> /wikispeech/.marytts_build_info.txt
-RUN echo "Built by: docker" >> /wikispeech/.marytts_build_info.txt
-RUN echo "Application name: marytts"  >> /wikispeech/.marytts_build_info.txt
-
+ENV BUILD_INFO_FILE /wikispeech/.marytts_build_info.txt
+RUN echo -n "Build timestamp: " > $BUILD_INFO_FILE
+RUN date --utc "+%Y-%m-%d %H:%M:%S %Z" >> $BUILD_INFO_FILE
+RUN echo "Built by: docker" >> $BUILD_INFO_FILE
+RUN echo "Application name: marytts"  >> $BUILD_INFO_FILE
+RUN echo -n "Git release: " >> $BUILD_INFO_FILE
+RUN cd /wikispeech/marytts && git describe --tags >> $BUILD_INFO_FILE
+RUN echo -n "Git timestamp: " >> $BUILD_INFO_FILE
+RUN cd /wikispeech/marytts && git log -1 "--pretty=format:%ad %h" "--date=format:%Y-%m-%d %H:%M:%S %z" >> $BUILD_INFO_FILE
 
 ## LIST MARYTTS VOICES
 RUN /wikispeech/bin/voices

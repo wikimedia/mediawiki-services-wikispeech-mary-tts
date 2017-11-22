@@ -78,7 +78,7 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 
      	// STTS addition, November 2017
      	private String getVersionInfo() throws IOException {
-	    String buildTimestamp = "Build timestamp: undefined";
+	    String buildTimestamp = "Build timestamp: " + startedAt;
 	    String builtBy = "Built by: java standalone";
 	    String appName = "Application name: marytts";
 	    String appNamePrefix = "Application name: ";
