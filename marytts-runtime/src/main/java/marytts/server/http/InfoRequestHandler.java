@@ -30,6 +30,7 @@ import java.util.TimeZone;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 
 import marytts.features.FeatureProcessorManager;
 import marytts.features.FeatureRegistry;
@@ -51,6 +52,7 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
     private String startedAt;
+    private String versionInfo;
     
 	public InfoRequestHandler() {
 		super();
@@ -77,17 +79,17 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 	}
 
      	// STTS addition, November 2017
-     	private String getVersionInfo() throws IOException {
-	    String buildTimestamp = "Build timestamp: " + startedAt;
-	    String builtBy = "Built by: java standalone";
-	    String appName = "Application name: marytts";
-	    String gitRelease = "Git release: unknown";
-	    String gitTimestamp = "Git timestamp: unknown";
+     	private String getVersionInfo() throws Exception {
 	    String appNamePrefix = "Application name: ";
 	    String builtByPrefix = "Built by: ";
 	    String buildTimePrefix = "Build timestamp: ";
 	    String gitReleasePrefix = "Git release: ";
 	    String gitTimestampPrefix = "Git timestamp: ";
+	    String buildTimestamp = buildTimePrefix + startedAt;
+	    String builtBy = builtByPrefix + "java standalone";
+	    String appName = appNamePrefix + "marytts";
+	    String gitRelease = gitReleasePrefix + "unknown";
+	    String gitTimestamp = gitTimestampPrefix + "unknown";
 	    String buildInfoFile = "/wikispeech/.marytts_build_info.txt";
 	    if (new File(buildInfoFile).exists()) {
 		Scanner sc = new Scanner(new BufferedReader(new FileReader(buildInfoFile)));
@@ -109,7 +111,60 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 		logger.info("[InfoRequestHandler] No build info file found: " + buildInfoFile);
 		System.err.println("[InfoRequestHandler] No build info file found: " + buildInfoFile);
 	    }
-	    return appName + "\n" + buildTimestamp + "\n" + builtBy + "\n" + gitRelease + "\n" + gitTimestamp + "\nStarted: " + startedAt + "\n\nMaryTTS version: " + MaryRuntimeUtils.getMaryVersion();
+
+	    if (gitRelease.endsWith("unknown")) {
+		try {
+		    Process p = Runtime.getRuntime().exec("git describe --tags");
+		    BufferedReader stdout = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		    BufferedReader stderr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+		    Scanner sce = new Scanner(stderr).useDelimiter("\\Z");
+		    if (sce.hasNext()) {
+			String s = sce.next().trim();
+			System.err.println("[InfoRequestHandler] Couldn't retrieve git relase info: " + s);
+			logger.info("[InfoRequestHandler] Couldn't retrieve git release info: " + s);
+		    } else {
+			Scanner sc = new Scanner(stdout).useDelimiter("\\Z");
+			if (sc.hasNext()) {
+			    String s = sc.next().trim();
+			    gitRelease = gitReleasePrefix + s;
+			} else {
+			    System.err.println("[InfoRequestHandler] Couldn't retrieve git release info: " + "??");
+			    logger.info("[InfoRequestHandler] Couldn't retrieve git release info: " + "??");
+			}
+		    }
+		} catch (Exception e) {
+		    System.err.println("[InfoRequestHandler] Couldn't retrieve git release info: " + e.getMessage());
+		    logger.info("[InfoRequestHandler] Couldn't retrieve git release info: " + e.getMessage());
+		}
+	    }
+	    if (gitTimestamp.endsWith("unknown")) {
+		try {
+		    Process p = Runtime.getRuntime().exec(new String[]{"git", "log", "-1", "--pretty=format:%ad %h", "--date=format:%Y-%m-%d %H:%M:%S %z"});
+		    BufferedReader stderr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+		    Scanner sce = new Scanner(stderr).useDelimiter("\\Z");
+		    if (sce.hasNext()) {
+			String s = sce.next().trim();
+			System.err.println("[InfoRequestHandler] Couldn't retrieve git timestamp: " + s);
+			logger.info("[InfoRequestHandler] Couldn't retrieve git timestamp: " + s);
+		    } else {
+			BufferedReader stdout = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			Scanner sc = new Scanner(stdout).useDelimiter("\\Z");
+			if (sc.hasNext()) {
+			    String s = sc.next().trim();
+			    gitTimestamp = gitTimestampPrefix + s;
+			} else {
+			    System.err.println("[InfoRequestHandler] Couldn't retrieve git timestamp: " + "??");
+			    logger.info("[InfoRequestHandler] Couldn't retrieve git timestamp: " + "??");
+			}
+		    }
+		} catch (Exception e) {
+		    e.printStackTrace();
+		    System.err.println("[InfoRequestHandler] Couldn't retrieve git timestamp: " + e.getMessage());
+		    logger.info("[InfoRequestHandler] Couldn't retrieve git timestamp: " + e.getMessage());
+		}
+	    }
+
+	    return appName + "\n" + buildTimestamp + "\n" + builtBy + "\n" + gitRelease + "\n" + gitTimestamp + "\nStarted: " + startedAt; //  + "\n\nMaryTTS version: " + MaryRuntimeUtils.getMaryVersion();
      	}
 
      	private String handleInfoRequest(String absPath, Map<String, String> queryItems, HttpResponse response) {
@@ -124,11 +179,15 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 		String request = absPath.substring(1); // without the initial slash
 
 		if (request.equals("version")) {
-		    try {
-			return getVersionInfo();
-		    } catch (IOException e) {
-			MaryHttpServerUtils.errorInternalServerError(response, "couldn't retrieve version info", e);
-			return null;
+		    if (this.versionInfo!= null) return this.versionInfo;
+		    else {
+			try {
+			    this.versionInfo = getVersionInfo();
+			    return this.versionInfo;
+			} catch (Exception e) {
+			    MaryHttpServerUtils.errorInternalServerError(response, "couldn't retrieve version info", e);
+			    return null;
+			}
 		    }
 		    //return MaryRuntimeUtils.getMaryVersion();
 		}
