@@ -125,6 +125,7 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 		}
 	    }
 
+	    res.add("Started: " + startedAt);
 	    String resString = "";
 	    for (String s : res)
 		resString += s + "\n";
