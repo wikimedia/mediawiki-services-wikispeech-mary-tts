@@ -95,9 +95,9 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 	    } else {
 		logger.info("[InfoRequestHandler] No build info file found: " + buildInfoFile);
 		System.err.println("[InfoRequestHandler] No build info file found: " + buildInfoFile);
-		res.add("Build timestamp: " + startedAt);
-		res.add("Built by: java standalone");
 		res.add("Application name: marytts");
+		res.add("Build timestamp: n/a");
+		res.add("Built by: java standalone");
 		try {
 		    Process p = Runtime.getRuntime().exec("git describe --tags");
 		    BufferedReader stdout = new BufferedReader(new InputStreamReader(p.getInputStream()));
