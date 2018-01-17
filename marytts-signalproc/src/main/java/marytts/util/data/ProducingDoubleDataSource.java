@@ -56,6 +56,7 @@ public abstract class ProducingDoubleDataSource extends BufferedDoubleDataSource
 	public void start() {
 		dataProducingThread = new Thread(this);
 		dataProducingThread.setDaemon(true);
+		//HB I've tested this.. dataProducingThread.setDaemon(false);
 		dataProducingThread.start();
 	}
 
@@ -75,13 +76,21 @@ public abstract class ProducingDoubleDataSource extends BufferedDoubleDataSource
 	 */
 	public void putOneDataPoint(double value) {
 		try {
-			queue.put(value);
+		    queue.put(value);
+		    //HB tested replace the above line with the following if
+		    /*
+		    if ( !queue.offer(value) ) {
+			System.out.println("Queue full!");
+			throw new InterruptedException("hejsan");
+		    }
+		    */
 		} catch (InterruptedException e) {
 			throw new RuntimeException("Unexpected interruption", e);
 		}
 	}
 
-	protected void putEndOfStream() {
+    //HB TEST protected void putEndOfStream() {
+	public void putEndOfStream() {
 		putOneDataPoint(END_OF_STREAM);
 		hasSentEndOfStream = true;
 	}
@@ -145,7 +154,8 @@ public abstract class ProducingDoubleDataSource extends BufferedDoubleDataSource
 	 * 
 	 * @return queue.take
 	 */
-	private double getOneDataPoint() {
+	//HB private double getOneDataPoint() {
+	public double getOneDataPoint() {
 		try {
 			return queue.take();
 		} catch (InterruptedException e) {

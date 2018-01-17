@@ -207,7 +207,7 @@ public class HTSVocoder {
 
 		int audioSize = computeAudioSize(pdf2par.getMcepPst(), htsData);
 		HTSVocoderDataProducer producer = new HTSVocoderDataProducer(audioSize, pdf2par, htsData);
-		//HB 160705 no it just stops if using run()..
+		//HB 160705 no it just stops if using run().. Place in code where it stops marked with HB-HERE
 		producer.start();
 		//producer.run();
 		return new DDSAudioInputStream(producer, getHTSAudioFormat(htsData));
@@ -334,6 +334,9 @@ public class HTSVocoder {
 		magSample = 1;
 		magPulseSize = 0;
 		for (mcepframe = 0, lf0frame = 0; mcepframe < mcepPst.getT(); mcepframe++) { /* for each mcep frame */
+
+			//HB
+			//System.out.println("start processing " + mcepframe + " mcep frame.");
 
 			/** feature vector for a particular frame */
 			double mc[] = new double[m]; /* feature vector for a particular frame */
@@ -508,10 +511,18 @@ public class HTSVocoder {
 					x = mglsadf(x, C, (m - 1), alpha, stage, D1);
 				}
 
-				// System.out.format("%f ", x);
+				//HB uncommented the following line
+				//System.out.format("%f ", x);
 				audio_double[s_double] = x;
+				//HB
+				//System.out.println("audioProducer: "+audioProducer);
 				if (audioProducer != null) {
-					audioProducer.putOneDataPoint(x);
+				    //HB
+				    //System.out.println("BEFORE audioProducer.putOneDataPoint..");
+				    //HB-HERE stops if using producer.run(). If using producer.start(), stops here with REALISED_ACOUSTPARAMS, but not with AUDIO
+				    audioProducer.putOneDataPoint(x);
+				    //HB
+				    //System.out.println("AFTER audioProducer.putOneDataPoint..");
 				}
 
 				s_double++;
@@ -523,6 +534,9 @@ public class HTSVocoder {
 					}
 					i = IPERIOD;
 				}
+
+				//HB
+				//System.out.println("at end of sample..");
 
 			} /* for each sample in a period fprd */
 
@@ -536,10 +550,21 @@ public class HTSVocoder {
 			/* move elements in c */
 			System.arraycopy(CC, 0, C, 0, m);
 
+			//HB
+			//System.out.println("end processing " + mcepframe + " mcep frame.");
+
 		} /* for each mcep frame */
+
+		//HB 
+		System.out.println("Finish processing " + mcepframe + " mcep frames.");
 
 		logger.debug("Finish processing " + mcepframe + " mcep frames.");
 
+		//HB test 180112
+		if (audioProducer != null) {
+		    audioProducer.putEndOfStream();
+		}
+	
 		return (audio_double);
 
 	} /* method htsMLSAVocoder() */
@@ -1881,10 +1906,20 @@ public class HTSVocoder {
 
 		public void run() {
 			try {
-				htsMLSAVocoder(lf0Pst, mcepPst, strPst, magPst, voiced, htsData, this);
-				putEndOfStream();
+			    //HB
+			    System.out.println("Runnning htsMLSAVocoder");
+			    htsMLSAVocoder(lf0Pst, mcepPst, strPst, magPst, voiced, htsData, this);
+			    //System.out.println("after runnning htsMLSAVocoder");
+			    //this.putEndOfStream();
+			    System.out.println("DONE runnning htsMLSAVocoder");
 			} catch (Exception e) {
-				logger.error("Cannot vocode", e);
+			    System.out.println("ERROR runnning htsMLSAVocoder: "+e);
+			    //System.out.println("trying getOneDataPoint");
+			    //this.getOneDataPoint();
+			    //System.out.println("trying putEndOfStream");
+			    //this.putEndOfStream();
+			    //System.out.println("done putEndOfStream");
+			    logger.error("Cannot vocode", e);
 			}
 		}
 

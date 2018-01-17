@@ -105,10 +105,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.traversal.NodeIterator;
 
-//HB 160706
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-
 /**
  * HTSEngine: a compact HMM-based speech synthesis engine.
  *
@@ -202,7 +198,7 @@ public class HTSEngine extends InternalModule {
 	 * @return output
 	 */
 	public MaryData process(MaryData d, List<Target> targetFeaturesList, List<Element> segmentsAndBoundaries,
-			List<Element> tokensAndBoundaries) throws Exception {
+			List<Element> tokensAndBoundaries, String outputParams) throws Exception {
 
 		Voice v = d.getDefaultVoice(); /* This is the way of getting a Voice through a MaryData type */
 		assert v instanceof HMMVoice;
@@ -228,9 +224,11 @@ public class HTSEngine extends InternalModule {
 		HTSVocoder par2speech = new HTSVocoder();
 
 		/* Synthesize speech waveform, generate speech out of sequence of parameters */
-		AudioInputStream ais = par2speech.htsMLSAVocoder(pdf2par, hmmv.getHMMData());
+		AudioInputStream ais = null;
+		if (!"noAudio".equals(outputParams))
+			ais = par2speech.htsMLSAVocoder(pdf2par, hmmv.getHMMData());
 
-		MaryData output = new MaryData(outputType(), d.getLocale());
+		MaryData output = new MaryData(getOutputType(), d.getLocale());
 		if (d.getAudioFileFormat() != null) {
 			output.setAudioFileFormat(d.getAudioFileFormat());
 			if (d.getAudio() != null) {
@@ -245,26 +243,6 @@ public class HTSEngine extends InternalModule {
 		// set the actualDurations in tokensAndBoundaries
 		if (tokensAndBoundaries != null)
 			setRealisedProsody(tokensAndBoundaries, um);
-
-		//HB 160706
-		//If writeTmpFile is true, the server doesn't return audio. No error message or anything, just no sound.
-		//It's only here temporarily, anyway, until I find a way to get at the audio in WikispeechJsonExtractor
-		//Trying to set AudioFileFormat back to null, it's the only thing changed here, I think?
-		//no, same thing.
-		//It writes the tmpfile, and then it says that it writes the audio to the client
-		boolean writeTmpFile = false;
-		if ( writeTmpFile ) {
-		    if (output.getAudioFileFormat() == null) {
-			output.setAudioFileFormat(new AudioFileFormat(AudioFileFormat.Type.WAVE, Voice.AF22050, AudioSystem.NOT_SPECIFIED));
-		    }
-		    String outputFileName = "/tmp/marytts_tmpfile_HTSEngine.wav";
-		    logger.debug("Trying to write audio to "+outputFileName);
-		    OutputStream os = new FileOutputStream(outputFileName);
-		    output.writeTo(os);
-		    logger.debug("Audio written to "+outputFileName);
-		    output.setAudioFileFormat(null);
-		}
-		//END HB 160706
 
 		return output;
 
