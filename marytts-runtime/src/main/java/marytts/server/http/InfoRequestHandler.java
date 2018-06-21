@@ -82,7 +82,7 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
      	// STTS addition, November 2017
      	private String getVersionInfo() throws Exception {
 	    ArrayList<String> res = new ArrayList<String>();
-	    String buildInfoFile = "/wikispeech/.marytts_build_info.txt";
+	    String buildInfoFile = "/wikispeech/marytts/build_info.txt";
 	    if (new File(buildInfoFile).exists()) {
 		Scanner sc = new Scanner(new BufferedReader(new FileReader(buildInfoFile)));
 		while (sc.hasNextLine()) {
@@ -107,16 +107,16 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 			String s = sce.next().trim();
 			System.err.println("[InfoRequestHandler] Couldn't retrieve git relase info: " + s);
 			logger.info("[InfoRequestHandler] Couldn't retrieve git release info: " + s);
-			res.add("Git release: unknown");
+			res.add("Release: unknown");
 		    } else {
 			Scanner sc = new Scanner(stdout).useDelimiter("\\Z");
 			if (sc.hasNext()) {
 			    String s = sc.next().trim();
-			    res.add("Git release: " + s);
+			    res.add("Release: " + s);
 			} else {
 			    System.err.println("[InfoRequestHandler] Couldn't retrieve git release info: " + "??");
 			    logger.info("[InfoRequestHandler] Couldn't retrieve git release info: " + "??");
-			    res.add("Git release: unknown");
+			    res.add("Release: unknown");
 			}
 		    }
 		} catch (Exception e) {

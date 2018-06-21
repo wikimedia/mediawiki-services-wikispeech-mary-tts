@@ -1,15 +1,35 @@
-# Download sttsse/wikispeech_base from hub.docker.com | source repository: https://github.com/stts-se/wikispeech_mockup: docker/wikispeech_base
-FROM sttsse/wikispeech_base
+FROM buildpack-deps
+
+############# INITIAL SETUP/INSTALLATION #############
+# setup apt
+RUN apt-get update -y && apt-get upgrade -y && apt-get install apt-utils -y
+
+# debugging tools
+# RUN apt-get install -y libnet-ifconfig-wrapper-perl/stable curl wget emacs
+
+# RELEASE variable (to be set by build args)
+ARG RELEASE="undefined"
 
 LABEL "se.stts.vendor"="STTS - Speech technology services - http://stts.se"
+LABEL "se.stts.release"=$RELEASE
 
-RUN mkdir -p /wikispeech/bin
-WORKDIR "/wikispeech"
 
-##################### INSTALL MARYTTS #####################
-RUN git clone https://github.com/stts-se/marytts.git
 
-WORKDIR "/wikispeech/marytts"
+############# COMPONENT SPECIFIC DEPENDENCIES #############
+RUN apt-get install -y python software-properties-common && add-apt-repository ppa:openjdk && apt-get install -y openjdk-8-jdk
+
+
+
+############# MARYTTS #############
+ENV BASEDIR /wikispeech/marytts
+WORKDIR $BASEDIR
+
+# local copy of https://github.com/stts-se/marytts.git 
+COPY . $BASEDIR
+
+RUN mkdir -p $BASEDIR/bin
+
+WORKDIR $BASEDIR
 
 RUN ./gradlew installDist
 
@@ -20,11 +40,11 @@ RUN cp stts_voices/voice-stts_no_nst-hsmm-5.2.jar build/install/marytts/lib/
 RUN cp stts_voices/voice-stts_sv_nst-hsmm-5.2-SNAPSHOT.jar build/install/marytts/lib/
 
 ## SCRIPT FOR LISTING VOICES
-RUN echo "echo 'AVAILABLE VOICES:' && ls /wikispeech/marytts/build/install/marytts/lib/ | egrep ^voice | sed 's/.jar//' | sed 's/^/* /' " > /wikispeech/bin/voices
-RUN chmod +x /wikispeech/bin/voices
+RUN echo "echo 'AVAILABLE VOICES:' && ls $BASEDIR/build/install/marytts/lib/ | egrep ^voice | sed 's/.jar//' | sed 's/^/* /' " > $BASEDIR/bin/voices
+RUN chmod +x $BASEDIR/bin/marytts_voices
 
 
-##################### INSTALL MISHKAL #####################
+############# MISHKAL #############
 WORKDIR "/wikispeech"
 
 # RUN git clone https://github.com/linuxscout/mishkal.git
@@ -33,36 +53,34 @@ RUN git clone https://github.com/HaraldBerthelsen/mishkal.git
 WORKDIR "/wikispeech/mishkal"
 
 # NO LONGER NEEDED (FIXED IN HB'S VERSION):
-# RUN sed 's/self.display(word, format_display)/self.display(voc_word, format_display)/' mishkal/tashkeel/tashkeel.py > mishkal/tashkeel/tashkeel.py_UPDATE
-# RUN mv mishkal/tashkeel/tashkeel.py mishkal/tashkeel/tashkeel.py_OLD
-# RUN cp mishkal/tashkeel/tashkeel.py_UPDATE mishkal/tashkeel/tashkeel.py
+# RUN sed -i.BAK 's/self.display(word, format_display)/self.display(voc_word, format_display)/' mishkal/tashkeel/tashkeel.py
 
-RUN echo "python /wikispeech/mishkal/interfaces/web/mishkal-webserver.py &" > /wikispeech/bin/marytts-mishkal-start
-RUN echo "sleep 2" >> /bin/marytts-mishkal-start
-RUN echo "cd /wikispeech/marytts && ./gradlew run" >> /wikispeech/bin/marytts-mishkal-start
+############# START SCRIPT #############
+RUN echo "python /wikispeech/mishkal/interfaces/web/mishkal-webserver.py &" > $BASEDIR/bin/marytts-mishkal-start
+RUN echo "sleep 2" >> $BASEDIR/bin/marytts-mishkal-start
+RUN echo "cd $BASEDIR/marytts && ./gradlew run" >> $BASEDIR/bin/marytts-mishkal-start
 
-RUN chmod +x /wikispeech/bin/marytts-mishkal-start
+RUN chmod +x $BASEDIR/bin/marytts-mishkal-start
 
 
-##################### AFTER INSTALL #####################
-
+############# POST INSTALL #############
 WORKDIR "/wikispeech"
 
-
 # BUILD INFO
-ENV BUILD_INFO_FILE /wikispeech/.marytts_build_info.txt
+ENV BUILD_INFO_FILE $BASEDIR/build_info.txt
 RUN echo "Application name: marytts"  >> $BUILD_INFO_FILE
 RUN echo -n "Build timestamp: " >> $BUILD_INFO_FILE
 RUN date --utc "+%Y-%m-%d %H:%M:%S %Z" >> $BUILD_INFO_FILE
 RUN echo "Built by: docker" >> $BUILD_INFO_FILE
-RUN echo -n "Git release: " >> $BUILD_INFO_FILE
-RUN cd /wikispeech/marytts && git describe --tags >> $BUILD_INFO_FILE
+RUN echo "Release: $RELEASE" >> $BUILD_INFO_FILE
+RUN cat $BUILD_INFO_FILE
 
 ## LIST MARYTTS VOICES
-RUN /wikispeech/bin/voices
+RUN $BASEDIR/bin/marytts_voices
 
 
-## RUNTIME SETTINGS
+############# RUNTIME SETTINGS #############
+WORKDIR $BASEDIR
 EXPOSE 59125
-CMD /wikispeech/bin/marytts-mishkal-start
+CMD $BASEDIR/bin/marytts-mishkal-start
 
