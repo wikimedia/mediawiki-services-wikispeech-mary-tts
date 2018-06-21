@@ -58,7 +58,7 @@ WORKDIR "/wikispeech/mishkal"
 ############# START SCRIPT #############
 RUN echo "python /wikispeech/mishkal/interfaces/web/mishkal-webserver.py &" > $BASEDIR/bin/marytts-mishkal-start
 RUN echo "sleep 2" >> $BASEDIR/bin/marytts-mishkal-start
-RUN echo "cd $BASEDIR/marytts && ./gradlew run" >> $BASEDIR/bin/marytts-mishkal-start
+RUN echo "cd $BASEDIR && ./gradlew run" >> $BASEDIR/bin/marytts-mishkal-start
 
 RUN chmod +x $BASEDIR/bin/marytts-mishkal-start
 
