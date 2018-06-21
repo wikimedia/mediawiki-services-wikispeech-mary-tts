@@ -24,9 +24,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
 import java.util.ArrayList;
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -51,14 +48,11 @@ import org.apache.http.nio.entity.NStringEntity;
  */
 public class InfoRequestHandler extends BaseHttpRequestHandler {
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
-    private String startedAt;
-    private String versionInfo;
+    private String buildInfo;
+    private BuildInfoReader buildInfoReader = new BuildInfoReader();
     
 	public InfoRequestHandler() {
 		super();
-		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-		startedAt = dateFormat.format(new Date());
 	}
 
 	@Override
@@ -79,59 +73,6 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 		}
 	}
 
-     	// STTS addition, November 2017
-     	private String getVersionInfo() throws Exception {
-	    ArrayList<String> res = new ArrayList<String>();
-	    String buildInfoFile = "/wikispeech/marytts/build_info.txt";
-	    if (new File(buildInfoFile).exists()) {
-		Scanner sc = new Scanner(new BufferedReader(new FileReader(buildInfoFile)));
-		while (sc.hasNextLine()) {
-		    String l = sc.nextLine().trim();
-		    if (l.trim().length()>0) {
-			res.add(l);
-		    }
-		}
-		sc.close();
-	    } else {
-		logger.info("[InfoRequestHandler] No build info file found: " + buildInfoFile);
-		System.err.println("[InfoRequestHandler] No build info file found: " + buildInfoFile);
-		res.add("Application name: marytts");
-		res.add("Build timestamp: n/a");
-		res.add("Built by: user");
-		try {
-		    Process p = Runtime.getRuntime().exec("git describe --tags");
-		    BufferedReader stdout = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		    BufferedReader stderr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-		    Scanner sce = new Scanner(stderr).useDelimiter("\\Z");
-		    if (sce.hasNext()) {
-			String s = sce.next().trim();
-			System.err.println("[InfoRequestHandler] Couldn't retrieve git relase info: " + s);
-			logger.info("[InfoRequestHandler] Couldn't retrieve git release info: " + s);
-			res.add("Release: unknown");
-		    } else {
-			Scanner sc = new Scanner(stdout).useDelimiter("\\Z");
-			if (sc.hasNext()) {
-			    String s = sc.next().trim();
-			    res.add("Release: " + s);
-			} else {
-			    System.err.println("[InfoRequestHandler] Couldn't retrieve git release info: " + "??");
-			    logger.info("[InfoRequestHandler] Couldn't retrieve git release info: " + "??");
-			    res.add("Release: unknown");
-			}
-		    }
-		} catch (Exception e) {
-		    System.err.println("[InfoRequestHandler] Couldn't retrieve git release info: " + e.getMessage());
-		    logger.info("[InfoRequestHandler] Couldn't retrieve git release info: " + e.getMessage());
-		}
-	    }
-
-	    res.add("Started: " + startedAt);
-	    String resString = "";
-	    for (String s : res)
-		resString += s + "\n";
-	    return resString.trim();
-     	}
-
      	private String handleInfoRequest(String absPath, Map<String, String> queryItems, HttpResponse response) {
 		logger.debug("New info request: " + absPath);
 		if (queryItems != null) {
@@ -144,11 +85,11 @@ public class InfoRequestHandler extends BaseHttpRequestHandler {
 		String request = absPath.substring(1); // without the initial slash
 
 		if (request.equals("version")) {
-		    if (this.versionInfo!= null) return this.versionInfo;
+		    if (this.buildInfo!= null) return this.buildInfo;
 		    else {
 			try {
-			    this.versionInfo = getVersionInfo();
-			    return this.versionInfo;
+			    this.buildInfo = buildInfoReader.getBuildInfo();
+			    return this.buildInfo;
 			} catch (Exception e) {
 			    MaryHttpServerUtils.errorInternalServerError(response, "couldn't retrieve version info", e);
 			    return null;
