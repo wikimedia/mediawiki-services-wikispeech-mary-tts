@@ -40,7 +40,7 @@ RUN cp stts_voices/voice-stts_no_nst-hsmm-5.2.jar build/install/marytts/lib/
 RUN cp stts_voices/voice-stts_sv_nst-hsmm-5.2-SNAPSHOT.jar build/install/marytts/lib/
 
 ## SCRIPT FOR LISTING VOICES
-RUN echo "echo 'AVAILABLE VOICES:' && ls $BASEDIR/build/install/marytts/lib/ | egrep ^voice | sed 's/.jar//' | sed 's/^/* /' " > $BASEDIR/bin/voices
+RUN echo "echo 'AVAILABLE VOICES:' && ls $BASEDIR/build/install/marytts/lib/ | egrep ^voice | sed 's/.jar//' | sed 's/^/* /' " > $BASEDIR/bin/marytts_voices
 RUN chmod +x $BASEDIR/bin/marytts_voices
 
 
