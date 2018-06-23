@@ -52,6 +52,7 @@ WORKDIR "/wikispeech"
 RUN git clone https://github.com/HaraldBerthelsen/mishkal.git
 
 WORKDIR "/wikispeech/mishkal"
+git checkout 9624fbd ## checkout the right commit/release/tag, TODO: Update if needed
 
 # NO LONGER NEEDED (FIXED IN HB'S VERSION):
 # RUN sed -i.BAK 's/self.display(word, format_display)/self.display(voc_word, format_display)/' mishkal/tashkeel/tashkeel.py
