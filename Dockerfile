@@ -49,13 +49,13 @@ RUN chmod +x $BASEDIR/bin/marytts_voices
 WORKDIR "/wikispeech"
 
 # RUN git clone https://github.com/linuxscout/mishkal.git
-RUN git clone https://github.com/HaraldBerthelsen/mishkal.git
-
-WORKDIR "/wikispeech/mishkal"
-RUN git checkout 9624fbd ## checkout the right commit/release/tag, TODO: Update if needed
-
 # NO LONGER NEEDED (FIXED IN HB'S VERSION):
 # RUN sed -i.BAK 's/self.display(word, format_display)/self.display(voc_word, format_display)/' mishkal/tashkeel/tashkeel.py
+
+# RELEASE TAG/COMMIT ID/BRANCH NAME FOR MISHKAL | update if needed
+ARG MISHKAL_RELEASE=9624fbd
+RUN git clone -b $MISHKAL_RELEASE --single-branch https://github.com/HaraldBerthelsen/mishkal.git
+
 
 ############# START SCRIPT #############
 RUN echo "python /wikispeech/mishkal/interfaces/web/mishkal-webserver.py &" > $BASEDIR/bin/marytts-mishkal-start
