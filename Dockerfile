@@ -54,8 +54,9 @@ WORKDIR "/wikispeech"
 
 # RELEASE TAG/COMMIT ID/BRANCH NAME FOR MISHKAL | update if needed
 ARG MISHKAL_RELEASE=9624fbd
-RUN git clone -b $MISHKAL_RELEASE --single-branch https://github.com/HaraldBerthelsen/mishkal.git
-
+RUN git clone https://github.com/HaraldBerthelsen/mishkal.git
+WORKDIR "/wikispeech/mishkal"
+RUN git checkout $MISHKAL_RELEASE
 
 ############# START SCRIPT #############
 RUN echo "python /wikispeech/mishkal/interfaces/web/mishkal-webserver.py &" > $BASEDIR/bin/marytts-mishkal-start
