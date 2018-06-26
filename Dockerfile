@@ -84,6 +84,12 @@ RUN $BASEDIR/bin/marytts_voices
 
 ############# RUNTIME SETTINGS #############
 WORKDIR $BASEDIR
+
+# non-root user
+RUN useradd -u 8877 wikispeech
+RUN chown -R wikispeech.wikispeech /wikispeech
+USER wikispeech
+
 EXPOSE 59125
 CMD $BASEDIR/bin/marytts-mishkal-start
 
