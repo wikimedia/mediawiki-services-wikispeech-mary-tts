@@ -88,6 +88,7 @@ RUN $BASEDIR/bin/marytts_voices
 
 ############# RUNTIME SETTINGS #############
 WORKDIR $BASEDIR
+RUN chown -R wikispeech.wikispeech /wikispeech
 USER wikispeech
 EXPOSE 59125
 
