@@ -35,10 +35,7 @@ RUN mkdir -p $BASEDIR/bin
 
 WORKDIR $BASEDIR
 
-USER wikispeech
 RUN ./gradlew installDist
-
-USER root
 
 ## INSTALL STTS VOICES
 RUN cp stts_voices/voice-ar-nah-hsmm-5.2.jar build/install/marytts/lib/
