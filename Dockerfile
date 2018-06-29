@@ -65,8 +65,6 @@ RUN git checkout $MISHKAL_RELEASE
 RUN echo "python /wikispeech/mishkal/interfaces/web/mishkal-webserver.py &" > $BASEDIR/bin/marytts-mishkal-start
 RUN echo "sleep 2" >> $BASEDIR/bin/marytts-mishkal-start
 RUN echo "whoami" >> $BASEDIR/bin/marytts-mishkal-start
-#RUN echo "ls -l /home/wikispeech" >> $BASEDIR/bin/marytts-mishkal-start
-#RUN echo "ls -l /home/wikispeech/.gradle" >> $BASEDIR/bin/marytts-mishkal-start
 RUN echo "cd $BASEDIR && ./gradlew run" >> $BASEDIR/bin/marytts-mishkal-start
 
 RUN chmod +x $BASEDIR/bin/marytts-mishkal-start
