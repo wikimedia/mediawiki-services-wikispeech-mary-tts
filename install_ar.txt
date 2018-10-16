@@ -1,4 +1,4 @@
-git clone https://github.com/HaraldBerthelsen/marytts.git
+git clone https://github.com/stts-se/marytts.git
 cd marytts
 ./gradlew installDist
 wget https://github.com/HaraldBerthelsen/voice-ar-nah-hsmm/releases/download/v5.2/voice-ar-nah-hsmm-5.2.jar
