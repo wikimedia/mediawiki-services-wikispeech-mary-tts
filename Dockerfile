@@ -19,7 +19,8 @@ LABEL "se.stts.release"=$RELEASE
 
 
 ############# COMPONENT SPECIFIC DEPENDENCIES #############
-RUN apt-get install -y python software-properties-common && add-apt-repository ppa:openjdk && apt-get install -y openjdk-11-jdk
+RUN apt-get install -y python software-properties-common
+RUN add-apt-repository ppa:openjdk && apt-get install -y openjdk-11-jdk
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
@@ -35,7 +36,7 @@ RUN mkdir -p $BASEDIR/bin
 
 WORKDIR $BASEDIR
 
-RUN ./gradlew installDist
+RUN ./gradlew installDist --stacktrace
 
 ## INSTALL STTS VOICES
 RUN cp stts_voices/voice-ar-nah-hsmm-5.2.jar build/install/marytts/lib/
