@@ -19,7 +19,7 @@ LABEL "se.stts.release"=$RELEASE
 
 
 ############# COMPONENT SPECIFIC DEPENDENCIES #############
-RUN apt-get install -y python software-properties-common && add-apt-repository ppa:openjdk && apt-get install -y openjdk-8-jdk
+RUN apt-get install -y python software-properties-common && add-apt-repository ppa:openjdk && apt-get install -y openjdk-11-jdk
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
