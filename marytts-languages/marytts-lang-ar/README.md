@@ -13,6 +13,8 @@ IMPORTANT: If you don't run the mishkal server in the background, there will be 
 
 If you want to correct the vocalisation, get vocalised text from the mishkal server at http://localhost:8080, paste it into marytts and edit.
 
+If you're running Mishkal on another server or port, set environment variable `MARY_TTS_MISHKAL_URL="http://service:port"`.
+
 -----------------------
 
 By default marytts-lang-ar is not included when running

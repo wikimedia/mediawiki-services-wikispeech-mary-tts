@@ -32,6 +32,8 @@ import org.w3c.dom.traversal.TreeWalker;
 import com.ibm.icu.text.RuleBasedNumberFormat;
 
 import java.io.StringReader;
+
+import static marytts.language.ar.MishkalEnv.getMishkalUrl;
 /*
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -41,7 +43,7 @@ import javax.json.JsonValue;
 */
 /**
  * @author Tristan Hamilton + HB
- * 
+ *
  *         Processes cardinal and ordinal numbers.
  */
 public class Preprocess extends InternalModule {
@@ -92,7 +94,7 @@ public class Preprocess extends InternalModule {
                 MaryDomUtils.setTokenText(t2, vocTextList[i]);
                 i++;
             }
-        } 
+        }
         catch (java.net.ConnectException e) {
             System.out.println("Mishkal server not running - can't vocalise");
         }
@@ -108,7 +110,7 @@ public class Preprocess extends InternalModule {
 
     protected static String vocaliseTextOld(String text) throws Exception {
 
-	String url = "http://localhost:8080/vocalise?text=";
+	String url = getMishkalUrl() + "vocalise?text=";
 	url+=URLEncoder.encode(text, "UTF-8");
 	System.out.println("Vocalise url: "+url);
 
@@ -119,22 +121,22 @@ public class Preprocess extends InternalModule {
         StringBuilder response = new StringBuilder();
         String inputLine;
 
-        while ((inputLine = in.readLine()) != null) 
+        while ((inputLine = in.readLine()) != null)
             response.append(inputLine);
 
         in.close();
 
         String vocalised = response.toString();
-	
+
 	System.out.println("Vocalised text: "+vocalised);
-	
+
 	return vocalised;
 
     }
 
     protected static String vocaliseTextMishkal(String text) throws Exception {
 
-	String url = "http://localhost:8080/ajaxGet?action=Tashkeel2&text=";
+	String url = getMishkalUrl() + "ajaxGet?action=Tashkeel2&text=";
 	url+=URLEncoder.encode(text, "UTF-8");
 	System.out.println("Vocalise url: "+url);
 
@@ -145,12 +147,12 @@ public class Preprocess extends InternalModule {
         StringBuilder response = new StringBuilder();
         String inputLine;
 
-        while ((inputLine = in.readLine()) != null) 
+        while ((inputLine = in.readLine()) != null)
             response.append(inputLine);
 
         in.close();
 
-        String vocalised = response.toString();	
+        String vocalised = response.toString();
 	System.out.println("Vocalised text: "+vocalised);
 
 	List<String> vocList = new ArrayList<String>();
@@ -158,7 +160,7 @@ public class Preprocess extends InternalModule {
 	//Here starts json part to replace
 	/*
 	JsonReader reader = Json.createReader(new StringReader(vocalised));
-        JsonObject vocObject = reader.readObject();         
+        JsonObject vocObject = reader.readObject();
         reader.close();
 
 	JsonArray resultsArray = vocObject.getJsonArray("result");
@@ -167,7 +169,7 @@ public class Preprocess extends InternalModule {
 	    JsonObject result = resultsArray.getJsonObject(i);
 
 	    //"chosen" appears to be with case endings, "semi" without
-	    //Maybe better to use "chosen" and skip final diacritic? 
+	    //Maybe better to use "chosen" and skip final diacritic?
 	    //String chosen = result.getString("chosen");
 	    String chosen = result.getString("semi");
 
@@ -199,7 +201,7 @@ public class Preprocess extends InternalModule {
     }
 
 
-    
+
     protected void checkForNumbers(Document doc) {
 	TreeWalker tw = ((DocumentTraversal) doc).createTreeWalker(doc, NodeFilter.SHOW_ELEMENT, new NameNodeFilter(MaryXML.TOKEN), false);
 	Element t = null;
@@ -215,7 +217,7 @@ public class Preprocess extends InternalModule {
 		System.err.println("FOUND NUMBER: "+origText);
 
 		//Decimal point is ok, but comma is not (1,000,000 -> 1000000)
-		String cleanedText = origText.replace(",", ""); 
+		String cleanedText = origText.replace(",", "");
 
 		String expanded = expandNumber(Double.parseDouble(cleanedText));
 		//System.err.println("Setting token text to "+expanded);
@@ -233,7 +235,7 @@ public class Preprocess extends InternalModule {
 		System.err.println("set treewalker position:" + MaryDomUtils.getPlainTextBelow((Element) tw.getCurrentNode()));
 
 
-		
+
 	    }
 	    // if token isn't ignored but there is no handling rule don't add MTU
 	    //if (!origText.equals(MaryDomUtils.tokenText(t))) {
@@ -244,7 +246,7 @@ public class Preprocess extends InternalModule {
 
     protected String expandNumber(double number) {
 	    this.rbnf.setDefaultRuleSet(cardinalRule);
-	    String expanded = this.rbnf.format(number); 
+	    String expanded = this.rbnf.format(number);
 	    logger.debug("Expanding cardinal "+number+" using rule "+cardinalRule+" -> "+expanded);
 	    System.err.println("Expanding cardinal "+number+" using rule "+cardinalRule+" -> "+expanded);
 	    return expanded;
@@ -253,7 +255,7 @@ public class Preprocess extends InternalModule {
 	// protected String expandOrdinal(double number) {
 	//     logger.info("Expanding ordinal "+number+" using rule "+ordinalRule);
 	//     this.rbnf.setDefaultRuleSet(ordinalRule);
-	//     String expanded = this.rbnf.format(number); 
+	//     String expanded = this.rbnf.format(number);
 	//     logger.debug("Expanding ordinal "+number+" using rule "+ordinalRule+" -> "+expanded);
 	//     return expanded;
 	// }
@@ -261,7 +263,7 @@ public class Preprocess extends InternalModule {
 	// protected String expandOrdinal_e(String rule, double number) {
 	//     logger.info("Expanding ordinal "+number+" using rule "+rule);
 	//     this.rbnf.setDefaultRuleSet(rule);
-	//     String expanded = this.rbnf.format(number); 
+	//     String expanded = this.rbnf.format(number);
 	//     logger.debug("Expanding ordinal "+number+" using rule "+rule+" -> "+expanded);
 	//     return expanded;
 	// }
