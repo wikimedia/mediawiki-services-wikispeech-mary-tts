@@ -41,9 +41,12 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
+
+import static marytts.language.ar.MishkalEnv.getMishkalUrl;
+
 /**
  * Embed plain text input into a raw (untokenised) MaryXML document.
- * 
+ *
  * @author Marc Schr&ouml;der
  */
 
@@ -94,7 +97,7 @@ public class TextToMaryXML extends marytts.modules.InternalModule {
      * Append one paragraph of text to the rawmaryxml document. If the text language (as determined by #getLanguage(text)) differs
      * from the enclosing document's language, the paragraph element is enclosed with a <code>&lt;voice xml:lang="..."&gt;</code>
      * element.
-     * 
+     *
      * @param text
      *            the paragraph text.
      * @param root
@@ -140,7 +143,7 @@ public class TextToMaryXML extends marytts.modules.InternalModule {
     /**
      * Try to determine the locale of the given text. This implementation simply returns the default locale; subclasses can try to
      * do something fancy here.
-     * 
+     *
      * @param text
      *            the text whose locale to determine
      * @param defaultLocale
@@ -162,7 +165,7 @@ public class TextToMaryXML extends marytts.modules.InternalModule {
 		return true;
 	    }
 	}
-	return false;	    
+	return false;
     }
 
 
@@ -178,7 +181,7 @@ public class TextToMaryXML extends marytts.modules.InternalModule {
 		return true;
 	    }
 	}
-	return false;	    
+	return false;
     }
 
     private static boolean isDiacritic(char c) {
@@ -194,23 +197,23 @@ public class TextToMaryXML extends marytts.modules.InternalModule {
 
     private static String vocaliseTextOLD(String text) throws Exception {
 
-	String url = "http://localhost:8080/ajaxGet?action=TashkeelText&text=";
+	String url = getMishkalUrl() + "/ajaxGet?action=TashkeelText&text=";
 	url+=URLEncoder.encode(text);
 	System.out.println("Vocalise url: "+url);
 	InputStream is = new URL(url).openStream();
 	JsonReader rdr = Json.createReader(is);
 	JsonObject obj = rdr.readObject();
 	String vocalised = obj.getString("result");
-	
+
 	System.out.println("Vocalised text: "+vocalised);
-	
+
 	return vocalised;
 
     }
 
     private static String vocaliseText(String text) throws Exception {
 
-	String url = "http://localhost:8080/vocalise?text=";
+	String url = getMishkalUrl() + "vocalise?text=";
 	url+=URLEncoder.encode(text, "UTF-8");
 	System.out.println("Vocalise url: "+url);
 
@@ -225,15 +228,15 @@ public class TextToMaryXML extends marytts.modules.InternalModule {
         StringBuilder response = new StringBuilder();
         String inputLine;
 
-        while ((inputLine = in.readLine()) != null) 
+        while ((inputLine = in.readLine()) != null)
             response.append(inputLine);
 
         in.close();
 
         String vocalised = response.toString();
-	
+
 	System.out.println("Vocalised text: "+vocalised);
-	
+
 	return vocalised;
 
     }
