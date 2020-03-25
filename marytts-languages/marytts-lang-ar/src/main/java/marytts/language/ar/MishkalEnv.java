@@ -5,7 +5,7 @@ import java.net.URL;
 
 public class MishkalEnv {
 
-  private static final String MISHKAL_DEFAULT_URL = "http://localhost:8080";
+  private static final String MISHKAL_DEFAULT_URL = "http://localhost:8080/";
   private static final String MISHKAL_URL_ENVIRONMENT_VARIABLE = "MARY_TTS_MISHKAL_URL";
   private static String mishkalUrl;
   public static String getMishkalUrl() {
