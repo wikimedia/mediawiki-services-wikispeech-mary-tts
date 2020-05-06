@@ -1,0 +1,33 @@
+version: v4
+
+base: docker-registry.wikimedia.org/wikimedia-buster
+
+runs:
+  insecurely: true
+  environment: { MARY_TTS_MISHKAL_URL: "http://mishkal-service:8080/" }
+
+lives:
+  in: /srv
+
+variants:
+  build:
+    apt:
+      packages: [ haproxy, openjdk-11-jre ]
+    copies:
+      - from: local
+        source: ./haproxy.cfg
+        destination: .
+      - from: local
+        source: ./blubber/mary-tts
+        destination: ./mary-tts
+      - from: local
+        source: ./blubber/gradle_user_home
+        destination: ./gradle_user_home
+  production:
+    includes: [ build ]
+    entrypoint: [ ./mary-tts/blubber-entrypoint.sh ]
+  test:
+    includes: [ build ]
+    apt:
+      packages: [ wget ]
+    entrypoint: [ ./mary-tts/blubber-entrypoint-test.sh ]
