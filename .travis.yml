@@ -29,7 +29,7 @@ script:
   - echo "marytts running on pid $pid"
   - sleep 30
   - sh .travis/exit_server_and_fail_if_not_running.sh marytts $pid
-  #- docker build . -t marytts
+  - docker build . -t marytts
 
 
 #from upstream
