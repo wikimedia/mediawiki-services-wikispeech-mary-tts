@@ -15,17 +15,10 @@ lives:
 variants:
   build:
     apt:
-      packages: [ haproxy, openjdk-11-jre ]
-    copies:
-      - from: local
-        source: ./haproxy.cfg
-        destination: .
-      - from: local
-        source: ./blubber/mary-tts
-        destination: ./mary-tts
-      - from: local
-        source: ./blubber/gradle_user_home
-        destination: ./gradle_user_home
+      packages: [ haproxy, openjdk-11-jdk ]
+    builder:
+      command: [ ./blubber-prepare.sh ]
+      requirements: [ . ]
   production:
     includes: [ build ]
     entrypoint: [ ./mary-tts/blubber-entrypoint.sh ]
