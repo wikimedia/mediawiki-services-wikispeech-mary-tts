@@ -42,5 +42,3 @@ fi
 if ! cp stts_voices/voice-ar-nah-hsmm-5.2.jar stts_voices/voice-dfki-spike-hsmm-5.1.jar stts_voices/voice-stts_no_nst-hsmm-5.2.jar stts_voices/voice-stts_sv_nst-hsmm-5.2-SNAPSHOT.jar build/install/mary-tts/lib/; then
   m_error "Unable to install voices to Mary TTS STTS!"
 fi
-
-echo "Successfully prepared Mary-TTS! Now run ./blubber-build.sh"
