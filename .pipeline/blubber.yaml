@@ -1,6 +1,8 @@
+# syntax=docker-registry.wikimedia.org/repos/releng/blubber/buildkit:v0.21.1
+
 version: v4
 
-base: docker-registry.wikimedia.org/wikimedia-buster
+base: docker-registry.wikimedia.org/openjdk-11-jdk
 
 runs:
   insecurely: true
@@ -15,7 +17,7 @@ lives:
 variants:
   build:
     apt:
-      packages: [ haproxy, openjdk-11-jdk ]
+      packages: [ haproxy ]
     builder:
       command: [ ./blubber-prepare.sh ]
       requirements: [ . ]

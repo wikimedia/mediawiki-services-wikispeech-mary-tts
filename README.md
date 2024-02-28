@@ -1,6 +1,6 @@
 # MaryTTS
 
-[![Build Status](https://travis-ci.org/stts-se/marytts.svg)](https://travis-ci.org/stts-se/marytts)
+[![Build Status](https://travis-ci.com/stts-se/marytts.svg)](https://travis-ci.com/stts-se/marytts)
 
 This is a copy of the source code repository for [MaryTTS](https://github.com/marytts/marytts), adapted by STTS for use with the <a href="http://stts-se.github.io/wikispeech">Wikispeech engine</a>.
 
